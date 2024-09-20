@@ -52,7 +52,7 @@
 
 // configuration file
 
-`include "../rtl/config.vh"
+`include "../../rtl/src/config.vh"
 
 module darkriscv
 #(
