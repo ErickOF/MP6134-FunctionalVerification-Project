@@ -151,10 +151,11 @@ module mt48lc16m16a2_ctrl #(
 
   reg [15:0] dq;
   reg [15:0] dq_nxt;
-  assign sdram_dq = oe ? dq : 16'hz;
 
   reg oe;
   reg oe_nxt;
+
+  assign sdram_dq = oe ? dq : 16'hz;
 
   always @(posedge clk) begin
     if (~resetn) begin
