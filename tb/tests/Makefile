@@ -45,9 +45,9 @@ VCDS = darksocv.vcd
 TRCE = darksocv.txt
 
 ifdef HARVARD
-	SRCS = ../src/darksocv.rom.mem ../src/darksocv.ram.mem
+	SRCS = ../../src/darksocv.rom.mem ../../src/darksocv.ram.mem
 else
-	SRCS = ../src/darksocv.mem
+	SRCS = ../../src/darksocv.mem
 endif
 
 DEPS = $(SRCS) $(RTLS) $(INCS)
