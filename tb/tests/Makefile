@@ -28,37 +28,20 @@
 
 # VCS variables
 VCS = vcs -sverilog -full64 -debug_all +v2k +lint=all
-RTLS =  darksimv.v                      \
-        ../../rtl/src/darksocv.v           \
-        ../../rtl/src/darkbridge.v         \
-        ../../rtl/src/darkuart.v           \
-        ../../rtl/src/darkriscv.v          \
-        ../../rtl/src/darkpll.v            \
-        ../../rtl/src/darkram.v            \
-        ../../rtl/src/darkio.v             \
-        ../../rtl/src/darkcache.v          \
-        ../../rtl/src/lib/mt48lc16m16a2_ctrl.v
-        
-INCS = ../../rtl/src/config.vh
+FILELIST = filelist.f
 XSIM = darksocv
 VCDS = darksocv.vcd
 TRCE = darksocv.txt
 
-ifdef HARVARD
-	SRCS = ../../src/darksocv.rom.mem ../../src/darksocv.ram.mem
-else
-	SRCS = ../../src/darksocv.mem
-endif
-
-DEPS = $(SRCS) $(RTLS) $(INCS)
+DEPS = $(FILELIST)
 
 all: $(XSIM)
 	./$(XSIM) +vcs+dumpvars+$(VCDS)
 
 $(XSIM): $(DEPS)
-	$(VCS) -I../rtl/src $(RTLS) -o $(XSIM)
+	$(VCS) -f $(FILELIST) -o $(XSIM)
 
 clean:
-	-rm -f $(VCDS) $(XSIM) $(TRCE) csrc DVEfiles ucli.key
+	-rm -rf $(VCDS) $(XSIM) $(TRCE) csrc DVEfiles ucli.key
 
 .PHONY: clean all
