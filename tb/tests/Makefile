@@ -27,7 +27,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # VCS variables
-VCS = vcs -sverilog -full64 -debug_all +v2k +lint=all
+VCS = vcs -sverilog -full64 -debug_access+all -gui +v2k +lint=all
 FILELIST = filelist.f
 XSIM = darksocv
 VCDS = darksocv.vcd
