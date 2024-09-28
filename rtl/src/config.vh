@@ -131,8 +131,8 @@
 // trace is enabled, the UART print is blocked, also, the trace does not
 // dump data when the core is in reset.
 // the trace file is stored on "sim/darksocv.txt"
-//`define __TRACE__
-//`define __TRACEFULL__
+`define __TRACE__
+`define __TRACEFULL__
 
 // performance measurement:
 //

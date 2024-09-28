@@ -27,7 +27,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # VCS variables
-VCS = vcs -sverilog -full64 -debug_all +v2k +lint=all
+VCS = vcs -sverilog -full64 -debug_access+all -gui +v2k +lint=all
 RTLS =  darksimv.v                      \
         ../../rtl/src/darksocv.v           \
         ../../rtl/src/darkbridge.v         \
@@ -59,6 +59,6 @@ $(XSIM): $(DEPS)
 	$(VCS) -I../rtl/src $(RTLS) -o $(XSIM)
 
 clean:
-	-rm -f $(VCDS) $(XSIM) $(TRCE) csrc DVEfiles ucli.key
+	-rm -rf $(VCDS) $(XSIM) $(TRCE) csrc DVEfiles ucli.key
 
 .PHONY: clean all
