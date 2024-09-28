@@ -42,6 +42,6 @@ $(XSIM): $(DEPS)
 	$(VCS) -f $(FILELIST) -o $(XSIM)
 
 clean:
-	-rm -rf $(VCDS) $(XSIM) $(TRCE) csrc DVEfiles ucli.key
+	-rm -rf $(VCDS) $(XSIM) $(TRCE) csrc DVEfiles ucli.key $(XSIM).daidir
 
 .PHONY: clean all

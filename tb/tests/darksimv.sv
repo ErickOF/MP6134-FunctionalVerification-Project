@@ -65,15 +65,25 @@ module darksimv;
 
     initial
     begin
+        @(negedge RES);
         @(posedge CLK);
-        cpu_if.CPU.HLT <= 1'b1;
+        cpu_if.HLT <= 1'b1;
 `ifdef __INTERRUPT__
-        cpu_if.CPU.IRQ <= 1'b1;
+        cpu_if.IRQ <= 1'b1;
 `endif
-        cpu_if.CPU.IDATA <= 32'h0;
-        cpu_if.CPU.DATAI <= 32'h0;
+    end
+
+    initial
+    begin
+        @(posedge CLK);
+        cpu_if.HLT <= 1'b0;
+`ifdef __INTERRUPT__
+        cpu_if.IRQ <= 1'b0;
+`endif
+        cpu_if.IDATA <= 32'h0;
+        cpu_if.DATAI <= 32'h0;
 `ifdef SIMULATION
-        cpu_if.CPU.ESIMREQ <= 1'b0;
+        cpu_if.ESIMREQ <= 1'b0;
 `endif
     end
 
@@ -83,32 +93,32 @@ module darksimv;
     )
     core0
     (
-        .CLK    (cpu_if.CPU.CLK),
-        .RES    (cpu_if.CPU.RES),
-        .HLT    (cpu_if.CPU.HLT),
+        .CLK    (cpu_if.CLK),
+        .RES    (cpu_if.RES),
+        .HLT    (cpu_if.HLT),
 
 `ifdef __INTERRUPT__
-        .IRQ    (cpu_if.CPU.IRQ),
+        .IRQ    (cpu_if.IRQ),
 `endif
 
-        .IDATA  (cpu_if.CPU.IDATA),
-        .IADDR  (cpu_if.CPU.IADDR),
-        .DADDR  (cpu_if.CPU.DADDR),
+        .IDATA  (cpu_if.IDATA),
+        .IADDR  (cpu_if.IADDR),
+        .DADDR  (cpu_if.DADDR),
 
-        .DATAI  (cpu_if.CPU.DATAI),
-        .DATAO  (cpu_if.CPU.DATAO),
-        .DLEN   (cpu_if.CPU.DLEN),
-        .DRW    (cpu_if.CPU.DRW),
-        .DWR    (cpu_if.CPU.DWR),
-        .DRD    (cpu_if.CPU.DRD),
-        .DAS    (cpu_if.CPU.DAS),
+        .DATAI  (cpu_if.DATAI),
+        .DATAO  (cpu_if.DATAO),
+        .DLEN   (cpu_if.DLEN),
+        .DRW    (cpu_if.DRW),
+        .DWR    (cpu_if.DWR),
+        .DRD    (cpu_if.DRD),
+        .DAS    (cpu_if.DAS),
 
 `ifdef SIMULATION
-        .ESIMREQ(cpu_if.CPU.ESIMREQ),
-        .ESIMACK(cpu_if.CPU.ESIMACK),
+        .ESIMREQ(cpu_if.ESIMREQ),
+        .ESIMACK(cpu_if.ESIMACK),
 `endif
 
-        .DEBUG  (cpu_if.CPU.DEBUG)
+        .DEBUG  (cpu_if.DEBUG)
     );
 
 endmodule
