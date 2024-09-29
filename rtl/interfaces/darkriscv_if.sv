@@ -1,3 +1,5 @@
+`include "config.vh"
+
 interface darkriscv_if (input bit CLK, input bit RES);
 
   logic            HLT;   // halt
