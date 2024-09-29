@@ -34,12 +34,16 @@ class driver;
     repeat (iteration) begin
       sti = new();
       @ (negedge intf.clk);
-      if(sti.randomize()) // Generate stimulus
-        $display("Driving 0x%h value in the DUT\n", sti.value);
-        intf.IDATA = sti.instruction;
-        intf.DATAI = sti.data;
-        sb.instruction_queue.push_front(sti.instruction); // Store the current instruction input in the scoreboard queue for that purpose
-        sb.data_queue.push_front(sti.instruction);        // Store the current data input in the scoreboard queue for that purpose
+      if(sti.randomize()) begin // Generate stimulus
+        $display("Driving instruction 0x%0h\n", sti.riscv_inst);
+      end
+      else begin
+        $error("There was an error in randomize call of write task at %m")
+      end
+        intf.IDATA = sti.riscv_inst;
+        intf.DATAI = sti.riscv_data;
+        sb.instruction_queue.push_front(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
+        sb.data_queue.push_front(sti.riscv_inst);        // Store the current data input in the scoreboard queue for that purpose
     end
     @ (negedge intf.clk);
     // TODO: what values to drive in "IDLE" mode?
