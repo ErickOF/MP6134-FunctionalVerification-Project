@@ -57,7 +57,7 @@ class driver;
       if ( ! sti.randomize() with { // Let's use ADDI instruction for populate each register, by taking advance of immediate values
         inst_type == i_type;    // I-type instruction
         funct3    == 3'b000;    // funct3 code for ADDI
-        rs1       == 5'b0_0000; // Register with hardcoded zero value
+        rs1       == 5'b0_0000; // Register with hardcoded zero value. Therefore, rd = 0 + imm -> rd = imm
         rd        == k;         // Number of destiny register, iterating over all 32 registers
       }
       ) begin
