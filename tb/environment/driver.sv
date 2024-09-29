@@ -49,6 +49,27 @@ class driver;
     // TODO: what values to drive in "IDLE" mode?
   endtask : write
 
+  // init_registers task: In order to do useful computation instructions, we need known values different than zero in each register
+  task init_registers();
+    for (int k = 0; k < 32; k++) begin
+      sti = new();
+      @ (negedge intf.clk);
+      if ( ! sti.randomize() with { // Let's use ADDI instruction for populate each register, by taking advance of immediate values
+        inst_type == i_type;    // I-type instruction
+        funct3    == 3'b000;    // funct3 code for ADDI
+        rs1       == 5'b0_0000; // Register with hardcoded zero value
+        rd        == k;         // Number of destiny register, iterating over all 32 registers
+      }
+      ) begin
+        $error("There was an error in randomize call of write init_registers task at %m")
+      end
+      intf.IDATA = sti.riscv_inst;
+      intf.DATAI = sti.riscv_data;
+      sb.instruction_queue.push_front(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
+      sb.data_queue.push_front(sti.riscv_inst);        // Store the current data input in the scoreboard queue for that purpose
+    end
+  endtask
+
   // halt_pattern task: Drive HLT input with a delay pattern
   task halt_pattern();
     //TODO:
