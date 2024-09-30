@@ -44,9 +44,8 @@ module darksimv;
 
     bit CLK = 0;
     
-    bit RES = 1;
 
-    darkriscv_if cpu_if(.CLK(CLK), .RES(RES));
+    darkriscv_if cpu_if(.CLK(CLK));
 
     initial while(1) #(500e6/`BOARD_CK) CLK = !CLK; // clock generator w/ freq defined by config.vh
 
@@ -62,36 +61,6 @@ module darksimv;
             $dumpvars(0, core0.REGS[i]);
         end
     `endif
-        $display("reset (startup)");
-        #1e3    RES = 0;            // wait 1us in reset state
-        $display("reset finished");
-        #1e3;
-        $display("Finished simulation");
-        $finish;
-    end
-
-    initial
-    begin
-        @(negedge RES);
-        @(posedge CLK);
-        cpu_if.HLT <= 1'b1;
-`ifdef __INTERRUPT__
-        cpu_if.IRQ <= 1'b1;
-`endif
-    end
-
-    initial
-    begin
-        @(posedge CLK);
-        cpu_if.HLT <= 1'b0;
-`ifdef __INTERRUPT__
-        cpu_if.IRQ <= 1'b0;
-`endif
-        cpu_if.IDATA <= 32'h0;
-        cpu_if.DATAI <= 32'h0;
-`ifdef SIMULATION
-        cpu_if.ESIMREQ <= 1'b0;
-`endif
     end
 
     darkriscv
