@@ -7,6 +7,8 @@ program test(darkriscv_if intf);
   initial begin
     // Reset the DUT through the driver
     env.drvr.reset();
+    // Initialize registers
+    env.drvr.init_registers();
     // Write 10 values
     env.drvr.write(10, 1);
   end
