@@ -30,6 +30,13 @@
 
 `timescale 1ns / 1ps
 `include "config.vh"
+`include "stimulus.sv"
+`include "scoreboard.sv"
+`include "driver.sv"
+`include "monitor.sv"
+`include "env.sv"
+`include "test_1.sv"
+`include "top.sv"
 
 // clock and reset logic
 
@@ -121,4 +128,7 @@ module darksimv;
         .DEBUG  (cpu_if.DEBUG)
     );
 
+    // Test program execution
+    // Invoke the test case with the virtual interface
+    test testcase(cpu_if);
 endmodule
