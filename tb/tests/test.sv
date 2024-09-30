@@ -1,5 +1,5 @@
 // Based on: https://www.edaplayground.com/x/Yk4N
-program test(dut_intf intf);
+program test(cpu_if intf);
   // Instantiate the environment and pass the virtual interface to it
   environment env = new(intf);
 

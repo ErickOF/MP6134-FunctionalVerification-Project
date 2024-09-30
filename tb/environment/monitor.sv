@@ -4,10 +4,10 @@ class monitor;
   scoreboard sb;
 
   // Virtual interface to observe signals from the DUT
-  virtual dut_intf intf;
+  virtual darkriscv_if intf;
 
   // Constructor: Initializes the interface and scoreboard objects
-  function new(virtual dut_intf intf, scoreboard sb);
+  function new(virtual darkriscv_if intf, scoreboard sb);
     this.intf = intf;
     this.sb = sb;
   endfunction : new
