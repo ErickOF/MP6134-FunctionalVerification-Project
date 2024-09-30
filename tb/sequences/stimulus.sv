@@ -2,6 +2,7 @@
 class stimulus;
   // Fields for RISC-V core instructions
   rand inst_type_e  inst_type;
+  rand logic [6:0]  opcode;
   rand logic [4:0]  rd;
   rand logic [4:0]  rs1;
   rand logic [4:0]  rs2;

@@ -30,13 +30,13 @@
 
 `timescale 1ns / 1ps
 `include "config.vh"
+`include "stimulus_types.sv"
 `include "stimulus.sv"
 `include "scoreboard.sv"
 `include "driver.sv"
 `include "monitor.sv"
-`include "env.sv"
-`include "test_1.sv"
-`include "top.sv"
+`include "environment.sv"
+`include "test.sv"
 
 // clock and reset logic
 
