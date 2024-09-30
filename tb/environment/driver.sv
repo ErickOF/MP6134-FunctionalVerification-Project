@@ -25,6 +25,10 @@ class driver;
 `ifdef SIMULATION
     intf.ESIMREQ = 0;
 `endif
+    @(negedge intf.CLK);
+    intf.RES     = 1;
+    @(negedge intf.CLK);
+    intf.RES     = 0;
   endtask : reset
 
   // Write task: Generates random instructions. Could be constrained (valid ones) or completely random (not valid RISC-V instructions)
@@ -53,14 +57,15 @@ class driver;
       sti = new();
       @ (negedge intf.CLK);
       if ( ! sti.randomize() with { // Let's use ADDI instruction for populate each register, by taking advance of immediate values
-        inst_type == i_type;    // I-type instruction
-        funct3    == 3'b000;    // funct3 code for ADDI
-        rs1       == 5'b0_0000; // Register with hardcoded zero value. Therefore, rd = 0 + imm -> rd = imm
-        rd        == k;         // Number of destiny register, iterating over all 32 registers
+        opcode == i_type;    // I-type instruction
+        funct3 == 3'b000;    // funct3 code for ADDI
+        rs1    == 5'b0_0000; // Register with hardcoded zero value. Therefore, rd = 0 + imm -> rd = imm
+        rd     == k;         // Number of destiny register, iterating over all 32 registers
       }
       ) begin
         $error("There was an error in randomize call of write init_registers task at %m");
       end
+      $display("Driving instruction 0x%0h\n", sti.riscv_inst);
       intf.IDATA = sti.riscv_inst;
       intf.DATAI = sti.riscv_data;
       sb.instruction_queue.push_front(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose

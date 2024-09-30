@@ -1,8 +1,9 @@
 `include "config.vh"
 
-interface darkriscv_if (input bit CLK, input bit RES);
+interface darkriscv_if (input bit CLK);
 
   logic            HLT;   // halt
+  logic            RES;   // reset
 
 `ifdef __INTERRUPT__
   logic            IRQ;   // interrupt request
