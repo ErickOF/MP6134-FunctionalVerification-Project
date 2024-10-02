@@ -1,5 +1,5 @@
 // Based on: https://www.edaplayground.com/x/Yk4N
-program test(dut_intf intf);
+program test(darkriscv_if intf);
   // Instantiate the environment and pass the virtual interface to it
   environment env = new(intf);
 
@@ -7,9 +7,9 @@ program test(dut_intf intf);
   initial begin
     // Reset the DUT through the driver
     env.drvr.reset();
+    // Initialize registers
+    env.drvr.init_registers();
     // Write 10 values
-    env.drvr.write(10);
-    // Read 10 values
-    env.drvr.read(10);
+    env.drvr.write(10, 1);
   end
 endprogram : test

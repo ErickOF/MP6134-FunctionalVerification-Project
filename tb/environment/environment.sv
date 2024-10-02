@@ -6,10 +6,10 @@ class environment;
   monitor mntr;
 
   // Virtual interface to connect the environment components to the DUT signals
-  virtual dut_intf intf;
+  virtual darkriscv_if intf;
 
   // Constructor: Initializes the environment
-  function new(virtual dut_intf intf);
+  function new(virtual darkriscv_if intf);
     // Display message indicating the creation of the environment
     $display("Creating environment");
 
