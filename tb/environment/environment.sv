@@ -4,6 +4,7 @@ class environment;
   driver drvr;
   scoreboard sb;
   monitor mntr;
+  riscv_reference_model ref_model;
 
   // Virtual interface to connect the environment components to the DUT signals
   virtual darkriscv_if intf;
@@ -16,11 +17,13 @@ class environment;
     // Assign the virtual interface
     this.intf = intf;
 
+    ref_model = new();
+
     // Instantiate the scoreboard
     sb = new();
 
     // Instantiate the driver and pass the interface and scoreboard references
-    drvr = new(intf, sb);
+    drvr = new(intf, sb, ref_model.mb_mn_instr);
 
     // Instantiate the monitor and pass the interface and scoreboard references
     mntr = new(intf, sb);
