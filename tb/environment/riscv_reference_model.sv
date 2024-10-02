@@ -35,7 +35,7 @@ class riscv_reference_model;
         decode_i_type_opcode(.my_instr(my_instr));
       end
       default : begin
-        $display("Instruction type %s is not supported right now in the reference model", opcode.name());
+        $display("Instruction type %s is not supported right now in the reference model\n", opcode.name());
       end
     endcase
   endfunction : proccess_instructions
@@ -49,6 +49,8 @@ class riscv_reference_model;
     bit [11:0] imm;
     bit signed [31:0] imm_signed = 0;
     bit [31:0] imm_unsigned = 0;
+    
+    bit signed [31:0] result;
 
     funct3 = my_instr[`RISCV_INST_FUNC3_RANGE];
     dest_reg = my_instr[`RISCV_INST_RD_RANGE];
@@ -58,69 +60,83 @@ class riscv_reference_model;
     imm_unsigned = unsigned'(imm_signed);
     shamt = imm[4:0];
 
-    case (funct3)
-      addi : begin
-        $display("Saving result from adding R%0d = %0d and IMM = %0d to R%0d = %0d", source_reg, register_bank[source_reg], imm_signed, dest_reg, register_bank[dest_reg]);
-        register_bank[dest_reg] = register_bank[source_reg] + imm_signed;
-      end
-      slli : begin
-        if (imm[11:5] == 7'b000_0000) begin
-          $display("Saving result from logic shifting to the left R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h", source_reg, register_bank[source_reg], shamt, dest_reg, register_bank[dest_reg]);
-          register_bank[dest_reg] = register_bank[source_reg] << shamt;
+    if (dest_reg != 'h0) begin
+      case (funct3)
+        addi : begin
+          result = register_bank[source_reg] + imm_signed;
+          $display("Saving result 0x%0h from adding R%0d = %0d and IMM = %0d to R%0d = %0d\n", result, source_reg, register_bank[source_reg], imm_signed, dest_reg, register_bank[dest_reg]);
+          register_bank[dest_reg] = result;
         end
-        else begin
-          $display("Upper seven bits of IMM is not recognized 0x%0h!", imm[11:5]);
+        slli : begin
+          // if (imm[11:5] == 7'b000_0000) begin // RISCV spec shows IMM[11:5] = 0, but the design doesn't check for that
+            result = register_bank[source_reg] << shamt;
+            $display("Saving result 0x%0h from logic shifting to the left R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h\n", result, source_reg, register_bank[source_reg], shamt, dest_reg, register_bank[dest_reg]);
+            register_bank[dest_reg] = result;
+          // end
+          // else begin
+          //   $display("Upper seven bits of IMM is not recognized 0x%0h!\n", imm[11:5]);
+          // end
         end
-      end
-      slti : begin
-        if (register_bank[source_reg] < imm_signed) begin
-          $display("Saving value from R%0d to R%0d = %0d since R%0d = %0d is smaller than IMM = %0d", source_reg, dest_reg, register_bank[dest_reg], source_reg, register_bank[source_reg], imm_signed);
-          register_bank[dest_reg] = register_bank[source_reg];
+        slti : begin
+          if (register_bank[source_reg] < imm_signed) begin
+            $display("Saving value 0x1 to R%0d = %0d since R%0d = %0d is smaller than IMM = %0d\n", dest_reg, register_bank[dest_reg], source_reg, register_bank[source_reg], imm_signed);
+            register_bank[dest_reg] = 1;
+          end
+          else begin
+            $display("Saving value of 0 to R%0d = %0d since R%0d = %0d is greater or equal than IMM = %0d\n", dest_reg, register_bank[dest_reg], source_reg, register_bank[source_reg], imm_signed);
+            register_bank[dest_reg] = 0;
+          end
         end
-        else begin
-          $display("Saving value of 0 to R%0d = %0d since R%0d = %0d is greater or equal than IMM = %0d", dest_reg, register_bank[dest_reg], source_reg, register_bank[source_reg], imm_signed);
-          register_bank[dest_reg] = 0;
+        sltiu : begin
+          if (unsigned'(register_bank[source_reg]) < imm_unsigned) begin
+            $display("Saving value of 0x1 to R%0d = %0d since R%0d = %0d is smaller than IMM = %0d\n", dest_reg, unsigned'(register_bank[dest_reg]), source_reg, unsigned'(register_bank[source_reg]), imm_unsigned);
+            register_bank[dest_reg] = 1;
+          end
+          else begin
+            $display("Saving value of 0 to R%0d = %0d since R%0d = %0d is greater or equal than IMM = %0d\n", dest_reg, unsigned'(register_bank[dest_reg]), source_reg, unsigned'(register_bank[source_reg]), imm_unsigned);
+            register_bank[dest_reg] = 0;
+          end
         end
-      end
-      sltiu : begin
-        if (unsigned'(register_bank[source_reg]) < imm_unsigned) begin
-          $display("Saving value from R%0d to R%0d = %0d since R%0d = %0d is smaller than IMM = %0d", source_reg, dest_reg, unsigned'(register_bank[dest_reg]), source_reg, unsigned'(register_bank[source_reg]), imm_unsigned);
-          register_bank[dest_reg] = register_bank[source_reg];
+        xori : begin
+          result = register_bank[source_reg] ^ imm_signed;
+          $display("Saving result 0x%0h from performing XOR bitwise between R%0d = 0x%0h and IMM = 0x%0h to R%0d = 0x%0h\n", result, source_reg, register_bank[source_reg], imm_signed, dest_reg, register_bank[dest_reg]);
+          register_bank[dest_reg] = result;
         end
-        else begin
-          $display("Saving value of 0 to R%0d = %0d since R%0d = %0d is greater or equal than IMM = %0d", dest_reg, unsigned'(register_bank[dest_reg]), source_reg, unsigned'(register_bank[source_reg]), imm_unsigned);
-          register_bank[dest_reg] = 0;
+        srli_srai : begin
+          // if (imm[11:5] == 7'b000_0000) begin // RISCV spec shows IMM[11:5] = 0, but the design doesn't check for that, only for imm[10] == 0
+          if (imm[10] == 1'b0) begin
+            result = register_bank[source_reg] >> shamt;
+            $display("Saving result 0x%0h from logic shifting to the right R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h\n", result, source_reg, register_bank[source_reg], shamt, dest_reg, register_bank[dest_reg]);
+            register_bank[dest_reg] = result;
+          end
+          // else if (imm[11:5] == 7'b010_0000) begin // RISCV spec shows IMM[11:5] = 0, but the design doesn't check for that, only for imm[10] != 0
+          else begin
+            result = register_bank[source_reg] >>> shamt;
+            $display("Saving result 0x%0h from arithmetic shifting to the right R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h\n", result, source_reg, register_bank[source_reg], shamt, dest_reg, register_bank[dest_reg]);
+            register_bank[dest_reg] = result;
+          end
+          // else begin
+          //   $display("Upper seven bits of IMM is not recognized 0x%0h!\n", imm[11:5]);
+          // end
         end
-      end
-      xori : begin
-        $display("Saving result from performing XOR bitwise between R%0d = 0x%0h and IMM = 0x%0h to R%0d = 0x%0h", source_reg, register_bank[source_reg], imm_signed, dest_reg, register_bank[dest_reg]);
-        register_bank[dest_reg] = register_bank[source_reg] ^ imm_signed;
-      end
-      srli_srai : begin
-        if (imm[11:5] == 7'b000_0000) begin
-          $display("Saving result from logic shifting to the right R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h", source_reg, register_bank[source_reg], shamt, dest_reg, register_bank[dest_reg]);
-          register_bank[dest_reg] = register_bank[source_reg] >> shamt;
+        ori : begin
+          result = register_bank[source_reg] | imm_signed;
+          $display("Saving result 0x%0h from performing OR bitwise between R%0d = 0x%0h and IMM = 0x%0h to R%0d = 0x%0h\n", result, source_reg, register_bank[source_reg], imm_signed, dest_reg, register_bank[dest_reg]);
+          register_bank[dest_reg] = result;
         end
-        else if (imm[11:5] == 7'b010_0000) begin
-          $display("Saving result from arithmetic shifting to the right R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h", source_reg, register_bank[source_reg], shamt, dest_reg, register_bank[dest_reg]);
-          register_bank[dest_reg] = register_bank[source_reg] >>> shamt;
+        andi : begin
+          result = register_bank[source_reg] & imm_signed;
+          $display("Saving result 0x%0h from performing AND bitwise between R%0d = 0x%0h and IMM = 0x%0h to R%0d = 0x%0h\n", result, source_reg, register_bank[source_reg], imm_signed, dest_reg, register_bank[dest_reg]);
+          register_bank[dest_reg] = result;
         end
-        else begin
-          $display("Upper seven bits of IMM is not recognized 0x%0h!", imm[11:5]);
+        default : begin
+          $display("Function was not recognized!\n");
         end
-      end
-      ori : begin
-        $display("Saving result from performing OR bitwise between R%0d = 0x%0h and IMM = 0x%0h to R%0d = 0x%0h", source_reg, register_bank[source_reg], imm_signed, dest_reg, register_bank[dest_reg]);
-        register_bank[dest_reg] = register_bank[source_reg] | imm_signed;
-      end
-      andi : begin
-        $display("Saving result from performing AND bitwise between R%0d = 0x%0h and IMM = 0x%0h to R%0d = 0x%0h", source_reg, register_bank[source_reg], imm_signed, dest_reg, register_bank[dest_reg]);
-        register_bank[dest_reg] = register_bank[source_reg] & imm_signed;
-      end
-      default : begin
-        $display("Function was not recognized!");
-      end
-    endcase
+      endcase
+    end
+    else begin
+      $display("Destination register 0 is trying to be used, this will result in the same value of 0 being stored, so no operation is done!\n");
+    end
 
   endfunction : decode_i_type_opcode
 

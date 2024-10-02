@@ -8,8 +8,8 @@ typedef enum logic [6:0] {
 } inst_type_e;
 
 typedef enum logic [2:0] {
-  slli      = 3'b000,
-  addi      = 3'b001,
+  addi      = 3'b000,
+  slli      = 3'b001,
   slti      = 3'b010,
   sltiu     = 3'b011,
   xori      = 3'b100,

@@ -74,6 +74,7 @@ class driver;
       intf.DATAI = sti.riscv_data;
       sb.instruction_queue.push_front(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
       sb.data_queue.push_front(sti.riscv_inst);        // Store the current data input in the scoreboard queue for that purpose
+      mb_mn_instr.put(riscv_instruction_d'(sti.riscv_inst));
     end
   endtask
 
