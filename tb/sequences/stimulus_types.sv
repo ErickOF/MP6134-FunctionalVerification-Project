@@ -10,7 +10,7 @@ typedef enum logic [6:0] {
 typedef enum logic [2:0] {
   slli      = 3'b000,
   addi      = 3'b001,
-  stli      = 3'b010,
+  slti      = 3'b010,
   sltiu     = 3'b011,
   xori      = 3'b100,
   srli_srai = 3'b101,

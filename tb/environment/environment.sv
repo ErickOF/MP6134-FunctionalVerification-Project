@@ -31,6 +31,7 @@ class environment;
     // Start the monitor's checking process in a parallel thread
     fork 
       mntr.check();
+      ref_model.wait_for_instructions();
     join_none
   endfunction : new
 endclass : environment
