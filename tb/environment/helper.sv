@@ -1,3 +1,6 @@
+`ifndef HELP_SV
+`define HELP_SV
+
 // ANSI escape codes for colors
 // -- Normal color
 `define COLOR_RESET "\033[0m"
@@ -17,3 +20,5 @@
 `define PRINT_WARNING(ID_MSG, MSG) `PRINT(`COLOR_WARNING, ID_MSG, "WARNING", MSG)
 `define PRINT_ERROR(ID_MSG, MSG) `PRINT(`COLOR_ERROR, ID_MSG, "ERROR", MSG)
 `define PRINT_FATAL(ID_MSG, MSG) `PRINT(`COLOR_FATAL, ID_MSG, "FATAL", MSG) $fatal;
+
+`endif // HELP_SV

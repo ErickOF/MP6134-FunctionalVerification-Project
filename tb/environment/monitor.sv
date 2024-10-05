@@ -1,9 +1,9 @@
 // Based on: https://www.edaplayground.com/x/Yk4N
-`include "helper.sv"
-
 `define MONITOR_NAME "MONITOR"
 
 class monitor;
+  import instructions_pkg::*;
+
   // Reference to the scoreboard to fetch expected values
   scoreboard sb;
 
@@ -14,7 +14,7 @@ class monitor;
   logic [31:0] instruction_sb;
   logic [31:0] instruction_intf;
   logic [31:0] data_sb;
-  logic [31:0] data_inft;
+  logic [31:0] data_intf;
 
   // PASS/ERROR counters
   int pass_counter;
@@ -39,16 +39,32 @@ class monitor;
       if ((intf.RES === 0) && (sb.instruction_queue.size() > 0)) begin
         instruction_sb = sb.instruction_queue.pop_back();
 	instruction_intf = intf.IDATA;
+        data_sb = sb.data_queue.pop_back();
+        data_intf = intf.IDATA;
 
 	`PRINT_INFO(`MONITOR_NAME, $sformatf("Instruction from Scoreboard: 0x%0h", instruction_sb))
 	`PRINT_INFO(`MONITOR_NAME, $sformatf("Instruction from Interface: 0x%0h", instruction_intf))
 
 	if (instruction_sb === instruction_intf) begin
-	  `PRINT_INFO(`MONITOR_NAME, "Scoreboard and interface match")
+	  `PRINT_INFO(`MONITOR_NAME, "Scoreboard and interface instructions match")
 	  pass_counter++;
 	end
 	else begin
-	  `PRINT_ERROR(`MONITOR_NAME, "Scoreboard and interface mismatch")
+	  `PRINT_ERROR(`MONITOR_NAME, "Scoreboard and interface instructions mismatch")
+	  error_counter++;
+	end
+
+	$display();
+
+        `PRINT_INFO(`MONITOR_NAME, $sformatf("Data input from Scoreboard: 0x%0h", data_sb))
+	`PRINT_INFO(`MONITOR_NAME, $sformatf("Data input from Interface: 0x%0h", data_intf))
+
+	if (data_sb == data_intf) begin
+	  `PRINT_INFO(`MONITOR_NAME, "Scoreboard and interface input data match")
+	  pass_counter++;
+	end
+	else begin
+	  `PRINT_INFO(`MONITOR_NAME, "Scoreboard and interface input data mismatch")
 	  error_counter++;
 	end
 
