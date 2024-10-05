@@ -11,10 +11,11 @@ class monitor;
   virtual darkriscv_if intf;
 
   // Instruction and data from scoreboard and interface
-  logic [31:0] instruction_sb;
-  logic [31:0] instruction_intf;
+  instruction_t instruction_sb;
+  instruction_t instruction_intf;
   logic [31:0] data_sb;
   logic [31:0] data_intf;
+  inst_type_e opcode;
 
   // PASS/ERROR counters
   int pass_counter;
@@ -41,6 +42,7 @@ class monitor;
 	instruction_intf = intf.IDATA;
         data_sb = sb.data_queue.pop_back();
         data_intf = intf.IDATA;
+	opcode = instruction_sb.opcode.opcode;
 
 	`PRINT_INFO(`MONITOR_NAME, $sformatf("Instruction from Scoreboard: 0x%0h", instruction_sb))
 	`PRINT_INFO(`MONITOR_NAME, $sformatf("Instruction from Interface: 0x%0h", instruction_intf))
@@ -52,6 +54,16 @@ class monitor;
 	else begin
 	  `PRINT_ERROR(`MONITOR_NAME, "Scoreboard and interface instructions mismatch")
 	  error_counter++;
+	end
+
+	// Check instruction type
+	`PRINT_INFO(`MONITOR_NAME, $sformatf("Instruction of type \"%s\"", opcode.name()))
+
+	if (opcode == r_type) begin
+	  check_r_type();
+        end
+	else if (opcode == i_type) begin
+	  check_i_type();
 	end
 
 	$display();
@@ -72,4 +84,12 @@ class monitor;
       end
     end
   endtask : check
+
+  task check_i_type();
+    `PRINT_INFO(`MONITOR_NAME, "Checking \"i_type\" instruction")
+  endtask : check_i_type
+
+  task check_r_type();
+    `PRINT_INFO(`MONITOR_NAME, "Checking \"r_type\" instruction")
+  endtask : check_r_type
 endclass : monitor
