@@ -30,7 +30,9 @@
 
 `timescale 1ns / 1ps
 `include "config.vh"
+`include "helper.sv"
 `include "stimulus_types.sv"
+`include "instructions_pkg.svh"
 `include "stimulus.sv"
 `include "scoreboard.sv"
 `include "driver.sv"
