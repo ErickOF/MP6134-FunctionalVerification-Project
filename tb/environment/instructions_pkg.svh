@@ -264,7 +264,7 @@ typedef union packed {
   // R-type instruction
   r_type_t r_type;
   // S-type instruction
-  s_type_t r_type;
+  s_type_t s_type;
   // U-type instruction
   u_type_t u_type;
 } instruction_t;

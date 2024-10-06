@@ -1,5 +1,8 @@
 `define MONITOR_NAME "MONITOR"
 
+// Import instruction types from the package
+import instructions_pkg::*;
+
 //#################################################################################################
 // Class: monitor
 // Description: This class monitors the instructions and data of the DUT and compares them with the
@@ -16,13 +19,9 @@
 //  - sb  : The scoreboard containing expected values for instructions and data.
 //#################################################################################################
 class monitor;
-  // Import instruction types from the package
-  import instructions_pkg::*;
-
   //###############################################################################################
   // Members:
   //###############################################################################################
-
   // Reference to the scoreboard to fetch expected values
   scoreboard sb;
 
@@ -345,8 +344,6 @@ class monitor;
           instruction_intf.j_type.imm1,
           // Immediate [11]
           instruction_intf.j_type.imm2,
-          // Immediate [11] in decimal
-          instruction_intf.j_type.imm2,
           // Immediate [10:1]
           instruction_intf.j_type.imm3,
           // Immediate [10:1] in decimal
@@ -382,6 +379,8 @@ class monitor;
           // RS2 in decimal
           instruction_intf.r_type.rs2,
           // Function field (7 bits)
+          instruction_intf.r_type.funct7,
+          // Function field (7 bits) in decimal
           instruction_intf.r_type.funct7
         )
       )
@@ -413,6 +412,8 @@ class monitor;
           // RS2 in decimal
           instruction_intf.s_type.rs2,
           // Immediate [11:5]
+          instruction_intf.s_type.imm2,
+          // Immediate [11:5] in decimal
           instruction_intf.s_type.imm2
         )
       )
