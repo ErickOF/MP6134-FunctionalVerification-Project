@@ -346,6 +346,18 @@ class monitor;
       )
     end
     else if (opcode == u_type) begin
+      `PRINT_INFO(
+        `MONITOR_NAME,
+        $sformatf(
+          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nIMM[19:0]: 0x%05h (%d)",
+          instruction_intf.u_type.opcode,
+          instruction_intf.u_type.opcode.name(),
+          instruction_intf.u_type.rd,
+          instruction_intf.u_type.rd,
+          instruction_intf.u_type.imm,
+          instruction_intf.u_type.imm
+        )
+      )
     end
   endtask : print_decoded_instruction
 endclass : monitor
