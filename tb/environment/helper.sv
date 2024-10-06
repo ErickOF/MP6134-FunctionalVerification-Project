@@ -2,7 +2,6 @@
 `define HELPER_SV
 
 //#################################################################################################
-// File: helper.sv
 // Description: A set of macros to enhance output messages in simulation logs. These macros utilize
 //              ANSI escape codes to provide colored outputs for different types of messages (INFO,
 //              WARNING, ERROR, FATAL), making it easier to distinguish between various report
