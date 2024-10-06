@@ -109,7 +109,7 @@ class monitor;
         // Check the instruction type and call respective check functions
         `PRINT_INFO(`MONITOR_NAME, $sformatf("Instruction of type \"%s\"", opcode.name()))
 
-	print_decoded_instruction();
+        print_decoded_instruction();
 
         if (opcode == b_type) begin
           // Specialized check for B-type instructions
@@ -166,7 +166,7 @@ class monitor;
   //
   //              B-type instructions include conditional branches such as BEQ (branch if equal),
   //              BNE (branch if not equal), etc.
-  // 
+  //
   // Example: B-type instructions are used for conditional branching based on register comparisons
   //          in RISC-V architectures.
   //###############################################################################################
@@ -246,115 +246,194 @@ class monitor;
     `PRINT_INFO(`MONITOR_NAME, "Checking \"u_type\" instruction")
   endtask : check_u_type
 
+  //###############################################################################################
+  // Task: print_decoded_instruction
+  // Description: This task decodes and prints the details of the instruction based on its type (I,
+  //              R, S, B, J, or U). It uses formatted strings to display the opcode, registers, 
+  //              immediate values, and function fields for each type of instruction.
+  //
+  // The task checks the opcode of the instruction and calls the appropriate print macro to format
+  // the output with relevant details for each instruction type.
+  //
+  // Example: This task would be invoked to print the decoded information of a given instruction
+  //          to the console for debugging or monitoring purposes.
+  //###############################################################################################
   task print_decoded_instruction();
+    // Check if the instruction is of B-type
     if (opcode == b_type) begin
       `PRINT_INFO(
         `MONITOR_NAME,
         $sformatf(
-          "\nOPCODE: 0b%07b (%s),\nIMM[11]: 0b%01b,\nIMM[4:1]: 0b%04b (%d),\nFUNCT3: 0b'%03b (%d),\nRS1: 0b%05b (%d),\nRS2: 0b%05b (%d),\nIMM[10:5]: 0x%02h (%d),\nIMM[12]: 0x%01b",
+          "\nOPCODE: 0b%07b (%s),\nIMM[11]: 0b%01b,\nIMM[4:1]: 0b%04b (%d),\nFUNCT3: 0b%03b (%d),\nRS1: 0b%05b (%d),\nRS2: 0b%05b (%d),\nIMM[10:5]: 0x%02h (%d),\nIMM[12]: 0x%01b",
+          // Opcode (7 bits)
           instruction_intf.b_type.opcode,
+          // Opcode name
           instruction_intf.b_type.opcode.name(),
+          // Immediate [11]
           instruction_intf.b_type.imm1,
+          // Immediate [4:1]
           instruction_intf.b_type.imm2,
+          // Immediate [4:1] in decimal
           instruction_intf.b_type.imm2,
+          // Function field (3 bits)
           instruction_intf.b_type.funct3,
+          // Function field in decimal
           instruction_intf.b_type.funct3,
+          // Source register 1 (5 bits)
           instruction_intf.b_type.rs1,
+          // RS1 in decimal
           instruction_intf.b_type.rs1,
+          // Source register 2 (5 bits)
           instruction_intf.b_type.rs2,
+          // RS2 in decimal
           instruction_intf.b_type.rs2,
+          // Immediate [10:5]
           instruction_intf.b_type.imm3,
+          // Immediate [10:5] in decimal
           instruction_intf.b_type.imm3,
+          // Immediate [12]
           instruction_intf.b_type.imm4
         )
       )
     end
+    // Check if the instruction is of I-type
     else if (opcode == i_type) begin
       `PRINT_INFO(
         `MONITOR_NAME,
         $sformatf(
-          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nFUNCT3: 0b'%03b (%d),\nRS1: 0b%05b (%d),\nIMM: 0x%03h (%d)",
+          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nFUNCT3: 0b%03b (%d),\nRS1: 0b%05b (%d),\nIMM: 0x%03h (%d)",
+          // Opcode (7 bits)
           instruction_intf.i_type.opcode,
+          // Opcode name
           instruction_intf.i_type.opcode.name(),
+          // Destination register (5 bits)
           instruction_intf.i_type.rd,
+          // RD in decimal
           instruction_intf.i_type.rd,
+          // Function field (3 bits)
           instruction_intf.i_type.funct3,
+          // Function field in decimal
           instruction_intf.i_type.funct3,
+          // Source register 1 (5 bits)
           instruction_intf.i_type.rs1,
+          // RS1 in decimal
           instruction_intf.i_type.rs1,
+          // Immediate value (12 bits)
           instruction_intf.i_type.imm,
+          // Immediate in decimal
           instruction_intf.i_type.imm
         )
       )
     end
+    // Check if the instruction is of J-type
     else if (opcode == j_type) begin
       `PRINT_INFO(
         `MONITOR_NAME,
         $sformatf(
-          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\IMM[19:12]: 0b'%02h (%d),\nIMM[11]: 0b%01b,\nIMM[10:1]: 0x%03h (%d),\nIMM[20]: 0b%01b",
+          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nIMM[19:12]: 0b%02h (%d),\nIMM[11]: 0b%01b,\nIMM[10:1]: 0x%03h (%d),\nIMM[20]: 0b%01b",
+          // Opcode (7 bits)
           instruction_intf.j_type.opcode,
+          // Opcode name
           instruction_intf.j_type.opcode.name(),
+          // Destination register (5 bits)
           instruction_intf.j_type.rd,
+          // RD in decimal
           instruction_intf.j_type.rd,
+          // Immediate [19:12]
           instruction_intf.j_type.imm1,
+          // Immediate [19:12] in decimal
           instruction_intf.j_type.imm1,
+          // Immediate [11]
           instruction_intf.j_type.imm2,
+          // Immediate [11] in decimal
+          instruction_intf.j_type.imm2,
+          // Immediate [10:1]
           instruction_intf.j_type.imm3,
+          // Immediate [10:1] in decimal
           instruction_intf.j_type.imm3,
+          // Immediate [20]
           instruction_intf.j_type.imm4
         )
       )
-    end
-    else if (opcode == r_type) begin
+    // Check if the instruction is of R-type
+    end else if (opcode == r_type) begin
       `PRINT_INFO(
         `MONITOR_NAME,
         $sformatf(
-          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nFUNCT3: 0b'%03b (%d),\nRS1: 0b%05b (%d),\nRS1: 0b%05b (%d),\nFUNCT7: 0x%02h (%d)",
+          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nFUNCT3: 0b%03b (%d),\nRS1: 0b%05b (%d),\nRS2: 0b%05b (%d),\nFUNCT7: 0x%02h (%d)",
+          // Opcode (7 bits)
           instruction_intf.r_type.opcode,
+          // Opcode name
           instruction_intf.r_type.opcode.name(),
+          // Destination register (5 bits)
           instruction_intf.r_type.rd,
+          // RD in decimal
           instruction_intf.r_type.rd,
+          // Function field (3 bits)
           instruction_intf.r_type.funct3,
+          // Function field in decimal
           instruction_intf.r_type.funct3,
+          // Source register 1 (5 bits)
           instruction_intf.r_type.rs1,
+          // RS1 in decimal
           instruction_intf.r_type.rs1,
+          // Source register 2 (5 bits)
           instruction_intf.r_type.rs2,
+          // RS2 in decimal
           instruction_intf.r_type.rs2,
-          instruction_intf.r_type.funct7,
+          // Function field (7 bits)
           instruction_intf.r_type.funct7
         )
       )
     end
+    // Check if the instruction is of S-type
     else if (opcode == s_type) begin
       `PRINT_INFO(
         `MONITOR_NAME,
         $sformatf(
-          "\nOPCODE: 0b%07b (%s),\nIMM[4:0]: 0b%05b (%d),\nFUNCT3: 0b'%03b (%d),\nRS1: 0b%05b (%d),\nRS1: 0b%05b (%d),\nIMM[11:5]: 0x%02h (%d)",
+          "\nOPCODE: 0b%07b (%s),\nIMM[4:0]: 0b%05b (%d),\nFUNCT3: 0b%03b (%d),\nRS1: 0b%05b (%d),\nRS2: 0b%05b (%d),\nIMM[11:5]: 0x%02h (%d)",
+          // Opcode (7 bits)
           instruction_intf.s_type.opcode,
+          // Opcode name
           instruction_intf.s_type.opcode.name(),
+          // Immediate [4:0]
           instruction_intf.s_type.imm1,
+          // Immediate [4:0] in decimal
           instruction_intf.s_type.imm1,
+          // Function field (3 bits)
           instruction_intf.s_type.funct3,
+          // Function field in decimal
           instruction_intf.s_type.funct3,
+          // Source register 1 (5 bits)
           instruction_intf.s_type.rs1,
+          // RS1 in decimal
           instruction_intf.s_type.rs1,
+          // Source register 2 (5 bits)
           instruction_intf.s_type.rs2,
+          // RS2 in decimal
           instruction_intf.s_type.rs2,
-          instruction_intf.s_type.imm2,
+          // Immediate [11:5]
           instruction_intf.s_type.imm2
         )
       )
     end
+    // Check if the instruction is of U-type
     else if (opcode == u_type) begin
       `PRINT_INFO(
         `MONITOR_NAME,
         $sformatf(
           "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nIMM[19:0]: 0x%05h (%d)",
+          // Opcode (7 bits)
           instruction_intf.u_type.opcode,
+          // Opcode name
           instruction_intf.u_type.opcode.name(),
+          // Destination register (5 bits)
           instruction_intf.u_type.rd,
+          // RD in decimal
           instruction_intf.u_type.rd,
+          // Immediate value (20 bits)
           instruction_intf.u_type.imm,
+          // Immediate in decimal
           instruction_intf.u_type.imm
         )
       )
