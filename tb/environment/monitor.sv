@@ -109,6 +109,8 @@ class monitor;
         // Check the instruction type and call respective check functions
         `PRINT_INFO(`MONITOR_NAME, $sformatf("Instruction of type \"%s\"", opcode.name()))
 
+	print_decoded_instruction();
+
         if (opcode == b_type) begin
           // Specialized check for B-type instructions
           check_b_type();
@@ -246,4 +248,39 @@ class monitor;
   task check_u_type();
     `PRINT_INFO(`MONITOR_NAME, "Checking \"u_type\" instruction")
   endtask : check_u_type
+
+  task print_decoded_instruction();
+    if (opcode == b_type) begin
+      `PRINT_INFO(
+        `MONITOR_NAME,
+        ""
+      )
+    end
+    else if (opcode == i_type) begin
+      `PRINT_INFO(
+        `MONITOR_NAME,
+	$sformatf(
+	  "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nFUNCT3: 0b'%03b (%d),\nRS1: 0b%05b (%d)\nIMM: 0x%03h (%d)",
+	  instruction_intf.i_type.opcode,
+	  instruction_intf.i_type.opcode.name(),
+	  instruction_intf.i_type.rd,
+          instruction_intf.i_type.rd,
+	  instruction_intf.i_type.func3,
+	  instruction_intf.i_type.func3,
+	  instruction_intf.i_type.rs1,
+          instruction_intf.i_type.rs1,
+	  instruction_intf.i_type.imm,
+          instruction_intf.i_type.imm
+	)
+      )
+    end
+    else if (opcode == j_type) begin
+    end
+    else if (opcode == r_type) begin
+    end
+    else if (opcode == s_type) begin
+    end
+    else if (opcode == u_type) begin
+    end
+  endtask : print_decoded_instruction
 endclass : monitor
