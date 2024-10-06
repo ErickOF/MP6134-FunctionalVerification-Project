@@ -288,6 +288,22 @@ class monitor;
       )
     end
     else if (opcode == j_type) begin
+      `PRINT_INFO(
+        `MONITOR_NAME,
+        $sformatf(
+          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\IMM[19:12]: 0b'%02h (%d),\nIMM[11]: 0b%01b,\nIMM[10:1]: 0x%03h (%d),\nIMM[20]: 0b%01b",
+          instruction_intf.j_type.opcode,
+          instruction_intf.j_type.opcode.name(),
+          instruction_intf.j_type.rd,
+          instruction_intf.j_type.rd,
+          instruction_intf.j_type.imm1,
+          instruction_intf.j_type.imm1,
+          instruction_intf.j_type.imm2,
+          instruction_intf.j_type.imm3,
+          instruction_intf.j_type.imm3,
+          instruction_intf.j_type.imm4
+        )
+      )
     end
     else if (opcode == r_type) begin
     end
