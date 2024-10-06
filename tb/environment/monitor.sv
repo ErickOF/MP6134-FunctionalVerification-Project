@@ -169,7 +169,6 @@ class monitor;
   // 
   // Example: B-type instructions are used for conditional branching based on register comparisons
   //          in RISC-V architectures.
-  //
   //###############################################################################################
   task check_b_type();
     `PRINT_INFO(`MONITOR_NAME, "Checking \"b_type\" instruction")
@@ -198,7 +197,6 @@ class monitor;
   //
   // Example: J-type instructions can be utilized for function calls and for implementing control
   //          flow in programs.
-  //
   //###############################################################################################
   task check_j_type();
     `PRINT_INFO(`MONITOR_NAME, "Checking \"j_type\" instruction")
@@ -243,7 +241,6 @@ class monitor;
   // Example: U-type instructions are often used to set up immediate values in higher-order bits,
   //          which can then be combined with lower order bits using other instructions for address
   //          calculations.
-  //
   //###############################################################################################
   task check_u_type();
     `PRINT_INFO(`MONITOR_NAME, "Checking \"u_type\" instruction")
@@ -253,25 +250,41 @@ class monitor;
     if (opcode == b_type) begin
       `PRINT_INFO(
         `MONITOR_NAME,
-        ""
+        $sformatf(
+          "\nOPCODE: 0b%07b (%s),\nIMM[11]: 0b%01b,\nIMM[4:1]: 0b%04b (%d),\nFUNCT3: 0b'%03b (%d),\nRS1: 0b%05b (%d),\nRS2: 0b%05b (%d),\nIMM[10:5]: 0x%02h (%d),\nIMM[12]: 0x%01b",
+          instruction_intf.b_type.opcode,
+          instruction_intf.b_type.opcode.name(),
+          instruction_intf.b_type.imm1,
+          instruction_intf.b_type.imm2,
+          instruction_intf.b_type.imm2,
+          instruction_intf.b_type.funct3,
+          instruction_intf.b_type.funct3,
+          instruction_intf.b_type.rs1,
+          instruction_intf.b_type.rs1,
+          instruction_intf.b_type.rs2,
+          instruction_intf.b_type.rs2,
+          instruction_intf.b_type.imm3,
+          instruction_intf.b_type.imm3,
+          instruction_intf.b_type.imm4
+        )
       )
     end
     else if (opcode == i_type) begin
       `PRINT_INFO(
         `MONITOR_NAME,
-	$sformatf(
-	  "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nFUNCT3: 0b'%03b (%d),\nRS1: 0b%05b (%d)\nIMM: 0x%03h (%d)",
-	  instruction_intf.i_type.opcode,
-	  instruction_intf.i_type.opcode.name(),
-	  instruction_intf.i_type.rd,
+        $sformatf(
+          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nFUNCT3: 0b'%03b (%d),\nRS1: 0b%05b (%d),\nIMM: 0x%03h (%d)",
+          instruction_intf.i_type.opcode,
+          instruction_intf.i_type.opcode.name(),
           instruction_intf.i_type.rd,
-	  instruction_intf.i_type.func3,
-	  instruction_intf.i_type.func3,
-	  instruction_intf.i_type.rs1,
+          instruction_intf.i_type.rd,
+          instruction_intf.i_type.funct3,
+          instruction_intf.i_type.funct3,
           instruction_intf.i_type.rs1,
-	  instruction_intf.i_type.imm,
+          instruction_intf.i_type.rs1,
+          instruction_intf.i_type.imm,
           instruction_intf.i_type.imm
-	)
+        )
       )
     end
     else if (opcode == j_type) begin
