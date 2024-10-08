@@ -1,4 +1,8 @@
 class b_type_checker extends base_instruction_checker;
+  function new(string name, virtual darkriscv_if intf, scoreboard sb);
+    super.new(name, intf, sb);
+  endfunction : new
+
   //###############################################################################################
   // Task: check_instruction
   // Description: Specialized check for B-type instructions.
@@ -15,9 +19,9 @@ class b_type_checker extends base_instruction_checker;
       `PRINT_INFO(this.name, "`check_instruction` task running")
 
       `PRINT_INFO(
-        `MONITOR_NAME,
+        this.name,
         $sformatf(
-          "\nOPCODE: 0b%07b (%s),\nIMM[11]: 0b%01b,\nIMM[4:1]: 0b%04b (%d),\nFUNCT3: 0b%03b (%d),\nRS1: 0b%05b (%d),\nRS2: 0b%05b (%d),\nIMM[10:5]: 0x%02h (%d),\nIMM[12]: 0x%01b",
+          "\nOPCODE: 0b%07b (%s),\nIMM[11]: 0b%01b,\nIMM[4:1]: 0b%04b (%d),\nFUNCT3: 0b%03b (%d),\nRS1: 0b%05b (%d),\nRS2: 0b%05b (%d),\nIMM[10:5]: 0x%02h (%d),\nIMM[12]: 0x%01b\n",
           // Opcode (7 bits)
           instruction_intf.b_type.opcode,
           // Opcode name
@@ -49,5 +53,5 @@ class b_type_checker extends base_instruction_checker;
         )
       )
     end
-  endtask check_instruction
+  endtask : check_instruction
 endclass : b_type_checker

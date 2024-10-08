@@ -1,4 +1,8 @@
 class u_type_checker extends base_instruction_checker;
+  function new(string name, virtual darkriscv_if intf, scoreboard sb);
+    super.new(name, intf, sb);
+  endfunction : new
+
   //###############################################################################################
   // Task: check_instruction
   // Description: Specialized check for U-type instructions.
@@ -17,9 +21,9 @@ class u_type_checker extends base_instruction_checker;
       `PRINT_INFO(this.name, "`check_instruction` task running")
 
       `PRINT_INFO(
-        `MONITOR_NAME,
+        this.name,
         $sformatf(
-          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nIMM[19:0]: 0x%05h (%d)",
+          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nIMM[19:0]: 0x%05h (%d)\n",
           // Opcode (7 bits)
           instruction_intf.u_type.opcode,
           // Opcode name
@@ -35,5 +39,5 @@ class u_type_checker extends base_instruction_checker;
         )
       )
     end
-  endtask check_instruction
+  endtask : check_instruction
 endclass : u_type_checker

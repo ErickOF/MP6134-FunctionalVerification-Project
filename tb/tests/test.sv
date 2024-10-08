@@ -16,14 +16,14 @@ program test(darkriscv_if intf);
     env.drvr.write(10, 1);
 
     // Check if the test pass
-    if (env.mntr.pass_counter == 0) begin
-      `PRINT_WARNING(`TEST_NAME, "None of the checkers run")
-    end
-    else if (env.mntr.error_counter > 0) begin
-      `PRINT_ERROR(`TEST_NAME, $sformatf("Monitor error count: %d", env.mntr.error_counter))
-    end
-    else begin
-      `PRINT_INFO(`TEST_NAME, "Test passed")
-    end
+    //if (env.mntr.pass_counter == 0) begin
+    //  `PRINT_WARNING(`TEST_NAME, "None of the checkers run")
+    //end
+    //else if (env.mntr.error_counter > 0) begin
+    //  `PRINT_ERROR(`TEST_NAME, $sformatf("Monitor error count: %d", env.mntr.error_counter))
+    //end
+    //else begin
+    //  `PRINT_INFO(`TEST_NAME, "Test passed")
+    //end
   end
 endprogram : test

@@ -46,13 +46,13 @@ class environment;
     join_none
 
     // Start the checker's checking processes in a parallel thread
-    fork begin
+    fork
       b_type_check.check();
       i_type_check.check();
       j_type_check.check();
       r_type_check.check();
       s_type_check.check();
       u_type_check.check();
-    end join_none
+    join_none
   endfunction : new
 endclass : environment

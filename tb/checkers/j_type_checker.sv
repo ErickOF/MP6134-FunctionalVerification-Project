@@ -1,4 +1,8 @@
 class j_type_checker extends base_instruction_checker;
+  function new(string name, virtual darkriscv_if intf, scoreboard sb);
+    super.new(name, intf, sb);
+  endfunction : new
+
   //###############################################################################################
   // Task: check_instruction
   // Description: Specialized check for J-type instructions.
@@ -17,9 +21,9 @@ class j_type_checker extends base_instruction_checker;
       `PRINT_INFO(this.name, "`check_instruction` task running")
 
       `PRINT_INFO(
-        `MONITOR_NAME,
+        this.name,
         $sformatf(
-          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nIMM[19:12]: 0b%02h (%d),\nIMM[11]: 0b%01b,\nIMM[10:1]: 0x%03h (%d),\nIMM[20]: 0b%01b",
+          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nIMM[19:12]: 0b%02h (%d),\nIMM[11]: 0b%01b,\nIMM[10:1]: 0x%03h (%d),\nIMM[20]: 0b%01b\n",
           // Opcode (7 bits)
           instruction_intf.j_type.opcode,
           // Opcode name
@@ -43,5 +47,5 @@ class j_type_checker extends base_instruction_checker;
         )
       )
     end
-  endtask check_instruction
+  endtask : check_instruction
 endclass : j_type_checker

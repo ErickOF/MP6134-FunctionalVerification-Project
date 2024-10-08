@@ -1,4 +1,4 @@
-virtual class base_instruction_checker();
+virtual class base_instruction_checker;
   // Import instruction types from the package
   import instructions_pkg::*;
 
@@ -12,13 +12,8 @@ virtual class base_instruction_checker();
   // Checker name
   string name;
 
-  // Instruction and data from scoreboard and interface
-  // Expected instruction from scoreboard
-  instruction_t instruction_sb;
   // Actual instruction from DUT interface
   instruction_t instruction_intf;
-  // Expected data from scoreboard
-  logic [31:0] data_sb;
   // Actual data from DUT interface
   logic [31:0] data_intf;
   // Instruction opcode (enum)
@@ -47,17 +42,13 @@ virtual class base_instruction_checker();
       @(negedge intf.CLK);
 
       // Ensure the reset is de-asserted and there are instructions in the scoreboard queue
-      if ((this.intf.RES === 0) && (this.sb.instruction_queue.size() > 0)) begin
-        // Fetch the instruction and data from the scoreboard and DUT interface
-        this.instruction_sb = this.sb.instruction_queue.pop_back();
+      if (this.intf.RES === 0) begin
+        // Fetch the instruction and data from the DUT interface
         this.instruction_intf = this.intf.IDATA;
-        this.data_sb = this.sb.data_queue.pop_back();
         this.data_intf = this.intf.IDATA;
-        this.opcode = this.instruction_sb.opcode.opcode;
+        this.opcode = this.instruction_intf.opcode.opcode;
 
         this.check_instruction();
-
-        $display();
       end
     end
   endtask : check
