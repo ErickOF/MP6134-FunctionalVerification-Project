@@ -37,6 +37,13 @@
 `include "scoreboard.sv"
 `include "driver.sv"
 `include "monitor.sv"
+`include "base_instruction_checker.sv"
+`include "b_type_checker.sv"
+`include "i_type_checker.sv"
+`include "j_type_checker.sv"
+`include "r_type_checker.sv"
+`include "s_type_checker.sv"
+`include "u_type_checker.sv"
 `include "environment.sv"
 `include "test.sv"
 
