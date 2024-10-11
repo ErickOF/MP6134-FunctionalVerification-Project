@@ -1,4 +1,6 @@
 // Based on: https://www.edaplayground.com/x/Yk4N
+import instructions_pkg::*;
+
 class stimulus;
   // Fields for RISC-V core instructions
   rand inst_type_e  opcode;
