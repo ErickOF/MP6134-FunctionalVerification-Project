@@ -28,13 +28,13 @@ class riscv_reference_model;
   function void proccess_instructions(riscv_instruction_d my_instr);
     inst_type_e opcode;
 
-    opcode = my_instr[`RISCV_INST_OPCODE_RANGE];
+    opcode = inst_type_e'(my_instr[`RISCV_INST_OPCODE_RANGE]);
 
     case (opcode)
       i_type : begin
         decode_i_type_opcode(.my_instr(my_instr));
       end
-      s_type begin
+      s_type : begin
         decode_s_type_opcode(.my_instr(my_instr));
       end
       default : begin
@@ -55,7 +55,7 @@ class riscv_reference_model;
     
     bit signed [31:0] result;
 
-    funct3 = my_instr[`RISCV_INST_FUNC3_RANGE];
+    funct3 = func3_i_type_e'(my_instr[`RISCV_INST_FUNC3_RANGE]);
     dest_reg = my_instr[`RISCV_INST_RD_RANGE];
     source_reg = my_instr[`RISCV_INST_RS1_RANGE];
     imm = my_instr[`RISCV_INST_IMM_I_11_0_RANGE];
@@ -154,7 +154,7 @@ class riscv_reference_model;
     bit [31:0] result_data = 0;
     int bytes_to_transfer = 0;
 
-    funct3 = my_instr[`RISCV_INST_FUNC3_RANGE];
+    funct3 = func3_s_type_e'(my_instr[`RISCV_INST_FUNC3_RANGE]);
     source_reg_1 = my_instr[`RISCV_INST_RS1_RANGE];
     source_reg_2 = my_instr[`RISCV_INST_RS2_RANGE];
     imm[11:5] = my_instr[`RISCV_INST_IMM_S_11_5_RANGE];
@@ -164,12 +164,15 @@ class riscv_reference_model;
     case (funct3)
       sb : begin
         bytes_to_transfer = 1;
+        result_data = {24'h0, register_bank[source_reg_2][7:0]};
       end
       sh : begin
         bytes_to_transfer = 2;
+        result_data = {16'h0, register_bank[source_reg_2][15:0]};
       end
       sw : begin
         bytes_to_transfer = 4;
+        result_data = register_bank[source_reg_2];
       end
       default : begin
         $display("Function %0d was not recognized!\n", funct3);
@@ -178,7 +181,6 @@ class riscv_reference_model;
 
     if (bytes_to_transfer != 0) begin
       result_address = register_bank[source_reg_1] + imm_signed;
-      result_data = register_bank[source_reg_2][bytes_to_transfer * 8 - 1: 0];
 
       $display("Storing %0d bytes of data 0x%0h to memory address 0x%0h\n", bytes_to_transfer, result_data, result_data);
     end
