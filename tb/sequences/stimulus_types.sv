@@ -17,3 +17,9 @@ typedef enum logic [2:0] {
   ori       = 3'b110,
   andi      = 3'b111
 } func3_i_type_e;
+
+typedef enum logic [2:0] {
+  sb = 3'b000,
+  sh = 3'b001,
+  sw = 3'b010
+} func3_s_type_e;
