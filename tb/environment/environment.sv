@@ -31,10 +31,10 @@ class environment;
     sb = new();
 
     // Instantiate the driver and pass the interface and scoreboard references
-    drvr = new(intf, sb, ref_model.mb_mn_instr);
+    drvr = new(intf, sb);
 
     // Instantiate the monitor and pass the interface and scoreboard references
-    mntr = new(intf, sb);
+    mntr = new(intf, sb, ref_model.mb_mn_instr);
 
     // Instantiate the checkers and pass the interface and scoreboard references
     b_type_check = new("B_TYPE_CHECKER", intf, sb);

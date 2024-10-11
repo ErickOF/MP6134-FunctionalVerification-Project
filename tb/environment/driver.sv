@@ -9,13 +9,10 @@ class driver;
   // Virtual interface to interact with the DUT
   virtual darkriscv_if intf;
 
-  mailbox #(riscv_instruction_d) mb_mn_instr;
-
   // Constructor: Initializes the interface and scoreboard objects
-  function new(virtual darkriscv_if intf, scoreboard sb, mailbox #(riscv_instruction_d) mb_mn_instr);
+  function new(virtual darkriscv_if intf, scoreboard sb);
     this.intf = intf;
     this.sb = sb;
-    this.mb_mn_instr = mb_mn_instr;
   endfunction : new
 
   // Reset task: Initializes the DUT by resetting all control and data signals
@@ -49,7 +46,6 @@ class driver;
         intf.DATAI = sti.riscv_data;
         sb.instruction_queue.push_front(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
         sb.data_queue.push_front(sti.riscv_inst);        // Store the current data input in the scoreboard queue for that purpose
-        mb_mn_instr.put(riscv_instruction_d'(sti.riscv_inst));
     end
     @ (negedge intf.CLK);
     // TODO: what values to drive in "IDLE" mode?
@@ -74,7 +70,6 @@ class driver;
       intf.DATAI = sti.riscv_data;
       sb.instruction_queue.push_front(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
       sb.data_queue.push_front(sti.riscv_inst);        // Store the current data input in the scoreboard queue for that purpose
-      mb_mn_instr.put(riscv_instruction_d'(sti.riscv_inst));
     end
   endtask
 
