@@ -25,6 +25,9 @@ class monitor;
         instruction_data = intf.IDATA;
         input_data = intf.DATAI;
 
+        sb.actual_data[0].put(instruction_data);
+        sb.actual_data[1].put(input_data);
+
         mb_mn_instr.put(riscv_instruction_d'(instruction_data));
         $display("Time: %0t, Instruction IDATA: %h, Input Data: %h", $time, instruction_data, input_data);
       end    

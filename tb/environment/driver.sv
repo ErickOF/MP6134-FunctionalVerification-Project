@@ -44,8 +44,8 @@ class driver;
       end
         intf.IDATA = sti.riscv_inst;
         intf.DATAI = sti.riscv_data;
-        sb.instruction_queue.push_front(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
-        sb.data_queue.push_front(sti.riscv_inst);        // Store the current data input in the scoreboard queue for that purpose
+        sb.expected_data[0].put(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
+        sb.expected_data[1].put(sti.riscv_data);        // Store the current data input in the scoreboard queue for that purpose
     end
     @ (negedge intf.CLK);
     // TODO: what values to drive in "IDLE" mode?
@@ -68,8 +68,8 @@ class driver;
       $display("Driving instruction 0x%0h\n", sti.riscv_inst);
       intf.IDATA = sti.riscv_inst;
       intf.DATAI = sti.riscv_data;
-      sb.instruction_queue.push_front(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
-      sb.data_queue.push_front(sti.riscv_inst);        // Store the current data input in the scoreboard queue for that purpose
+      sb.expected_data[0].put(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
+      sb.expected_data[1].put(sti.riscv_data);        // Store the current data input in the scoreboard queue for that purpose
     end
   endtask
 

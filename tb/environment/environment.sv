@@ -48,6 +48,7 @@ class environment;
     fork 
       mntr.check();
       ref_model.wait_for_instructions();
+      sb.check();
     join_none
 
     // Start the checker's checking processes in a parallel thread
