@@ -40,6 +40,105 @@ class i_type_checker extends base_instruction_checker;
           instruction_intf.i_type.imm
         )
       )
+
+      check_operation();
     end
   endtask : check_instruction
+
+  task check_operation();
+    logic [31:0] reg_rs1 = darksimv.core0.REGS[instruction_intf.i_type.rs1];
+    logic [31:0] imm = instruction_intf.i_type.imm[11] ?
+		         {'1, instruction_intf.i_type.imm} :
+		         {'0, instruction_intf.i_type.imm};
+    logic [31:0] reg_rd = darksimv.core0.REGS[instruction_intf.i_type.rd];
+
+    case (instruction_intf.i_type.funct3)
+      addi: begin
+        logic [31:0] result = reg_rs1 + imm;
+        `PRINT_INFO(
+          this.name,
+	  $sformatf(
+            "ADDI: %08h + %08h = %08h (expected: %08h).",
+            reg_rs1,
+            imm,
+            reg_rd,
+            result
+          )
+        )
+
+        if (result === reg_rd) begin
+          `PRINT_INFO(this.name, "Operation match")
+        end
+        else begin
+          `PRINT_ERROR(this.name, "Operation mismatch")
+        end
+      end
+      slli: begin
+        `PRINT_INFO(
+          this.name,
+	  $sformatf(
+            "SLLI instruction detected."
+          )
+        )
+      end
+      slti: begin
+        `PRINT_INFO(
+          this.name,
+	  $sformatf(
+            "SLTI instruction detected."
+          )
+        )
+      end
+      sltiu: begin
+        `PRINT_INFO(
+          this.name,
+	  $sformatf(
+            "SLTIU instruction detected."
+          )
+        )
+      end
+      xori: begin
+        `PRINT_INFO(
+          this.name,
+	  $sformatf(
+            "XORI instruction detected."
+          )
+        )
+      end
+      srli_srai: begin
+        `PRINT_INFO(
+          this.name,
+	  $sformatf(
+            "SRLI/SRAI instruction detected."
+          )
+        )
+      end
+      ori: begin
+        `PRINT_INFO(
+          this.name,
+	  $sformatf(
+            "ORI instruction detected."
+          )
+        )
+      end
+      andi: begin
+        `PRINT_INFO(
+          this.name,
+	  $sformatf(
+            "ANDI instruction detected."
+          )
+        )
+      end
+      default: begin
+        `PRINT_ERROR(
+          this.name,
+          $sformatf(
+            "Operation (funct3) with code %03b (%d) is not supported.",
+            instruction_intf.i_type.funct3,
+            instruction_intf.i_type.funct3
+          )
+        )
+      end
+    endcase
+  endtask : check_operation
 endclass : i_type_checker

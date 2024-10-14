@@ -1,6 +1,6 @@
 virtual class base_instruction_checker;
   // Import instruction types from the package
-  import instructions_pkg::*;
+  //import instructions_pkg::*;
 
   //###############################################################################################
   // Members:
@@ -47,6 +47,8 @@ virtual class base_instruction_checker;
         this.instruction_intf = this.intf.IDATA;
         this.data_intf = this.intf.IDATA;
         this.opcode = this.instruction_intf.opcode.opcode;
+
+        @(posedge intf.CLK);
 
         this.check_instruction();
       end
