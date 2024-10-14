@@ -51,6 +51,23 @@ typedef enum logic [6:0] {
   j_type = 7'b110_1111
 } inst_type_e;
 
+typedef enum logic [2:0] {
+  addi      = 3'b000,
+  slli      = 3'b001,
+  slti      = 3'b010,
+  sltiu     = 3'b011,
+  xori      = 3'b100,
+  srli_srai = 3'b101,
+  ori       = 3'b110,
+  andi      = 3'b111
+} func3_i_type_e;
+
+typedef enum logic [2:0] {
+  sb = 3'b000,
+  sh = 3'b001,
+  sw = 3'b010
+} func3_s_type_e;
+
 //#################################################################################################
 // Struct: b_type_t
 // Description: Represents a B-type (branch-type) RISC-V instruction format. This structure encodes

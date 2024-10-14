@@ -25,10 +25,10 @@ class driver;
 `ifdef SIMULATION
     intf.ESIMREQ = 0;
 `endif
-    @(negedge intf.CLK);
     intf.RES     = 1;
-    @(negedge intf.CLK);
+    repeat (2) @(negedge intf.CLK);
     intf.RES     = 0;
+    intf.HLT     = 1;
   endtask : reset
 
   // Write task: Generates random instructions. Could be constrained (valid ones) or completely random (not valid RISC-V instructions)
@@ -36,6 +36,7 @@ class driver;
     repeat (iteration) begin
       sti = new();
       @ (negedge intf.CLK);
+      intf.HLT = 0;
       if(sti.randomize()) begin // Generate stimulus
         $display("Driving instruction 0x%0h\n", sti.riscv_inst);
       end
@@ -44,10 +45,11 @@ class driver;
       end
         intf.IDATA = sti.riscv_inst;
         intf.DATAI = sti.riscv_data;
-        sb.instruction_queue.push_front(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
-        sb.data_queue.push_front(sti.riscv_inst);        // Store the current data input in the scoreboard queue for that purpose
+        sb.expected_mb[0].put(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
+        sb.expected_mb[1].put(sti.riscv_data);        // Store the current data input in the scoreboard queue for that purpose
     end
     @ (negedge intf.CLK);
+    intf.HLT = 1;
     // TODO: what values to drive in "IDLE" mode?
   endtask : write
 
@@ -56,6 +58,7 @@ class driver;
     for (int k = 0; k < 32; k++) begin
       sti = new();
       @ (negedge intf.CLK);
+      intf.HLT = 0;
       if ( ! sti.randomize() with { // Let's use ADDI instruction for populate each register, by taking advance of immediate values
         opcode == i_type;    // I-type instruction
         funct3 == 3'b000;    // funct3 code for ADDI
@@ -68,9 +71,11 @@ class driver;
       $display("Driving instruction 0x%0h\n", sti.riscv_inst);
       intf.IDATA = sti.riscv_inst;
       intf.DATAI = sti.riscv_data;
-      sb.instruction_queue.push_front(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
-      sb.data_queue.push_front(sti.riscv_inst);        // Store the current data input in the scoreboard queue for that purpose
+      sb.expected_mb[0].put(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
+      sb.expected_mb[1].put(sti.riscv_data);        // Store the current data input in the scoreboard queue for that purpose
     end
+    @ (negedge intf.CLK);
+    intf.HLT = 1;
   endtask
 
   // halt_pattern task: Drive HLT input with a delay pattern

@@ -55,4 +55,9 @@ class stimulus;
     }
     solve opcode before imm; // We need to first known the instruction type in order to determine valid instructions
   }
+
+  constraint support_i_type_only {
+    opcode == i_type;
+  }
+  
 endclass : stimulus

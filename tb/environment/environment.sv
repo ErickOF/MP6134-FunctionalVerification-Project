@@ -4,6 +4,8 @@ class environment;
   driver drvr;
   scoreboard sb;
   monitor mntr;
+  riscv_reference_model ref_model;
+
   // Checkers
   b_type_checker b_type_check;
   i_type_checker i_type_check;
@@ -23,6 +25,8 @@ class environment;
     // Assign the virtual interface
     this.intf = intf;
 
+    ref_model = new();
+
     // Instantiate the scoreboard
     sb = new();
 
@@ -30,7 +34,7 @@ class environment;
     drvr = new(intf, sb);
 
     // Instantiate the monitor and pass the interface and scoreboard references
-    mntr = new(intf, sb);
+    mntr = new(intf, sb, ref_model.mb_mn_instr);
 
     // Instantiate the checkers and pass the interface and scoreboard references
     b_type_check = new("B_TYPE_CHECKER", intf, sb);
@@ -43,6 +47,8 @@ class environment;
     // Start the monitor's checking process in a parallel thread
     fork 
       mntr.check();
+      ref_model.wait_for_instructions();
+      sb.check();
     join_none
 
     // Start the checker's checking processes in a parallel thread

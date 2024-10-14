@@ -30,10 +30,12 @@
 
 `timescale 1ns / 1ps
 `include "config.vh"
+`include "riscv_defs.svh"
 `include "helper.sv"
 `include "stimulus_types.sv"
 `include "instructions_pkg.svh"
 `include "stimulus.sv"
+`include "riscv_reference_model.sv"
 `include "scoreboard.sv"
 `include "driver.sv"
 `include "monitor.sv"
