@@ -59,22 +59,26 @@ class i_type_checker extends base_instruction_checker;
   // Example: I-type instructions include ADDI, XORI, ORI, SLTIU, ANDI, SRLI, and SRAI.
   //###############################################################################################
   task check_operation();
-    case (instruction_intf.i_type.funct3)
-      // Fetch the source register value from the DUT register file
-      logic [31:0] reg_rs1 = darksimv.core0.REGS[instruction_intf.i_type.rs1];
-      // Fetch the destination register value from the DUT
-      logic [31:0] reg_rd = darksimv.core0.REGS[instruction_intf.i_type.rd];
+    // Fetch the source register value from the DUT register file
+    logic [31:0] reg_rs1 = darksimv.core0.REGS[instruction_intf.i_type.rs1];
+    logic [31:0] reg_rd;
 
+    @(posedge this.intf.CLK);
+
+    // Fetch the destination register value from the DUT
+    reg_rd = darksimv.core0.REGS[instruction_intf.i_type.rd];
+
+    case (instruction_intf.i_type.funct3)
       // ADDI Operation: Performs a add operation between rs1 and the immediate value, then checks
       // the result
       addi: begin
+        logic [31:0] result;
         // Sign-extend the immediate value based on the MSB (bit 11)
-        logic signed [31:0] imm = instruction_intf.i_type.imm[11] ?
-                {'1, instruction_intf.i_type.imm} :
-                {'0, instruction_intf.i_type.imm};
+        logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
+        imm[11:0] = instruction_intf.i_type.imm;
 
         // Compute the expected result for the operation
-        logic [31:0] result = reg_rs1 + simm;
+        result = reg_rs1 + imm;
 
         `PRINT_INFO(
           this.name,
@@ -98,12 +102,10 @@ class i_type_checker extends base_instruction_checker;
       // SLLI Operation: Shifts the value in rs1 logically left depending on the `imm` bits.
       slli: begin
         // Get the immediate value for the shift operation
-        logic [31:0] imm = instruction_intf.i_type.imm[11] ?
-                {'1, instruction_intf.i_type.imm} :
-                {'0, instruction_intf.i_type.imm};
+        logic [31:0] imm = {20'b0, instruction_intf.i_type.imm};
 
         // Compute the expected result for the operation
-        logic [31:0] result = reg_rs1 << imm;
+        logic [31:0] result = reg_rs1 << imm[4:0];
 
         `PRINT_INFO(
           this.name,
@@ -127,13 +129,13 @@ class i_type_checker extends base_instruction_checker;
       // SLTI Operation: Compares rs1 with the immediate value (signed comparison) and stores the
       // result in rd
       slti: begin
+        logic [31:0] result;
         // Sign-extend the immediate value based on the MSB (bit 11)
-        logic sgined [31:0] imm = instruction_intf.i_type.imm[11] ?
-                {'1, instruction_intf.i_type.imm} :
-                {'0, instruction_intf.i_type.imm};
+        logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
+        imm[11:0] = instruction_intf.i_type.imm;
 
         // Compute the expected result for the operation
-        logic [31:0] result = reg_rs1 < imm;
+        result = reg_rs1 < imm;
 
         `PRINT_INFO(
           this.name,
@@ -157,10 +159,8 @@ class i_type_checker extends base_instruction_checker;
       // SLTIU Operation: Compares rs1 with the immediate value (unsigned comparison) and stores
       // the result in rd
       sltiu: begin
-        // Sign-extend the immediate value based on the MSB (bit 11)
-        logic [31:0] imm = instruction_intf.i_type.imm[11] ?
-                {'1, instruction_intf.i_type.imm} :
-                {'0, instruction_intf.i_type.imm};
+        // Get the immediate value for the shift operation
+        logic [31:0] imm = {20'b0, instruction_intf.i_type.imm};
 
         // Compute the expected result for the operation
         logic [31:0] result = reg_rs1 < imm;
@@ -187,13 +187,13 @@ class i_type_checker extends base_instruction_checker;
       // XORI Operation: Performs a bitwise XOR between rs1 and the immediate value, then checks
       // the result
       xori: begin
+        logic [31:0] result;
         // Sign-extend the immediate value based on the MSB (bit 11)
-        logic signed [31:0] imm = instruction_intf.i_type.imm[11] ?
-                {'1, instruction_intf.i_type.imm} :
-                {'0, instruction_intf.i_type.imm};
+        logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
+        imm[11:0] = instruction_intf.i_type.imm;
 
         // Compute the expected result for the operation
-        logic [31:0] result = reg_rs1 ^ imm;
+        result = reg_rs1 ^ imm;
 
         `PRINT_INFO(
           this.name,
@@ -217,10 +217,8 @@ class i_type_checker extends base_instruction_checker;
       // SRLI/SRAI Operation: Shifts the value in rs1 right either logically or arithmetically,
       // depending on the `imm` bits.
       srli_srai: begin
-        // Sign-extend the immediate value based on the MSB (bit 11)
-        logic [31:0] imm = instruction_intf.i_type.imm[11] ?
-                {'1, instruction_intf.i_type.imm} :
-                {'0, instruction_intf.i_type.imm};
+        // Get the immediate value for the shift operation
+        logic [31:0] imm = {'0, instruction_intf.i_type.imm};
 
         // Compute the expected result for the operation
         logic [31:0] result = (imm[11:5] === 7'b010_0000) ?
@@ -235,7 +233,7 @@ class i_type_checker extends base_instruction_checker;
             "%s: %08h < %08h = %08h (expected: %08h).",
             inst_name,
             reg_rs1,
-            simm,
+            imm,
             reg_rd,
             result
           )
@@ -258,13 +256,13 @@ class i_type_checker extends base_instruction_checker;
       // ORI Operation: Performs a bitwise OR between rs1 and the immediate value, then checks the
       // result.
       ori: begin
+        logic [31:0] result;
         // Sign-extend the immediate value based on the MSB (bit 11)
-        logic signed [31:0] imm = instruction_intf.i_type.imm[11] ?
-                {'1, instruction_intf.i_type.imm} :
-                {'0, instruction_intf.i_type.imm};
+        logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
+        imm[11:0] = instruction_intf.i_type.imm;
 
         // Compute the expected result for the operation
-        logic [31:0] result = reg_rs1 | imm;
+        result = reg_rs1 | imm;
 
         `PRINT_INFO(
           this.name,
@@ -288,13 +286,13 @@ class i_type_checker extends base_instruction_checker;
       // ANDI Operation: Performs a bitwise AND between rs1 and the immediate value, then checks
       // the result.
       andi: begin
+        logic [31:0] result;
         // Sign-extend the immediate value based on the MSB (bit 11)
-        logic signed [31:0] imm = instruction_intf.i_type.imm[11] ?
-                {'1, instruction_intf.i_type.imm} :
-                {'0, instruction_intf.i_type.imm};
+        logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
+        imm[11:0] = instruction_intf.i_type.imm;
 
         // Compute the expected result for the operation
-        logic [31:0] result = reg_rs1 & imm;
+        result = reg_rs1 & imm;
 
         `PRINT_INFO(
           this.name,
