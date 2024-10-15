@@ -103,11 +103,13 @@ class i_type_checker extends base_instruction_checker;
 
       // SLLI Operation: Shifts the value in rs1 logically left depending on the `imm` bits.
       slli: begin
+        logic [31:0] result;
         // Get the immediate value for the shift operation
-        logic [31:0] imm = {20'b0, instruction_intf.i_type.imm};
+        logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
+        imm[11:0] = instruction_intf.i_type.imm;
 
         // Compute the expected result for the operation
-        logic [31:0] result = reg_rs1 << imm[4:0];
+        result = reg_rs1 << imm[4:0];
 
         `PRINT_INFO(
           this.name,
@@ -137,7 +139,7 @@ class i_type_checker extends base_instruction_checker;
         imm[11:0] = instruction_intf.i_type.imm;
 
         // Compute the expected result for the operation
-        result = reg_rs1 < imm;
+        result = $signed(reg_rs1) < $signed(imm);
 
         `PRINT_INFO(
           this.name,
@@ -359,43 +361,49 @@ class i_type_checker extends base_instruction_checker;
   
     // Check the funct3 field to determine if the instruction uses sign-extension
     case (instruction_intf.i_type.funct3)
-  
+
       // ADDI Operation: Add Immediate with sign-extension
       addi: begin
         inst_name = "ADDI";
         use_sign_ext = 1'b1;
       end
-  
+
+      // SLLI Operation: Shift Left Logical Immediate with sign-extension
+      slli: begin
+        inst_name = "SLLI";
+        use_zero_ext = 1'b1;
+      end
+
       // SLTI Operation: Set Less Than Immediate, requires sign-extension
       slti: begin
         inst_name = "SLTI";
         use_sign_ext = 1'b1;
       end
-  
+
       // XORI Operation: XOR Immediate, requires sign-extension
       xori: begin
         inst_name = "XORI";
         use_sign_ext = 1'b1;
       end
-  
+
       // ORI Operation: OR Immediate, requires sign-extension
       ori: begin
         inst_name = "ORI";
         use_sign_ext = 1'b1;
       end
-  
+
       // ANDI Operation: AND Immediate, requires sign-extension
       andi: begin
         inst_name = "ANDI";
         use_sign_ext = 1'b1;
       end
-  
+
       // Default case: No sign-extension required for other instructions
       default: begin
         use_sign_ext = 1'b0;
       end
     endcase
-  
+
     // If sign-extension is required, check the value and print the results
     if (use_sign_ext === 1'b1) begin
       `PRINT_INFO(
@@ -407,7 +415,7 @@ class i_type_checker extends base_instruction_checker;
           imm
         )
       )
-  
+
       // Compare the simulated immediate with the expected immediate
       if (simm === imm) begin
         `PRINT_INFO(this.name, $sformatf("IMM sign-extension for %s match", inst_name))
@@ -446,12 +454,6 @@ class i_type_checker extends base_instruction_checker;
 
     // Check the funct3 field to determine if the instruction uses zero-extension
     case (instruction_intf.i_type.funct3)
-      // SLLI Operation: Shift Left Logical Immediate with zero-extension
-      slli: begin
-        inst_name = "SLLI";
-        use_zero_ext = 1'b1;
-      end
-
       // SLTIU Operation: Set Less Than Immediate Unsigned, requires zero-extension
       sltiu: begin
         inst_name = "SLTIU";
