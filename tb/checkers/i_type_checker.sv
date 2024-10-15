@@ -372,7 +372,7 @@ class i_type_checker extends base_instruction_checker;
       // SLLI Operation: Shift Left Logical Immediate with sign-extension
       slli: begin
         inst_name = "SLLI";
-        use_zero_ext = 1'b1;
+        use_sign_ext = 1'b1;
       end
 
       // SLTI Operation: Set Less Than Immediate, requires sign-extension
