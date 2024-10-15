@@ -43,6 +43,7 @@ class i_type_checker extends base_instruction_checker;
 
       check_sign_extension();
       check_zero_extension();
+      check_valid_shift();
       check_operation();
     end
   endtask : check_instruction
@@ -493,4 +494,41 @@ class i_type_checker extends base_instruction_checker;
       end
     end
   endtask : check_zero_extension
+
+  task check_valid_shift();
+    logic [11:0] imm = instruction_intf.i_type.imm;
+    logic use_shift;
+
+    case (instruction_intf.i_type.funct3)
+      slli: begin
+        inst_name = "SLLI";
+        use_shift = 1'b1;
+      end
+      srli_srai: begin
+        inst_name = (imm[11:5] === 7'b010_0000) ? "SRAI" : "SRLI";
+        use_shift = 1'b1;
+      end
+      default: begin
+        use_shift = 1'b0;
+      end
+    endcase
+
+    if (use_shift === 1'b1) begin
+      `PRINT_INFO(
+        this.name,
+        $sformatf(
+          "%s imm[5]: %01b (expected: 0).",
+          inst_name,
+          imm[5]
+        )
+      )
+
+      if (imm[5] === 1'b0) begin
+        `PRINT_INFO(this.name, $sformatf("%s is properly set for shitf operation", inst_name))
+      end
+      else begin
+        `PRINT_ERROR(this.name, $sformatf("%s bit imm[5] must be 0", inst_name))
+      end
+    end
+  endtask : check_valid_shift
 endclass : i_type_checker
