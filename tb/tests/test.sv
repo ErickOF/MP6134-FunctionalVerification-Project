@@ -14,6 +14,8 @@ program test(darkriscv_if intf);
     env.drvr.init_registers();
     // Write 10 values
     env.drvr.write(10, 1);
+    // Dump the register file by using store instructions
+    env.drvr.save_registers();
 
     // Check if the test pass
     //if (env.mntr.pass_counter == 0) begin
@@ -25,7 +27,7 @@ program test(darkriscv_if intf);
     //else begin
     //  `PRINT_INFO(`TEST_NAME, "Test passed")
     //end
-
+    
     env.sb.final_checker();
   end
 endprogram : test
