@@ -495,25 +495,52 @@ class i_type_checker extends base_instruction_checker;
     end
   endtask : check_zero_extension
 
+  //###############################################################################################
+  // Task: check_valid_shift
+  // Description: This task verifies the validity of the immediate (IMM) field for shift
+  //              instructionssuch as SLLI, SRLI, and SRAI. It checks whether the bit imm[5] is
+  //              properly set to 0 for valid shift operations, as required by the RISC-V
+  //              specification.
+  //
+  // Example: For SLLI (Shift Left Logical Immediate), SRLI (Shift Right Logical Immediate), and 
+  //          SRAI (Shift Right Arithmetic Immediate), imm[5] must be 0 to ensure proper behavior.
+  // 
+  // Notes: - The task checks if the instruction is a shift operation by evaluating the funct3
+  //          field.
+  //        - If the instruction requires a shift operation, it logs whether the immediate field is
+  //          valid by checking imm[5].
+  //###############################################################################################
   task check_valid_shift();
+    // Immediate value from the instruction
     logic [11:0] imm = instruction_intf.i_type.imm;
-    logic use_shift;
-
+    // Instruction name for logging
+    string inst_name;
+    // Flag to indicate if the instruction is a shift operation
+    logic is_shift;
+  
+    // Check the funct3 field to determine if the instruction is a shift operation
     case (instruction_intf.i_type.funct3)
+
+      // SLLI Operation: Shift Left Logical Immediate
       slli: begin
         inst_name = "SLLI";
-        use_shift = 1'b1;
+        is_shift = 1'b1;
       end
+
+      // SRLI and SRAI Operations: Shift Right Logical and Arithmetic Immediate
       srli_srai: begin
         inst_name = (imm[11:5] === 7'b010_0000) ? "SRAI" : "SRLI";
-        use_shift = 1'b1;
+        is_shift = 1'b1;
       end
+
+      // Default case: No shift operation for other instructions
       default: begin
-        use_shift = 1'b0;
+        is_shift = 1'b0;
       end
     endcase
 
-    if (use_shift === 1'b1) begin
+    // If the instruction is a shift operation, validate the imm[5] bit
+    if (is_shift === 1'b1) begin
       `PRINT_INFO(
         this.name,
         $sformatf(
@@ -523,8 +550,9 @@ class i_type_checker extends base_instruction_checker;
         )
       )
 
+      // Check if imm[5] is properly set to 0
       if (imm[5] === 1'b0) begin
-        `PRINT_INFO(this.name, $sformatf("%s is properly set for shitf operation", inst_name))
+        `PRINT_INFO(this.name, $sformatf("%s is properly set for shift operation", inst_name))
       end
       else begin
         `PRINT_ERROR(this.name, $sformatf("%s bit imm[5] must be 0", inst_name))
