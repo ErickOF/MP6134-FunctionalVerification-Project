@@ -347,14 +347,15 @@ class i_type_checker extends base_instruction_checker;
   //          a mismatch.
   //###############################################################################################
   task check_sign_extension();
-    // Simulated value of the sign-extended immediate
-    logic [31:0] simm = darksimv.core0.SIMM;
-    // Immediate value (either sign-extended or zero-extended)
-    logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
     // Instruction name for logging
     string inst_name;
     // Flag to indicate if sign-extension is required
     logic use_sign_ext;
+    // Simulated value of the sign-extended immediate
+    logic [31:0] simm = darksimv.core0.SIMM;
+    // Immediate value (either sign-extended or zero-extended)
+    logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
+    imm[11:0] = instruction_intf.i_type.imm;
   
     // Check the funct3 field to determine if the instruction uses sign-extension
     case (instruction_intf.i_type.funct3)
@@ -400,7 +401,7 @@ class i_type_checker extends base_instruction_checker;
       `PRINT_INFO(
         this.name,
         $sformatf(
-          "%s sign extension: %08h (expected: %08h).",
+          "%s sign-extension: %08h (expected: %08h).",
           inst_name,
           simm,
           imm
@@ -437,7 +438,7 @@ class i_type_checker extends base_instruction_checker;
     // RTL value of the sign-extended immediate
     logic [31:0] simm = darksimv.core0.SIMM;
     // Immediate value (either sign-extended or zero-extended)
-    logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
+    logic signed [31:0] imm = {20'b0, instruction_intf.i_type.imm};
     // Instruction name for logging
     string inst_name;
     // Flag to indicate if zero-extension is required
@@ -474,7 +475,7 @@ class i_type_checker extends base_instruction_checker;
       `PRINT_INFO(
         this.name,
         $sformatf(
-          "%s sign extension: %08h (expected: %08h).",
+          "%s zero-extension: %08h (expected: %08h).",
           inst_name,
           simm,
           imm
@@ -483,10 +484,10 @@ class i_type_checker extends base_instruction_checker;
 
       // Compare the simulated immediate with the expected immediate
       if (simm === imm) begin
-        `PRINT_INFO(this.name, $sformatf("IMM sign-extension for %s match", inst_name))
+        `PRINT_INFO(this.name, $sformatf("IMM zero-extension for %s match", inst_name))
       end
       else begin
-        `PRINT_ERROR(this.name, $sformatf("IMM sign-extension for %s mismatch", inst_name))
+        `PRINT_ERROR(this.name, $sformatf("IMM zero-extension for %s mismatch", inst_name))
       end
     end
   endtask : check_zero_extension
