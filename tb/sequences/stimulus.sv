@@ -30,8 +30,11 @@ class stimulus;
     else if (opcode == u_type) {
       riscv_inst == {imm[31:12], rd, opcode};
     }
-    else { // Assume that it will be a J instruction type
+    else if (opcode == j_type) {
       riscv_inst == {imm[20], imm[10:1], imm[11], imm[19:12], rd, opcode};
+    }
+    else if (opcode == custom_0_type) {
+      riscv_inst == {imm[24:0], opcode};
     }
     solve opcode before riscv_inst; // We need to first known the instruction type in order to determine valid instructions
   }
@@ -49,9 +52,12 @@ class stimulus;
     else if (opcode == u_type) {
       imm[11:0]  == 'd0; // Bits at positions lower than 11 are not going to be used, so let's force them low in order to randomize values within [31:12] frame
     }
-    else { // Assume that it will be a J instruction type
+    else if (opcode == j_type) {
       imm[31:21] == 'd0; // Bits at positions higher than 21 are not going to be used
       imm[9:0]   == 'd0; // Bits at positions lower than 9 are not going to be used
+    }
+    else if (opcode == custom_0_type) {
+      imm[31:0] == 'd0; // Custom-0 will use no data
     }
     solve opcode before imm; // We need to first known the instruction type in order to determine valid instructions
   }
@@ -62,7 +68,7 @@ class stimulus;
     }
   }
 
-  constraint support_i_type_only {
+  constraint c_supported_type_only {
     opcode inside {i_type, s_type};
   }
   

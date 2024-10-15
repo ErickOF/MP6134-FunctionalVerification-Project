@@ -48,7 +48,9 @@ typedef enum logic [6:0] {
   u_type = 7'b001_0111,
   // J-type instructions (JAL)
   // TODO: only for JAL
-  j_type = 7'b110_1111
+  j_type = 7'b110_1111,
+  // Custom-0-type instructions
+  custom_0_type = 7'b0001011
 } inst_type_e;
 
 typedef enum logic [2:0] {
@@ -67,6 +69,10 @@ typedef enum logic [2:0] {
   sh = 3'b001,
   sw = 3'b010
 } func3_s_type_e;
+
+typedef enum logic [2:0] {
+  idle = 3'b000
+} func3_custom_0_type_e;
 
 //#################################################################################################
 // Struct: b_type_t

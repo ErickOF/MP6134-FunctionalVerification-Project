@@ -40,13 +40,13 @@ class environment;
     sb_write = new(sb_names);
     sb_names.delete();
 
+    ref_model = new(sb_write);
+
     // Instantiate the driver and pass the interface and scoreboard references
     drvr = new(intf, sb_in);
 
     // Instantiate the monitor and pass the interface and scoreboard references
     mntr = new(intf, sb_in, sb_write, ref_model.mb_mn_instr);
-
-    ref_model = new(sb_write);
 
     // Instantiate the checkers and pass the interface and scoreboard references
     b_type_check = new("B_TYPE_CHECKER", intf, sb_in);

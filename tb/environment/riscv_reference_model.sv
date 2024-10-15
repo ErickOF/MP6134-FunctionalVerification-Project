@@ -32,6 +32,8 @@ class riscv_reference_model;
   function void proccess_instructions(riscv_instruction_d my_instr);
     inst_type_e opcode;
 
+    $display("Decoding instruction %0h", my_instr);
+
     opcode = inst_type_e'(my_instr[`RISCV_INST_OPCODE_RANGE]);
 
     case (opcode)
@@ -184,11 +186,11 @@ class riscv_reference_model;
     result_data = register_bank[source_reg_2];
     result_address = register_bank[source_reg_1] + imm_signed;
 
-    $display("Storing %0d bytes of data 0x%0h to memory address 0x%0h\n", bytes_to_transfer, result_data, result_data);
+    $display("Storing %0d bytes of data 0x%0h to memory address 0x%0h\n", bytes_to_transfer, result_data, result_address);
 
-    sb_write.expected_data[0].put(result_address);
-    sb_write.expected_data[1].put(result_data);
-    sb_write.expected_data[2].put(bytes_to_transfer);
+    sb_write.expected_mb[0].try_put(result_address);
+    sb_write.expected_mb[1].try_put(result_data);
+    sb_write.expected_mb[2].try_put(bytes_to_transfer);
   endfunction : decode_s_type_opcode
 
 endclass : riscv_reference_model

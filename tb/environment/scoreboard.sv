@@ -12,9 +12,9 @@ class scoreboard;
   int unsigned mismatch_count [$];
 
   function new(string names[$]);
-    number_of_scoreboards = names.size();
-
     mailbox #(logic [31:0]) my_mb;
+
+    number_of_scoreboards = names.size();
 
     for (int i = 0; i < number_of_scoreboards; i++) begin
       my_mb = new();

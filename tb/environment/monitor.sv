@@ -28,11 +28,14 @@ class monitor;
     logic [31:0] output_data;
     logic [2:0] bytes_transfered;
 
+    inst_type_e opcode;
+
     forever begin
-      @ (posedge intf.CLK);
+      @ (negedge intf.CLK);
       if (!intf.HLT && !intf.RES) begin
         instruction_data = intf.IDATA;
         input_data = intf.DATAI;
+        opcode = instruction_data[`RISCV_INST_OPCODE_RANGE];
 
         if (intf.DWR) begin
           write_op = 1;
@@ -53,16 +56,18 @@ class monitor;
           bytes_transfered = 0;
         end
 
-        sb_in.actual_mb[0].put(instruction_data);
-        sb_in.actual_mb[1].put(input_data);
+        if (opcode != custom_0_type) begin
+          sb_in.actual_mb[0].put(instruction_data);
+          sb_in.actual_mb[1].put(input_data);
+        end
 
         mb_mn_instr.put(riscv_instruction_d'(instruction_data));
         $display("Time: %0t, Instruction IDATA: %h, Input Data: %h", $time, instruction_data, input_data);
 
         if (write_op) begin
-          sb_out.actual_mb[0].put(data_address);
-          sb_out.actual_mb[1].put(output_data);
-          sb_out.actual_mb[2].put(bytes_transfered);
+          sb_write.actual_mb[0].put(data_address);
+          sb_write.actual_mb[1].put(output_data);
+          sb_write.actual_mb[2].put(bytes_transfered);
 
           $display("Time: %0t, Write operation of %0d bytes: Data Address: %h, Output Data: %h", $time, bytes_transfered, data_address, output_data);
         end

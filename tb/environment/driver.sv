@@ -33,32 +33,75 @@ class driver;
 
   // Write task: Generates random instructions. Could be constrained (valid ones) or completely random (not valid RISC-V instructions)
   task write(input integer iteration, input bit valid_inst);
-    repeat (iteration) begin
+    bit previous_sti_s_type = 1'b0;
+    for (int i = 0; i < iteration; i++) begin
+      if (i == 0) begin
+        @ (negedge intf.CLK);
+        previous_sti_s_type = 1'b0;
+      end
+      else begin
+        @ (posedge intf.CLK);
+        if (sti.opcode == s_type) begin
+          previous_sti_s_type = 1'b1;
+          intf.HLT = 1;
+        end
+        else begin
+          previous_sti_s_type = 1'b0;
+        end
+      end
       sti = new();
-      @ (negedge intf.CLK);
-      intf.HLT = 0;
       if(sti.randomize()) begin // Generate stimulus
-        $display("Driving instruction 0x%0h\n", sti.riscv_inst);
+        $display("write(): Driving instruction 0x%0h\n", sti.riscv_inst);
       end
       else begin
         $error("There was an error in randomize call of write task at %m");
       end
-        intf.IDATA = sti.riscv_inst;
-        intf.DATAI = sti.riscv_data;
-        sb.expected_mb[0].put(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
-        sb.expected_mb[1].put(sti.riscv_data);        // Store the current data input in the scoreboard queue for that purpose
+      intf.IDATA = sti.riscv_inst;
+      intf.DATAI = sti.riscv_data;
+      sb.expected_mb[0].put(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
+      sb.expected_mb[1].put(sti.riscv_data);        // Store the current data input in the scoreboard queue for that purpose
+      if (i == 0) begin
+          @ (posedge intf.CLK);
+          intf.HLT = 0;
+      end
+      if (previous_sti_s_type == 1'b1) begin
+        @ (posedge intf.CLK);
+        @ (posedge intf.CLK);
+        intf.HLT = 0;
+      end
     end
-    @ (negedge intf.CLK);
+    if (sti.opcode == s_type) begin
+      sti = new();
+      sti.c_supported_type_only.constraint_mode(0);
+      @ (negedge intf.CLK);
+      if ( ! sti.randomize() with { // Let's use ADDI instruction for populate each register, by taking advance of immediate values
+        opcode == custom_0_type;    // Custom-0-type instruction
+        funct3 == 3'b000;    // funct3 code for idle
+      }) begin
+        $error("There was an error in randomize call of write init_registers task at %m");
+      end
+      $display("write(): Driving instruction 0x%0h\n", sti.riscv_inst);
+      intf.IDATA = sti.riscv_inst;
+      intf.DATAI = sti.riscv_data;
+      @ (posedge intf.CLK);
+      intf.HLT = 0;
+    end
+    @ (posedge intf.CLK);
     intf.HLT = 1;
     // TODO: what values to drive in "IDLE" mode?
   endtask : write
 
   // init_registers task: In order to do useful computation instructions, we need known values different than zero in each register
   task init_registers();
+    bit previous_sti_s_type = 1'b0;
     for (int k = 0; k < 32; k++) begin
       sti = new();
-      @ (negedge intf.CLK);
-      intf.HLT = 0;
+      if (k == 0) begin
+        @ (negedge intf.CLK);
+      end
+      else begin
+        @ (posedge intf.CLK);
+      end
       if ( ! sti.randomize() with { // Let's use ADDI instruction for populate each register, by taking advance of immediate values
         opcode == i_type;    // I-type instruction
         funct3 == 3'b000;    // funct3 code for ADDI
@@ -68,13 +111,17 @@ class driver;
       ) begin
         $error("There was an error in randomize call of write init_registers task at %m");
       end
-      $display("Driving instruction for init_registers: 0x%0h\n", sti.riscv_inst);
+      $display("init_registers(): Driving instruction for init_registers: 0x%0h\n", sti.riscv_inst);
       intf.IDATA = sti.riscv_inst;
       intf.DATAI = sti.riscv_data;
       sb.expected_mb[0].put(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
       sb.expected_mb[1].put(sti.riscv_data);        // Store the current data input in the scoreboard queue for that purpose
+      if (k == 0) begin
+        @ (posedge intf.CLK);
+        intf.HLT = 0;
+      end
     end
-    @ (negedge intf.CLK);
+    @ (posedge intf.CLK);
     intf.HLT = 1;
   endtask
 
@@ -82,11 +129,23 @@ class driver;
 	// test, by doing store instructions for transfer each register content to a random memory
 	// location
 	task save_registers();
+    bit previous_sti_s_type = 1'b0;
 		for (int k = 0; k < 32; k++) begin
-		    sti = new();
-		    @ (negedge intf.CLK);
-	            intf.HLT = 0;
-                    sti.support_i_type_only.constraint_mode(0);
+		    if (k == 0) begin
+          @ (negedge intf.CLK);
+          previous_sti_s_type = 1'b0;
+        end
+        else begin
+          @ (posedge intf.CLK);
+          if (sti.opcode == s_type) begin
+            previous_sti_s_type = 1'b1;
+            intf.HLT = 1;
+          end
+          else begin
+            previous_sti_s_type = 1'b0;
+          end
+        end
+        sti = new();
 		    if ( ! sti.randomize() with {
 		      opcode == s_type;    // S-type instruction
 		      funct3 == 3'b010;    // encoding for a "word" width store instruction
@@ -97,18 +156,40 @@ class driver;
 		    ) begin
 		      $fatal("There was an error in randomize call of write init_registers task at %m");
 		    end
-		    $display("Driving instruction for save_registers: 0x%0h\n", sti.riscv_inst);
+		    $display("save_registers(): Driving instruction for save_registers: 0x%0h\n", sti.riscv_inst);
 		    intf.IDATA = sti.riscv_inst;
 		    intf.DATAI = sti.riscv_data; // Driving input data but DUT should ignore this
 		    sb.expected_mb[0].put(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
                     sb.expected_mb[1].put(sti.riscv_data);        // Store the current data input in the scoreboard queue for that purpose
                     // Arbitrary wait time to avoid race conditions in the model, based on feedback PR#15 Feedback
-                    @ (posedge intf.CLK);
-                    @ (posedge intf.CLK);
-                    @ (posedge intf.CLK);
+        if (k == 0) begin
+          @ (posedge intf.CLK);
+          intf.HLT = 0;
+        end
+        if (previous_sti_s_type == 1'b1) begin
+          @ (posedge intf.CLK);
+          @ (posedge intf.CLK);
+          intf.HLT = 0;
+        end
 		end
-		@ (negedge intf.CLK);
-    		intf.HLT = 1;
+    if (sti.opcode == s_type) begin
+      sti = new();
+      sti.c_supported_type_only.constraint_mode(0);
+      @ (negedge intf.CLK);
+      if ( ! sti.randomize() with { // Let's use ADDI instruction for populate each register, by taking advance of immediate values
+        opcode == custom_0_type;    // Custom-0-type instruction
+        funct3 == 3'b000;    // funct3 code for idle
+      }) begin
+        $error("There was an error in randomize call of write init_registers task at %m");
+      end
+      $display("save_registers(): Driving instruction 0x%0h\n", sti.riscv_inst);
+      intf.IDATA = sti.riscv_inst;
+      intf.DATAI = sti.riscv_data;
+      @ (posedge intf.CLK);
+      intf.HLT = 0;
+    end
+		@ (posedge intf.CLK);
+		intf.HLT = 1;
 	endtask
 
   // halt_pattern task: Drive HLT input with a delay pattern
