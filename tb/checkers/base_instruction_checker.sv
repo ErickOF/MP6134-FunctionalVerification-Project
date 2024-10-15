@@ -54,6 +54,7 @@ virtual class base_instruction_checker;
 
       // Ensure the reset is de-asserted
       this.checker_en = (this.intf.RES === 1'b0) && (hlt === 1'b0) && (prev_hlt === 1'b0);
+
       if (this.checker_en === 1'b1) begin
         @(posedge this.intf.CLK);
 
