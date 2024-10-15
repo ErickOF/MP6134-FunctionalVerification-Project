@@ -26,6 +26,7 @@ virtual class base_instruction_checker;
   // HTL
   logic hlt;
   logic prev_hlt;
+  logic checker_en;
 
   function new(string name, virtual darkriscv_if intf, scoreboard sb);
     this.name = name;
