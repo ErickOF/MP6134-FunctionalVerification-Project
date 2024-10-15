@@ -2,7 +2,8 @@
 class environment;
   // Objects for driver, scoreboard, and monitor
   driver drvr;
-  scoreboard sb;
+  scoreboard sb_in;
+  scoreboard sb_write;
   monitor mntr;
   riscv_reference_model ref_model;
 
@@ -19,36 +20,48 @@ class environment;
 
   // Constructor: Initializes the environment
   function new(virtual darkriscv_if intf);
+    string sb_names[$];
+
     // Display message indicating the creation of the environment
     $display("Creating environment");
 
     // Assign the virtual interface
     this.intf = intf;
 
-    ref_model = new();
-
     // Instantiate the scoreboard
-    sb = new();
+    sb_names.push_back("instruction_sb");
+    sb_names.push_back("data_in_sb");
+    sb_in = new(sb_names);
+    sb_names.delete();
+
+    sb_names.push_back("address_out_sb");
+    sb_names.push_back("data_out_sb");
+    sb_names.push_back("bytes_transfered_sb");
+    sb_write = new(sb_names);
+    sb_names.delete();
+
+    ref_model = new(sb_write);
 
     // Instantiate the driver and pass the interface and scoreboard references
-    drvr = new(intf, sb);
+    drvr = new(intf, sb_in);
 
     // Instantiate the monitor and pass the interface and scoreboard references
-    mntr = new(intf, sb, ref_model.mb_mn_instr);
+    mntr = new(intf, sb_in, sb_write, ref_model.mb_mn_instr);
 
     // Instantiate the checkers and pass the interface and scoreboard references
-    b_type_check = new("B_TYPE_CHECKER", intf, sb);
-    i_type_check = new("I_TYPE_CHECKER", intf, sb);
-    j_type_check = new("J_TYPE_CHECKER", intf, sb);
-    r_type_check = new("R_TYPE_CHECKER", intf, sb);
-    s_type_check = new("S_TYPE_CHECKER", intf, sb);
-    u_type_check = new("U_TYPE_CHECKER", intf, sb);
+    b_type_check = new("B_TYPE_CHECKER", intf, sb_in);
+    i_type_check = new("I_TYPE_CHECKER", intf, sb_in);
+    j_type_check = new("J_TYPE_CHECKER", intf, sb_in);
+    r_type_check = new("R_TYPE_CHECKER", intf, sb_in);
+    s_type_check = new("S_TYPE_CHECKER", intf, sb_in);
+    u_type_check = new("U_TYPE_CHECKER", intf, sb_in);
 
     // Start the monitor's checking process in a parallel thread
     fork 
       mntr.check();
       ref_model.wait_for_instructions();
-      sb.check();
+      sb_in.check();
+      sb_write.check();
     join_none
 
     // Start the checker's checking processes in a parallel thread

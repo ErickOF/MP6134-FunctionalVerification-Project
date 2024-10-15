@@ -1,7 +1,7 @@
 // Based on: https://www.edaplayground.com/x/Yk4N
 class scoreboard;
 
-  localparam int number_of_scoreboards = 2;
+  int number_of_scoreboards = 0;
 
   string sb_name [$];
 
@@ -11,11 +11,10 @@ class scoreboard;
   int unsigned match_count [$];
   int unsigned mismatch_count [$];
 
-  function new();
+  function new(string names[$]);
     mailbox #(logic [31:0]) my_mb;
 
-    sb_name.push_back("instruction_sb");
-    sb_name.push_back("data_in_sb");
+    number_of_scoreboards = names.size();
 
     for (int i = 0; i < number_of_scoreboards; i++) begin
       my_mb = new();
@@ -27,9 +26,7 @@ class scoreboard;
       match_count.push_back(0);
       mismatch_count.push_back(0);
 
-      if (sb_name.size() < i) begin
-        sb_name.push_back("my_sb");
-      end
+      sb_name.push_back(names[i]);
     end
   endfunction : new
 

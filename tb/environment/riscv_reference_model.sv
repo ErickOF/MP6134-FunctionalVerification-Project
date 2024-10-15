@@ -7,12 +7,16 @@ class riscv_reference_model;
 
   bit signed [31:0] register_bank [32];
 
-  function new();
+  scoreboard sb_write;
+
+  function new(scoreboard sb_write);
     mb_mn_instr = new();
 
     foreach (register_bank[i]) begin
       register_bank[i] = 32'h0;
     end
+
+    this.sb_write = sb_write;
   endfunction : new
 
   task wait_for_instructions();
@@ -27,6 +31,8 @@ class riscv_reference_model;
 
   function void proccess_instructions(riscv_instruction_d my_instr);
     inst_type_e opcode;
+
+    $display("Decoding instruction %0h", my_instr);
 
     opcode = inst_type_e'(my_instr[`RISCV_INST_OPCODE_RANGE]);
 
@@ -133,7 +139,7 @@ class riscv_reference_model;
           register_bank[dest_reg] = result;
         end
         default : begin
-          $display("Function %0d was not recognized!\n", funct3);
+          $display("Function %0d was not recognized in I-type decoding!\n", funct3);
         end
       endcase
     end
@@ -164,26 +170,27 @@ class riscv_reference_model;
     case (funct3)
       sb : begin
         bytes_to_transfer = 1;
-        result_data = {24'h0, register_bank[source_reg_2][7:0]};
       end
       sh : begin
         bytes_to_transfer = 2;
-        result_data = {16'h0, register_bank[source_reg_2][15:0]};
       end
       sw : begin
         bytes_to_transfer = 4;
-        result_data = register_bank[source_reg_2];
       end
       default : begin
-        $display("Function %0d was not recognized!\n", funct3);
+        bytes_to_transfer = 0;
+        $display("Function %0d was not recognized in S-type decoding, transfering 0 bytes of data!\n", funct3);
       end
     endcase
 
-    if (bytes_to_transfer != 0) begin
-      result_address = register_bank[source_reg_1] + imm_signed;
+    result_data = register_bank[source_reg_2];
+    result_address = register_bank[source_reg_1] + imm_signed;
 
-      $display("Storing %0d bytes of data 0x%0h to memory address 0x%0h\n", bytes_to_transfer, result_data, result_data);
-    end
+    $display("Storing %0d bytes of data 0x%0h to memory address 0x%0h\n", bytes_to_transfer, result_data, result_address);
+
+    sb_write.expected_mb[0].try_put(result_address);
+    sb_write.expected_mb[1].try_put(result_data);
+    sb_write.expected_mb[2].try_put(bytes_to_transfer);
   endfunction : decode_s_type_opcode
 
 endclass : riscv_reference_model
