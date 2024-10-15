@@ -1,6 +1,6 @@
 virtual class base_instruction_checker;
   // Import instruction types from the package
-  import instructions_pkg::*;
+  //import instructions_pkg::*;
 
   //###############################################################################################
   // Members:
@@ -23,6 +23,11 @@ virtual class base_instruction_checker;
   int pass_counter;
   int error_counter;
 
+  // HTL
+  logic hlt;
+  logic prev_hlt;
+  logic checker_en;
+
   function new(string name, virtual darkriscv_if intf, scoreboard sb);
     this.name = name;
     this.intf = intf;
@@ -36,19 +41,32 @@ virtual class base_instruction_checker;
     this.pass_counter = 0;
     this.error_counter = 0;
 
+    // Store the value of the halt
+    this.hlt = this.intf.HLT;
+    this.prev_hlt = this.intf.HLT;
+
     // Infinite loop to continuously check the DUT
     forever begin
       // Check on negative edge of the clock
-      @(negedge intf.CLK);
+      @(negedge this.intf.CLK);
 
-      // Ensure the reset is de-asserted and there are instructions in the scoreboard queue
-      if (this.intf.RES === 0) begin
+      this.prev_hlt = hlt;
+      this.hlt = this.intf.HLT;
+
+      // Ensure the reset is de-asserted
+      this.checker_en = (this.intf.RES === 1'b0) && (hlt === 1'b0) && (prev_hlt === 1'b0);
+
+      if (this.checker_en === 1'b1) begin
+        @(posedge this.intf.CLK);
+
         // Fetch the instruction and data from the DUT interface
         this.instruction_intf = this.intf.IDATA;
         this.data_intf = this.intf.IDATA;
         this.opcode = this.instruction_intf.opcode.opcode;
 
-        this.check_instruction();
+        fork
+          this.check_instruction();
+        join_none
       end
     end
   endtask : check
