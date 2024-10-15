@@ -27,7 +27,8 @@ program test(darkriscv_if intf);
     //else begin
     //  `PRINT_INFO(`TEST_NAME, "Test passed")
     //end
-    
-    env.sb.final_checker();
+
+    env.sb_in.final_checker();
+    env.sb_write.final_checker();
   end
 endprogram : test

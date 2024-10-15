@@ -56,8 +56,14 @@ class stimulus;
     solve opcode before imm; // We need to first known the instruction type in order to determine valid instructions
   }
 
+  constraint c_funct3 {
+    if (opcode == s_type) {
+      funct3 dist {3'b000 := 32, 3'b001 := 32, 3'b010 := 32, [3'b011:3'b111] := 4};
+    }
+  }
+
   constraint support_i_type_only {
-    opcode == i_type;
+    opcode inside {i_type, s_type};
   }
   
 endclass : stimulus
