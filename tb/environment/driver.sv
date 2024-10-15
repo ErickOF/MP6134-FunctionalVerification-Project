@@ -85,6 +85,8 @@ class driver;
 		for (int k = 0; k < 32; k++) begin
 		    sti = new();
 		    @ (negedge intf.CLK);
+	            intf.HLT = 0;
+                    sti.support_i_type_only.constraint_mode(0);
 		    if ( ! sti.randomize() with {
 		      opcode == s_type;    // S-type instruction
 		      funct3 == 3'b010;    // encoding for a "word" width store instruction
@@ -93,19 +95,20 @@ class driver;
 					imm    == 12'h100;   // Arbitrary offset
 		    }
 		    ) begin
-		      $error("There was an error in randomize call of write init_registers task at %m");
+		      $fatal("There was an error in randomize call of write init_registers task at %m");
 		    end
 		    $display("Driving instruction for save_registers: 0x%0h\n", sti.riscv_inst);
 		    intf.IDATA = sti.riscv_inst;
 		    intf.DATAI = sti.riscv_data; // Driving input data but DUT should ignore this
-		    sb.instruction_queue.push_front(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
-		    sb.data_queue.push_front(sti.riscv_inst);        // Store the current data input in the scoreboard queue for that purpose
-        // Arbitrary wait time to avoid race conditions in the model, based on feedback PR#15 Feedback
-        @ (posedge intf.CLK);
-        @ (posedge intf.CLK);
-        @ (posedge intf.CLK);
-		  end
-
+		    sb.expected_mb[0].put(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
+                    sb.expected_mb[1].put(sti.riscv_data);        // Store the current data input in the scoreboard queue for that purpose
+                    // Arbitrary wait time to avoid race conditions in the model, based on feedback PR#15 Feedback
+                    @ (posedge intf.CLK);
+                    @ (posedge intf.CLK);
+                    @ (posedge intf.CLK);
+		end
+		@ (negedge intf.CLK);
+    		intf.HLT = 1;
 	endtask
 
   // halt_pattern task: Drive HLT input with a delay pattern
