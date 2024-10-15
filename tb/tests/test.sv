@@ -17,6 +17,8 @@ program test(darkriscv_if intf);
     // Dump the register file by using store instructions
     env.drvr.save_registers();
 
+    repeat (3) @ (posedge intf.CLK);
+
     // Check if the test pass
     //if (env.mntr.pass_counter == 0) begin
     //  `PRINT_WARNING(`TEST_NAME, "None of the checkers run")
