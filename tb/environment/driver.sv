@@ -100,6 +100,10 @@ class driver;
 		    intf.DATAI = sti.riscv_data; // Driving input data but DUT should ignore this
 		    sb.instruction_queue.push_front(sti.riscv_inst); // Store the current instruction input in the scoreboard queue for that purpose
 		    sb.data_queue.push_front(sti.riscv_inst);        // Store the current data input in the scoreboard queue for that purpose
+        // Arbitrary wait time to avoid race conditions in the model, based on feedback PR#15 Feedback
+        @ (posedge intf.CLK);
+        @ (posedge intf.CLK);
+        @ (posedge intf.CLK);
 		  end
 
 	endtask
