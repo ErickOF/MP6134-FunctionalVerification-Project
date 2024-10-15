@@ -41,6 +41,8 @@ class i_type_checker extends base_instruction_checker;
         )
       )
 
+      check_sign_extension();
+      check_zero_extension();
       check_operation();
     end
   endtask : check_instruction
@@ -326,4 +328,166 @@ class i_type_checker extends base_instruction_checker;
       end
     endcase
   endtask : check_operation
+
+  //###############################################################################################
+  // Task: check_sign_extension
+  // Description: This task checks the sign-extension of immediate values in instructions that
+  //              require the immediate value to be sign-extended. The task verifies if the sign
+  //              simulated value extension of the immediate value has been correctly performed by
+  //              comparing the RTL (SIMM) to the immediate value (IMM) extracted from the
+  //              instruction.
+  //
+  // Example: Instructions like ADDI, SLTI, XORI, ORI, and ANDI require sign-extension for their
+  //          immediate values. The task checks that the immediate value has been correctly
+  //          extended and prints the result.
+  //
+  // Notes: - If the instruction's `funct3` field matches ADDI, SLTI, XORI, ORI, or ANDI,
+  //          sign-extension is applied.
+  //        - The task prints a message indicating whether the extension is correct or if there is
+  //          a mismatch.
+  //###############################################################################################
+  task check_sign_extension();
+    // Simulated value of the sign-extended immediate
+    logic [31:0] simm = darksimv.core0.SIMM;
+    // Immediate value (either sign-extended or zero-extended)
+    logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
+    // Instruction name for logging
+    string inst_name;
+    // Flag to indicate if sign-extension is required
+    logic use_sign_ext;
+  
+    // Check the funct3 field to determine if the instruction uses sign-extension
+    case (instruction_intf.i_type.funct3)
+  
+      // ADDI Operation: Add Immediate with sign-extension
+      addi: begin
+        inst_name = "ADDI";
+        use_sign_ext = 1'b1;
+      end
+  
+      // SLTI Operation: Set Less Than Immediate, requires sign-extension
+      slti: begin
+        inst_name = "SLTI";
+        use_sign_ext = 1'b1;
+      end
+  
+      // XORI Operation: XOR Immediate, requires sign-extension
+      xori: begin
+        inst_name = "XORI";
+        use_sign_ext = 1'b1;
+      end
+  
+      // ORI Operation: OR Immediate, requires sign-extension
+      ori: begin
+        inst_name = "ORI";
+        use_sign_ext = 1'b1;
+      end
+  
+      // ANDI Operation: AND Immediate, requires sign-extension
+      andi: begin
+        inst_name = "ANDI";
+        use_sign_ext = 1'b1;
+      end
+  
+      // Default case: No sign-extension required for other instructions
+      default: begin
+        use_sign_ext = 1'b0;
+      end
+    endcase
+  
+    // If sign-extension is required, check the value and print the results
+    if (use_sign_ext === 1'b1) begin
+      `PRINT_INFO(
+        this.name,
+        $sformatf(
+          "%s sign extension: %08h (expected: %08h).",
+          inst_name,
+          simm,
+          imm
+        )
+      )
+  
+      // Compare the simulated immediate with the expected immediate
+      if (simm === imm) begin
+        `PRINT_INFO(this.name, $sformatf("IMM sign-extension for %s match", inst_name))
+      end
+      else begin
+        `PRINT_ERROR(this.name, $sformatf("IMM sign-extension for %s mismatch", inst_name))
+      end
+    end
+  endtask : check_sign_extension
+
+  //###############################################################################################
+  // Task: check_zero_extension
+  // Description: This task checks the zero-extension of immediate values in instructions that
+  //              require the immediate value to be extended. The task verifies if the sign or zero
+  //              extension of the immediate value has been correctly performed by comparing the
+  //              RTL value (SIMM) to the immediate value (IMM) extracted from the instruction.
+  //
+  // Example: Instructions like SLLI, SLTIU, SRLI, and SRAI require zero-extension for their
+  //          immediate values. The task checks that the immediate value has been correctly
+  //          extended and prints the result.
+  // 
+  // Notes: - If the instruction's `funct3` field matches SLLI, SLTIU, or SRLI/SRAI, zero-extension
+  //          is applied.
+  //        - The task prints a message indicating whether the extension is correct or if there is
+  //          a mismatch.
+  //###############################################################################################
+  task check_zero_extension();
+    // RTL value of the sign-extended immediate
+    logic [31:0] simm = darksimv.core0.SIMM;
+    // Immediate value (either sign-extended or zero-extended)
+    logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
+    // Instruction name for logging
+    string inst_name;
+    // Flag to indicate if zero-extension is required
+    logic use_zero_ext;
+
+    // Check the funct3 field to determine if the instruction uses zero-extension
+    case (instruction_intf.i_type.funct3)
+      // SLLI Operation: Shift Left Logical Immediate with zero-extension
+      slli: begin
+        inst_name = "SLLI";
+        use_zero_ext = 1'b1;
+      end
+
+      // SLTIU Operation: Set Less Than Immediate Unsigned, requires zero-extension
+      sltiu: begin
+        inst_name = "SLTIU";
+        use_zero_ext = 1'b1;
+      end
+
+      // SRLI/SRAI Operation: Shift Right Logical Immediate or Shift Right Arithmetic Immediate
+      srli_srai: begin
+        inst_name = (imm[11:5] === 7'b010_0000) ? "SRAI" : "SRLI";
+        use_zero_ext = 1'b1;
+      end
+
+      // Default case: No zero-extension required for other instructions
+      default: begin
+        use_zero_ext = 1'b0;
+      end
+    endcase
+
+    // If zero-extension is required, check the value and print the results
+    if (use_zero_ext === 1'b1) begin
+      `PRINT_INFO(
+        this.name,
+        $sformatf(
+          "%s sign extension: %08h (expected: %08h).",
+          inst_name,
+          simm,
+          imm
+        )
+      )
+
+      // Compare the simulated immediate with the expected immediate
+      if (simm === imm) begin
+        `PRINT_INFO(this.name, $sformatf("IMM sign-extension for %s match", inst_name))
+      end
+      else begin
+        `PRINT_ERROR(this.name, $sformatf("IMM sign-extension for %s mismatch", inst_name))
+      end
+    end
+  endtask : check_zero_extension
 endclass : i_type_checker
