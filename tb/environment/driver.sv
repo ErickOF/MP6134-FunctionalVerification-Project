@@ -55,7 +55,7 @@ class driver;
 
   // init_registers task: In order to do useful computation instructions, we need known values different than zero in each register
   task init_registers();
-    for (int k = 0; k < 16; k++) begin
+    for (int k = 0; k < 32; k++) begin
       sti = new();
       @ (negedge intf.CLK);
       intf.HLT = 0;
@@ -82,7 +82,7 @@ class driver;
 	// test, by doing store instructions for transfer each register content to a random memory
 	// location
 	task save_registers();
-		for (int k = 0; k < 16; k++) begin
+		for (int k = 0; k < 32; k++) begin
 		    sti = new();
 		    @ (negedge intf.CLK);
 		    if ( ! sti.randomize() with {
