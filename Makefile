@@ -27,12 +27,19 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # VCS variables
-FILELIST = tb/filelist.f
+#FILELIST = tb/filelist.f
+FILELIST = tb_uvm/filelist.f
 SIMDIR = darksocv_dir
 XSIM = $(SIMDIR)/darksocv
 VCDS = $(SIMDIR)/darksocv.vcd
 TRCE = $(SIMDIR)/darksocv.txt
-VCS = vcs -sverilog -full64 -debug_access+all -gui +v2k +lint=all -Mdir=$(SIMDIR)
+UVM_HOME = /mnt/vol_NFS_alajuela/qtree_NFS_rh003/synopsys_tools/synopsys/vcs-mx/O-2018.09-SP2-3/etc/uvm-1.2
+VCS = vcs -sverilog -full64 -debug_access+all -gui +v2k +lint=all -Mdir=$(SIMDIR) \
+        +acc +vpi -debug_access+nomemcbk+dmptf -debug_region+cell \
+	+define+UVM_OBJECT_MUST_HAVE_CONSTRUCTOR \
+	+incdir+$(UVM_HOME)/src $(UVM_HOME)/src/uvm.sv \
+	-cm line+cond+fsm+branch+tgl -cm_dir ./coverage.vdb \
+	$(UVM_HOME)/src/dpi/uvm_dpi.cc -CFLAGS -DVCS
 
 DEPS = $(FILELIST)
 
