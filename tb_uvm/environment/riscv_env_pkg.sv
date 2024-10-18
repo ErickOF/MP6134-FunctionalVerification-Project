@@ -9,6 +9,7 @@ package riscv_env_pkg;
 
   import riscv_items_pkg::*;
 
+  `include "riscv_scoreboard.svh"
   `include "riscv_reference_model.svh"
   `include "riscv_env.svh";
 
