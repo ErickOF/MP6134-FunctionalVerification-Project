@@ -81,7 +81,7 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
     forever begin
       darkriscv_item driscv_item;
 
-      `uvm_info(this.name, "Wait for item from sequencer", UVM_LOW)
+      `uvm_info(get_type_name(), "Wait for item from sequencer", UVM_LOW)
 
       // Get the next item from the sequencer.
       seq_item_port.get_next_item(driscv_item);

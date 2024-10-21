@@ -37,14 +37,15 @@ UVM_HOME = /mnt/vol_NFS_alajuela/qtree_NFS_rh003/synopsys_tools/synopsys/vcs-mx/
 VCS = vcs -sverilog -full64 -debug_access+all -gui +v2k +lint=all -Mdir=$(SIMDIR) \
         +acc +vpi -debug_access+nomemcbk+dmptf -debug_region+cell \
 	+define+UVM_OBJECT_MUST_HAVE_CONSTRUCTOR \
-	+incdir+$(UVM_HOME)/src $(UVM_HOME)/src/uvm.sv \
+	-ntb_opts uvm-1.2 \
+	-timescale=1ns/1ps \
 	-cm line+cond+fsm+branch+tgl -cm_dir ./coverage.vdb \
-	$(UVM_HOME)/src/dpi/uvm_dpi.cc -CFLAGS -DVCS
+	-CFLAGS -DVCS
 
 DEPS = $(FILELIST)
 
 all: compile
-	./$(XSIM) +vcs+dumpvars+$(VCDS)
+	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=darkriscv_test
 
 compile: $(DEPS) $(SIMDIR)
 	$(VCS) -f $(FILELIST) -o $(XSIM)

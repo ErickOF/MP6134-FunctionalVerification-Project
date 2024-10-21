@@ -11,6 +11,7 @@ import uvm_pkg::*;
 `include "darkriscv_monitor.sv"
 `include "darkriscv_scoreboard.sv"
 `include "darkriscv_agent.sv"
+`include "darkriscv_env.sv"
 `include "darkriscv_test.sv"
 
 module darksimv();

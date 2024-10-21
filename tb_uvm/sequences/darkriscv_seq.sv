@@ -42,10 +42,10 @@ class darkriscv_seq extends uvm_sequence;
   // This task overrides the body task in the base uvm_sequence class.
   //-----------------------------------------------------------------------------------------------
   virtual task body();
+    darkriscv_item driscv_item = darkriscv_item::type_id::create("driscv_item");// Create a darkriscv_item object to generate random items for the sequence.
     super.body();
 
-    // Create a darkriscv_item object to generate random items for the sequence.
-    darkriscv_item driscv_item = darkriscv_item::type_id::create("driscv_item");
+    
 
     for (int i = 0; i < num; i++) begin
        // Notify sequencer that an item is ready to start.
@@ -53,7 +53,7 @@ class darkriscv_seq extends uvm_sequence;
 
       driscv_item.randomize();
 
-      `uvm_info(this.name, "Generate new item: ", UVM_LOW)
+      `uvm_info(get_type_name(), "Generate new item: ", UVM_LOW)
 
       driscv_item.print();
 
@@ -61,7 +61,7 @@ class darkriscv_seq extends uvm_sequence;
       finish_item(driscv_item);
     end
 
-    `uvm_info(this.name, $sformatf("Done generation of %0d items", num), UVM_LOW)
+    `uvm_info(get_type_name(), $sformatf("Done generation of %0d items", num), UVM_LOW)
   endtask : body
 
 endclass : darkriscv_seq

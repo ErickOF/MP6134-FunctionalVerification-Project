@@ -11,6 +11,8 @@
 // The scoreboard does not contain any specific comparison logic yet, but the foundation is laid
 // out for handling the transactions received from the driver and monitor.
 //-------------------------------------------------------------------------------------------------
+`uvm_analysis_imp_decl(_drv)
+`uvm_analysis_imp_decl(_mon)
 class darkriscv_scoreboard extends uvm_scoreboard;
   `uvm_component_utils(darkriscv_scoreboard)
 
@@ -88,4 +90,9 @@ class darkriscv_scoreboard extends uvm_scoreboard;
     // No specific check logic implemented yet.
   endfunction : check_phase
 
+  virtual function void write_drv(darkriscv_item trans);
+  endfunction
+
+  virtual function void write_mon(darkriscv_item trans);
+  endfunction
 endclass : darkriscv_scoreboard

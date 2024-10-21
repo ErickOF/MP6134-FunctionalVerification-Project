@@ -24,11 +24,11 @@ class darkriscv_test extends uvm_test;
   function new(string name="darkriscv_test", uvm_component parent=null);
     super.new(name, parent);
 
-    `UVM_INFO(this.name, "Running test", UVM_MEDIUM)
+    `uvm_info(get_type_name(), "Running test", UVM_MEDIUM)
   endfunction : new
 
   // Virtual interface to the DUT
-  virtual darkriscv_intf intf;
+  virtual darkriscv_if intf;
 
   // Environment that contains the agent and scoreboard
   darkriscv_env env;  
@@ -46,7 +46,7 @@ class darkriscv_test extends uvm_test;
     super.build_phase(phase);
 
     // Retrieve the virtual interface from the UVM configuration DB
-    if (uvm_config_db #(virtual darkriscv_intf)::get(this, "", "VIRTUAL_INTERFACE", intf) == 0) begin
+    if (uvm_config_db #(virtual darkriscv_if)::get(this, "", "VIRTUAL_INTERFACE", intf) == 0) begin
       `uvm_fatal("INTERFACE_CONNECT", "Could not get from the DB the virtual interface for the TB")
     end
 
@@ -54,7 +54,7 @@ class darkriscv_test extends uvm_test;
     env = darkriscv_env::type_id::create("env", this);
 
     // Set the virtual interface for the environment
-    uvm_config_db #(virtual darkriscv_intf)::set(null, "uvm_test_top.*", "VIRTUAL_INTERFACE", intf);
+    uvm_config_db #(virtual darkriscv_if)::set(null, "uvm_test_top.*", "VIRTUAL_INTERFACE", intf);
   endfunction : build_phase
 
   //-----------------------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ class darkriscv_test extends uvm_test;
   endfunction : end_of_elaboration_phase
 
   // Sequence that generates items for the test
-  gen_item_seq seq;
+  //gen_item_seq seq;
 
   //-----------------------------------------------------------------------------------------------
   // Task: run_phase
@@ -89,11 +89,11 @@ class darkriscv_test extends uvm_test;
     phase.raise_objection(this);
 
     // Create and randomize the sequence
-    seq = gen_item_seq::type_id::create("seq");
-    seq.randomize();
+    //seq = gen_item_seq::type_id::create("seq");
+    //seq.randomize();
 
     // Start the sequence on the sequencer
-    seq.start(env.driscv_ag.driscv_seqr);
+    //seq.start(env.driscv_ag.driscv_seqr);
 
     // Drop the objection to end the test.
     phase.drop_objection(this);

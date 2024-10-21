@@ -26,7 +26,7 @@ class darkriscv_agent extends uvm_agent;
   endfunction : new
 
   // Virtual interface to the DUT
-  virtual darkriscv_intf intf;
+  virtual darkriscv_if intf;
 
   // Driver to send transactions to the DUT
   darkriscv_driver driscv_drv;
@@ -50,7 +50,7 @@ class darkriscv_agent extends uvm_agent;
     super.build_phase(phase);
 
     // Get the virtual interface from the UVM configuration database
-    if(uvm_config_db #(virtual darkriscv_intf)::get(this, "", "VIRTUAL_INTERFACE", intf) == 0) begin
+    if(uvm_config_db #(virtual darkriscv_if)::get(this, "", "VIRTUAL_INTERFACE", intf) == 0) begin
       `uvm_fatal("INTERFACE_CONNECT", "Could not get from the DB the virtual interface for the TB")
     end
 
