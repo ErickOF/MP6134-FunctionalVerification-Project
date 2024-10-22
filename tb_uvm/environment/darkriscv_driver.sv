@@ -78,6 +78,8 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
   virtual task run_phase(uvm_phase phase);
     super.run_phase(phase);
 
+    reset();
+
     forever begin
       darkriscv_item driscv_item;
 
@@ -116,6 +118,21 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
     @ (posedge intf.CLK);
     intf.HLT = 1;
   endtask : drive
+
+  virtual task reset();
+    `uvm_info(get_type_name(), "Driving signals to initial/known values" , UVM_NONE)
+    intf.HLT     = 0;
+    intf.IRQ     = 0;
+    intf.IDATA   = 0;
+    intf.DATAI   = 0;
+`ifdef SIMULATION
+    intf.ESIMREQ = 0;
+`endif
+    intf.RES     = 1;
+    repeat (2) @(negedge intf.CLK);
+    intf.RES     = 0;
+    intf.HLT     = 1;
+  endtask : reset
 
   //-----------------------------------------------------------------------------------------------
   // Task: read
