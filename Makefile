@@ -45,7 +45,7 @@ VCS = vcs -sverilog -full64 -debug_access+all -gui +v2k +lint=all -Mdir=$(SIMDIR
 DEPS = $(FILELIST)
 
 all: compile
-	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=darkriscv_test
+	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=random_instr_test
 
 compile: $(DEPS) $(SIMDIR)
 	$(VCS) -f $(FILELIST) -o $(XSIM)
