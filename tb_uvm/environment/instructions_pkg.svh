@@ -50,7 +50,7 @@ typedef enum logic [6:0] {
   // TODO: only for JAL
   j_type = 7'b110_1111,
   // Custom-0-type instructions
-  custom_0_type = 7'b0001011
+  custom_0_type = 7'b000_1011
 } inst_type_e;
 
 typedef enum logic [2:0] {

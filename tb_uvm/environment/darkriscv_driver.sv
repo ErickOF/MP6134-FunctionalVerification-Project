@@ -78,6 +78,8 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
   virtual task run_phase(uvm_phase phase);
     super.run_phase(phase);
 
+    reset();
+
     forever begin
       darkriscv_item driscv_item;
 
@@ -108,7 +110,29 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
   //-----------------------------------------------------------------------------------------------
   virtual task drive(darkriscv_item driscv_item);
     // Drive the signals from the item to the DUT via the interface (implementation required).
+    `uvm_info(get_type_name(), $sformatf("Driving instruction 0x%0h with data 0x%0h", driscv_item.riscv_inst, driscv_item.riscv_data), UVM_NONE)
+    @ (posedge intf.CLK);
+    intf.HLT = 0;
+    intf.IDATA = driscv_item.riscv_inst;
+    intf.DATAI = driscv_item.riscv_data;
+    @ (posedge intf.CLK);
+    intf.HLT = 1;
   endtask : drive
+
+  virtual task reset();
+    `uvm_info(get_type_name(), "Driving signals to initial/known values" , UVM_NONE)
+    intf.HLT     = 0;
+    intf.IRQ     = 0;
+    intf.IDATA   = 0;
+    intf.DATAI   = 0;
+`ifdef SIMULATION
+    intf.ESIMREQ = 0;
+`endif
+    intf.RES     = 1;
+    repeat (2) @(negedge intf.CLK);
+    intf.RES     = 0;
+    intf.HLT     = 1;
+  endtask : reset
 
   //-----------------------------------------------------------------------------------------------
   // Task: read
