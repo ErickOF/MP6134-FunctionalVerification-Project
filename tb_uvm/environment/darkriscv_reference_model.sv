@@ -1,18 +1,18 @@
-`ifndef __RISCV_REFERENCE_MODEL_SVH__
-`define __RISCV_REFERENCE_MODEL_SVH__
+`ifndef _DARKRISCV_REFERENCE_MODEL_SV_
+`define _DARKRISCV_REFERENCE_MODEL_SV_
 
 `uvm_analysis_imp_decl(_in_dat)
 
-class riscv_reference_model extends uvm_component;
+class darkriscv_reference_model extends uvm_component;
 
-  uvm_analysis_imp_in_dat #(riscv_input_item, riscv_reference_model) input_data_ap;
-  uvm_analysis_port #(riscv_output_item, riscv_reference_model) output_data_ap;
+  uvm_analysis_imp_in_dat #(darkriscv_input_item, darkriscv_reference_model) input_data_ap;
+  uvm_analysis_port #(darkriscv_output_item, darkriscv_reference_model) output_data_ap;
 
-  mailbox #(riscv_input_item) mb_mn_instr;
+  mailbox #(darkriscv_input_item) mb_mn_instr;
 
   logic signed [31:0] register_bank [32];
 
-  function new(string name = "riscv_reference_model", uvm_component parent = null);
+  function new(string name = "darkriscv_reference_model", uvm_component parent = null);
     mb_mn_instr = new();
 
     foreach (register_bank[i]) begin
@@ -30,18 +30,18 @@ class riscv_reference_model extends uvm_component;
     wait_for_instructions();
   endtask : run_phase
 
-  function void write_in_dat(riscv_input_item input_item);
-    riscv_input_item input_item_tmp;
+  function void write_in_dat(darkriscv_input_item input_item);
+    darkriscv_input_item input_item_tmp;
 
     if (!$cast(input_item_tmp, input_item.clone())) begin
-      `uvm_fatal(get_type_name(), $sformatf("Failed to cast riscv_input_item!"))
+      `uvm_fatal(get_type_name(), $sformatf("Failed to cast darkriscv_input_item!"))
     end
 
     mb_mn_instr.try_put(input_item);
   endfunction : write_in_dat
 
   task wait_for_instructions();
-    riscv_input_item my_input_data;
+    darkriscv_input_item my_input_data;
     logic [31:0] my_instr;
 
     forever begin
@@ -172,7 +172,7 @@ class riscv_reference_model extends uvm_component;
   endfunction : decode_i_type_opcode
 
   function void decode_s_type_opcode(logic [31:0] my_instr);
-    riscv_output_item output_item;
+    darkriscv_output_item output_item;
 
     func3_s_type_e funct3;
     bit [4:0] source_reg_1;
@@ -213,13 +213,13 @@ class riscv_reference_model extends uvm_component;
 
     `uvm_info(get_type_name(), $sformatf("Storing %0d bytes of data 0x%0h to memory address 0x%0h\n", bytes_to_transfer, result_data, result_address), UVM_MEDIUM);
 
-    output_item = riscv_output_item::type_id::create("output_item");
+    output_item = darkriscv_output_item::type_id::create("output_item");
     output_item.data_address = result_address;
     output_item.output_data = result_data;
     output_item.bytes_transfered = bytes_to_transfer;
     output_data_ap.write(output_item);
   endfunction : decode_s_type_opcode
 
-endclass : riscv_reference_model
+endclass : darkriscv_reference_model
 
-`endif // __RISCV_REFERENCE_MODEL_SVH__
+`endif // _DARKRISCV_REFERENCE_MODEL_SV_

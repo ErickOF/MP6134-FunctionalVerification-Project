@@ -32,6 +32,8 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
   //-----------------------------------------------------------------------------------------------
   virtual darkriscv_if intf;
 
+  uvm_analysis_port #(darkriscv_input_item, darkriscv_driver) driven_data_ap;
+
   //-----------------------------------------------------------------------------------------------
   // Function: build_phase
   //
@@ -50,6 +52,8 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
     if (uvm_config_db #(virtual darkriscv_if)::get(this, "", "VIRTUAL_INTERFACE", intf) == 0) begin
       `uvm_fatal("INTERFACE_CONNECT", "Could not get from the DB the virtual interface for the TB")
     end
+
+    driven_data_ap = new("driven_data_ap", this);
   endfunction : build_phase
 
   //-----------------------------------------------------------------------------------------------
@@ -109,6 +113,8 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
   // - driscv_item: The item to be driven to the DUT.
   //-----------------------------------------------------------------------------------------------
   virtual task drive(darkriscv_item driscv_item);
+    darkriscv_input_item expected_item;
+
     // Drive the signals from the item to the DUT via the interface (implementation required).
     `uvm_info(get_type_name(), $sformatf("Driving instruction 0x%0h with data 0x%0h", driscv_item.riscv_inst, driscv_item.riscv_data), UVM_NONE)
     @ (posedge intf.CLK);
@@ -117,6 +123,11 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
     intf.DATAI = driscv_item.riscv_data;
     @ (posedge intf.CLK);
     intf.HLT = 1;
+
+    expected_item = darkriscv_input_item::type_id::create("expected_item");
+    expected_item.instruction_data = darkriscv_item.riscv_inst;
+    expected_item.input_data = darkriscv_item.riscv_data;
+    driven_data_ap.write(expected_item);
   endtask : drive
 
   virtual task reset();
