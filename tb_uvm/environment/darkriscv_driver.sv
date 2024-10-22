@@ -32,7 +32,7 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
   //-----------------------------------------------------------------------------------------------
   virtual darkriscv_if intf;
 
-  uvm_analysis_port #(darkriscv_input_item, darkriscv_driver) driven_data_ap;
+  uvm_analysis_port #(darkriscv_input_item) driven_data_ap;
 
   //-----------------------------------------------------------------------------------------------
   // Function: build_phase
@@ -125,8 +125,8 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
     intf.HLT = 1;
 
     expected_item = darkriscv_input_item::type_id::create("expected_item");
-    expected_item.instruction_data = darkriscv_item.riscv_inst;
-    expected_item.input_data = darkriscv_item.riscv_data;
+    expected_item.instruction_data = driscv_item.riscv_inst;
+    expected_item.input_data = driscv_item.riscv_data;
     driven_data_ap.write(expected_item);
   endtask : drive
 

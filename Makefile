@@ -42,19 +42,20 @@ VCS_UVM = vcs -sverilog -full64 -debug_access+all -gui +v2k +lint=all -Mdir=$(SI
 	-cm line+cond+fsm+branch+tgl -cm_dir ./coverage.vdb \
 	-CFLAGS -DVCS
 
-DEPS = $(FILELIST)
+DEPS_LAYERS = $(FILELIST_LAYERS)
+DEPS_UVM = $(FILELIST_UVM)
 
 layers: compile_layers
 	./$(XSIM) +vcs+dumpvars+$(VCDS)
 
-compile_layers: $(DEPS) $(SIMDIR)
-	$(VCS_LAYERS) -f $(FILELIST) -o $(XSIM)
+compile_layers: $(DEPS_LAYERS) $(SIMDIR)
+	$(VCS_LAYERS) -f $(FILELIST_LAYERS) -o $(XSIM)
 
 uvm: compile_uvm
 	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=random_instr_test
 
-compile_uvm: $(DEPS) $(SIMDIR)
-	$(VCS_UVM) -f $(FILELIST) -o $(XSIM)
+compile_uvm: $(DEPS_UVM) $(SIMDIR)
+	$(VCS_UVM) -f $(FILELIST_UVM) -o $(XSIM)
 
 $(SIMDIR):
 	mkdir -p $(SIMDIR)

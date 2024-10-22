@@ -36,7 +36,7 @@ class darkriscv_env extends uvm_env;
   darkriscv_scoreboard #(darkriscv_output_item) output_sb;
 
   // Reference model for results predictions
-  riscv_reference_model ref_model;
+  darkriscv_reference_model ref_model;
 
   //-----------------------------------------------------------------------------------------------
   // Function: build_phase
@@ -61,7 +61,7 @@ class darkriscv_env extends uvm_env;
     input_sb = darkriscv_scoreboard #(darkriscv_input_item)::type_id::create("input_sb", this);
     output_sb = darkriscv_scoreboard #(darkriscv_output_item)::type_id::create("output_sb", this);
     
-    ref_model = riscv_reference_model::type_id::create("ref_model", this);
+    ref_model = darkriscv_reference_model::type_id::create("ref_model", this);
 
     // Report the end of the build phase and print the component's hierarchy
     uvm_report_info(get_full_name(), "End_of_build_phase", UVM_LOW);

@@ -25,7 +25,7 @@ class darkriscv_monitor extends uvm_monitor;
   // signals to other UVM components, like the scoreboard. It will be used to forward the data 
   // observed in the DUT.
   //-----------------------------------------------------------------------------------------------
-  uvm_analysis_port #(darkriscv_input_item, darkriscv_monitor) monitored_input_ap;
+  uvm_analysis_port #(darkriscv_input_item) monitored_input_ap;
 
   //-----------------------------------------------------------------------------------------------
   // Analysis Port: monitored_output_ap
@@ -34,7 +34,7 @@ class darkriscv_monitor extends uvm_monitor;
   // output signals to other UVM components, like the scoreboard. It will be used to forward the
   // data observed in the DUT.
   //-----------------------------------------------------------------------------------------------
-  uvm_analysis_port #(darkriscv_output_item, darkriscv_monitor) monitored_output_ap;
+  uvm_analysis_port #(darkriscv_output_item) monitored_output_ap;
 
   //-----------------------------------------------------------------------------------------------
   // Function: new

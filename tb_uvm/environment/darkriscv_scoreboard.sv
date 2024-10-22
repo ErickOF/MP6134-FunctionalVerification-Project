@@ -27,7 +27,7 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
   // connected the component that will predict the expected value via the analysis port in the 
   // testbench and will receive transactions of type T for comparison in the scoreboard.
   //-----------------------------------------------------------------------------------------------
-  uvm_analysis_imp_exp #(T, riscv_scoreboard) expected_ap;
+  uvm_analysis_imp_exp #(T, darkriscv_scoreboard #(T)) expected_ap;
 
   //-----------------------------------------------------------------------------------------------
   // Analysis Implementation: driscv_mon
@@ -36,7 +36,7 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
   // the monitor. It will collect observed transactions from the monitor via its analysis port for
   // comparison in the scoreboard.
   //-----------------------------------------------------------------------------------------------
-  uvm_analysis_imp_act #(T, riscv_scoreboard) actual_ap;
+  uvm_analysis_imp_act #(T, darkriscv_scoreboard #(T)) actual_ap;
 
   mailbox #(T) expected_mb;
   mailbox #(T) actual_mb;
@@ -46,7 +46,7 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
 
   bit objection_raised;
 
-  `uvm_component_utils(darkriscv_scoreboard)
+  `uvm_component_utils(darkriscv_scoreboard #(T))
 
   //-----------------------------------------------------------------------------------------------
   // Function: new
@@ -83,7 +83,7 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
   function void build_phase(uvm_phase phase);
     // Initialize the analysis implementation ports for receiving transactions.
     expected_ap = new("expected_ap", this);
-    actual_ap = new("actual_ap", this);;
+    actual_ap = new("actual_ap", this);
   endfunction : build_phase
 
   //-----------------------------------------------------------------------------------------------
@@ -105,11 +105,11 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
           fork
             begin
               expected_mb.peek(expected_data);
-              handle_objetions(phase);
+              handle_objections(phase);
             end
             begin
               actual_mb.peek(actual_data);
-              handle_objetions(phase);
+              handle_objections(phase);
             end
           join_any
           disable fork;
@@ -120,15 +120,15 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
       actual_mb.get(actual_data);
 
       if (expected_data.compare(actual_data)) begin
-        `uvm_info(get_type_name(), $sformatf("Data matched in scoreboard with expected = %s and actual = %s!", expected_data.sprint(), actual_data.sprint()), UVM_MEDIUM);
+        `uvm_info(get_type_name(), $sformatf("Data matched in scoreboard with expected = %s and actual = %s!", expected_data.sprint(), actual_data.sprint()), UVM_MEDIUM)
         match_count++;
       end
       else begin
-        `uvm_error(get_type_name(), $sformatf("Data mismatched in scoreboard with expected = %s and actual = %s!", expected_data.sprint(), actual_data.sprint()));
+        `uvm_error(get_type_name(), $sformatf("Data mismatched in scoreboard with expected = %s and actual = %s!", expected_data.sprint(), actual_data.sprint()))
         mismatch_count++;
       end
 
-      handle_objetions(phase);
+      handle_objections(phase);
     end
   endtask : run_phase
 
@@ -152,14 +152,27 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
     actual_mb.try_put(actual_item_tmp);
   endfunction : write_act
 
+  function void handle_objections(uvm_phase phase);
+    if ((expected_mb.num() > 0) || (actual_mb.num() > 0)) begin
+      if (objection_raised == 1'b0) begin
+        phase.raise_objection(this, "Pending transactions to compare");
+      end
+    end
+    else begin
+      if (objection_raised == 1'b1) begin
+        phase.drop_objection(this, "Pending transactions to compare completed");
+      end
+    end
+  endfunction : handle_objections
+
   function void report_phase(uvm_phase phase);
-    phase.raise_objection(this, "Reporting results")
+    phase.raise_objection(this, "Reporting results");
 
-    `uvm_info(get_type_name(), $sformatf("Scoreboard finished with %0d matches and %0d mismatches!", match_count, mismatch_count), UVM_NONE);
-    `uvm_info(get_type_name(), $sformatf("Scoreboard finished with %0d expected items waiting to be processed!", expected_mb.num()), UVM_NONE);
-    `uvm_info(get_type_name(), $sformatf("Scoreboard finished with %0d actual items waiting to be processed!", actual_mb.num()), UVM_NONE);
+    `uvm_info(get_type_name(), $sformatf("Scoreboard finished with %0d matches and %0d mismatches!", match_count, mismatch_count), UVM_NONE)
+    `uvm_info(get_type_name(), $sformatf("Scoreboard finished with %0d expected items waiting to be processed!", expected_mb.num()), UVM_NONE)
+    `uvm_info(get_type_name(), $sformatf("Scoreboard finished with %0d actual items waiting to be processed!", actual_mb.num()), UVM_NONE)
 
-    phase.lower_objection(this, "Reporting results finished")
+    phase.drop_objection(this, "Reporting results finished");
   endfunction : report_phase
 
 endclass : darkriscv_scoreboard
