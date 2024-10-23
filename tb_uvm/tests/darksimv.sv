@@ -6,6 +6,8 @@ import instructions_pkg::*;
 `include "riscv_defs.svh"
 `include "helper.sv"
 //`include "instructions_pkg.svh"
+`include "base_instruction_checker.sv"
+`include "i_type_checker.sv"
 `include "darkriscv_item.sv"
 `include "darkriscv_seq.sv"
 `include "init_registers_seq.sv"

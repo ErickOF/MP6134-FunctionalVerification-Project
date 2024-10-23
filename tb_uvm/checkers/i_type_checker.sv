@@ -1,6 +1,6 @@
 class i_type_checker extends base_instruction_checker;
-  function new(string name, virtual darkriscv_if intf, scoreboard sb);
-    super.new(name, intf, sb);
+  function new(string name="i_type_checker", uvm_component parent=null);
+    super.new(name, parent);
   endfunction : new
 
   //###############################################################################################
@@ -42,10 +42,14 @@ class i_type_checker extends base_instruction_checker;
         UVM_LOW
       )
 
-      check_sign_extension();
-      check_zero_extension();
-      check_valid_shift();
-      check_operation();
+      //@(negedge this.intf.CLK);
+
+      fork
+        check_sign_extension();
+        check_zero_extension();
+        check_valid_shift();
+        check_operation();
+      join_none
     end
   endtask : check_instruction
 
@@ -65,283 +69,285 @@ class i_type_checker extends base_instruction_checker;
   task check_operation();
     // Fetch the source register value from the DUT register file
     logic [31:0] reg_rs1 = darksimv.core0.REGS[instruction_intf.i_type.rs1];
-    logic [31:0] reg_rd;
+    logic [11:0] i_type_imm = instruction_intf.i_type.imm;
+    logic [2:0] funct3 = instruction_intf.i_type.funct3;
+    logic [31:0] alu_result;
 
-    @(posedge this.intf.CLK);
+    repeat (2) @(posedge this.intf.CLK);
 
-    if (this.checker_en === 1'b1) begin
-      // Fetch the destination register value from the DUT
-      reg_rd = darksimv.core0.REGS[instruction_intf.i_type.rd];
+    // Fetch the destination register value from the DUT
+    alu_result = darksimv.core0.RMDATA;
 
-      case (instruction_intf.i_type.funct3)
-        // ADDI Operation: Performs a add operation between rs1 and the immediate value, then
-        // checks the result
-        addi: begin
-          logic [31:0] result;
-          // Sign-extend the immediate value based on the MSB (bit 11)
-          logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
-          imm[11:0] = instruction_intf.i_type.imm;
+    case (funct3)
+      // ADDI Operation: Performs a add operation between rs1 and the immediate value, then
+      // checks the result
+      addi: begin
+        logic [31:0] result;
+        // Sign-extend the immediate value based on the MSB (bit 11)
+        logic signed [31:0] imm = i_type_imm[11] ? '1 : '0;
+        imm[11:0] = i_type_imm;
 
-          // Compute the expected result for the operation
-          result = reg_rs1 + imm;
+        // Compute the expected result for the operation
+        result = reg_rs1 + imm;
 
+        `uvm_info(
+          get_full_name(),
+            $sformatf(
+            "ADDI: %08h + %08h = %08h (expected: %08h).",
+            reg_rs1,
+            imm,
+            alu_result,
+            result
+          ),
+          UVM_LOW
+        )
+
+        if (result === alu_result) begin
+          `uvm_info(get_full_name(), "ADDI operation match", UVM_LOW)
+        end
+        else begin
+          `uvm_error(get_full_name(), "ADDI operation mismatch")
+        end
+      end
+
+      // SLLI Operation: Shifts the value in rs1 logically left depending on the `imm` bits.
+      slli: begin
+        logic [31:0] result;
+        // Get the immediate value for the shift operation
+        logic signed [31:0] imm = i_type_imm[11] ? '1 : '0;
+        imm[11:0] = i_type_imm;
+
+        // Compute the expected result for the operation
+        result = reg_rs1 << imm[4:0];
+
+        `uvm_info(
+          get_full_name(),
+            $sformatf(
+            "SLLI: %08h << %08h = %08h (expected: %08h).",
+            reg_rs1,
+            imm,
+            alu_result,
+            result
+          ),
+          UVM_LOW
+        )
+
+        if (result === alu_result) begin
+          `uvm_info(get_full_name(), "SLLI operation match", UVM_LOW)
+        end
+        else begin
+          `uvm_error(get_full_name(), "SLLI operation mismatch")
+        end
+      end
+
+      // SLTI Operation: Compares rs1 with the immediate value (signed comparison) and stores the
+      // result in rd
+      slti: begin
+        logic [31:0] result;
+        // Sign-extend the immediate value based on the MSB (bit 11)
+        logic signed [31:0] imm = i_type_imm[11] ? '1 : '0;
+        imm[11:0] = i_type_imm;
+
+        // Compute the expected result for the operation
+        result = $signed(reg_rs1) < $signed(imm);
+
+        `uvm_info(
+          get_full_name(),
+            $sformatf(
+            "SLTI: %08h < %08h = %08h (expected: %08h).",
+            reg_rs1,
+            imm,
+            alu_result,
+            result
+          ),
+          UVM_LOW
+        )
+
+        if (result === alu_result) begin
+          `uvm_info(get_full_name(), "SLTI operation match", UVM_LOW)
+        end
+        else begin
+          `uvm_error(get_full_name(), "SLTI operation mismatch")
+        end
+      end
+
+      // SLTIU Operation: Compares rs1 with the immediate value (unsigned comparison) and stores
+      // the result in rd
+      sltiu: begin
+        // Get the immediate value for the shift operation
+        logic [31:0] imm = {20'b0, i_type_imm};
+
+        // Compute the expected result for the operation
+        logic [31:0] result = reg_rs1 < imm;
+
+        `uvm_info(
+          get_full_name(),
+            $sformatf(
+            "SLTIU: %08h < %08h = %08h (expected: %08h).",
+            reg_rs1,
+            imm,
+            alu_result,
+            result
+          ),
+          UVM_LOW
+        )
+
+        if (result === alu_result) begin
+          `uvm_info(get_full_name(), "SLTIU operation match", UVM_LOW)
+        end
+        else begin
+          `uvm_error(get_full_name(), "SLTIU operation mismatch")
+        end
+      end
+
+      // XORI Operation: Performs a bitwise XOR between rs1 and the immediate value, then checks
+      // the result
+      xori: begin
+        logic [31:0] result;
+        // Sign-extend the immediate value based on the MSB (bit 11)
+        logic signed [31:0] imm = i_type_imm[11] ? '1 : '0;
+        imm[11:0] = i_type_imm;
+
+        // Compute the expected result for the operation
+        result = reg_rs1 ^ imm;
+
+        `uvm_info(
+          get_full_name(),
+            $sformatf(
+            "XORI: %08h ^ %08h = %08h (expected: %08h).",
+            reg_rs1,
+            imm,
+            alu_result,
+            result
+          ),
+          UVM_LOW
+        )
+
+        if (result === alu_result) begin
+          `uvm_info(get_full_name(), "XORI operation match", UVM_LOW)
+        end
+        else begin
+          `uvm_error(get_full_name(), "XORI operation mismatch")
+        end
+      end
+
+      // SRLI/SRAI Operation: Shifts the value in rs1 right either logically or arithmetically,
+      // depending on the `imm` bits.
+      srli_srai: begin
+        // Get the immediate value for the shift operation
+        logic [31:0] imm = {20'b0, i_type_imm};
+
+        // Compute the expected result for the operation
+        logic [31:0] result = (imm[11:5] === 7'b010_0000) ?
+                                (reg_rs1 >>> $signed(imm[4:0])) :
+                                (reg_rs1 >> imm[4:0]);
+
+        string inst_name = (imm[11:5] === 7'b010_0000) ? "SRAI" : "SRLI";
+        string symb = (imm[11:5] === 7'b010_0000) ? ">>>" : ">>";
+
+        `uvm_info(
+          get_full_name(),
+            $sformatf(
+            "%s: %08h %s %08h = %08h (expected: %08h).",
+            inst_name,
+            reg_rs1,
+            symb,
+            imm[4:0],
+            alu_result,
+            result
+          ),
+          UVM_LOW
+        )
+
+        if (result === alu_result) begin
           `uvm_info(
             get_full_name(),
-              $sformatf(
-              "ADDI: %08h + %08h = %08h (expected: %08h).",
-              reg_rs1,
-              imm,
-              reg_rd,
-              result
-            ),
+            $sformatf("%s operation match", inst_name),
             UVM_LOW
           )
-
-          if (result === reg_rd) begin
-            `uvm_info(get_full_name(), "ADDI operation match", UVM_LOW)
-          end
-          else begin
-            `uvm_error(get_full_name(), "ADDI operation mismatch")
-          end
         end
-
-        // SLLI Operation: Shifts the value in rs1 logically left depending on the `imm` bits.
-        slli: begin
-          logic [31:0] result;
-          // Get the immediate value for the shift operation
-          logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
-          imm[11:0] = instruction_intf.i_type.imm;
-
-          // Compute the expected result for the operation
-          result = reg_rs1 << imm[4:0];
-
-          `uvm_info(
-            get_full_name(),
-              $sformatf(
-              "SLLI: %08h << %08h = %08h (expected: %08h).",
-              reg_rs1,
-              imm,
-              reg_rd,
-              result
-            ),
-            UVM_LOW
-          )
-
-          if (result === reg_rd) begin
-            `uvm_info(get_full_name(), "SLLI operation match", UVM_LOW)
-          end
-          else begin
-            `uvm_error(get_full_name(), "SLLI operation mismatch")
-          end
-        end
-
-        // SLTI Operation: Compares rs1 with the immediate value (signed comparison) and stores the
-        // result in rd
-        slti: begin
-          logic [31:0] result;
-          // Sign-extend the immediate value based on the MSB (bit 11)
-          logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
-          imm[11:0] = instruction_intf.i_type.imm;
-
-          // Compute the expected result for the operation
-          result = $signed(reg_rs1) < $signed(imm);
-
-          `uvm_info(
-            get_full_name(),
-              $sformatf(
-              "SLTI: %08h < %08h = %08h (expected: %08h).",
-              reg_rs1,
-              imm,
-              reg_rd,
-              result
-            ),
-            UVM_LOW
-          )
-
-          if (result === reg_rd) begin
-            `uvm_info(get_full_name(), "SLTI operation match", UVM_LOW)
-          end
-          else begin
-            `uvm_error(get_full_name(), "SLTI operation mismatch")
-          end
-        end
-
-        // SLTIU Operation: Compares rs1 with the immediate value (unsigned comparison) and stores
-        // the result in rd
-        sltiu: begin
-          // Get the immediate value for the shift operation
-          logic [31:0] imm = {20'b0, instruction_intf.i_type.imm};
-
-          // Compute the expected result for the operation
-          logic [31:0] result = reg_rs1 < imm;
-
-          `uvm_info(
-            get_full_name(),
-              $sformatf(
-              "SLTIU: %08h < %08h = %08h (expected: %08h).",
-              reg_rs1,
-              imm,
-              reg_rd,
-              result
-            ),
-            UVM_LOW
-          )
-
-          if (result === reg_rd) begin
-            `uvm_info(get_full_name(), "SLTIU operation match", UVM_LOW)
-          end
-          else begin
-            `uvm_error(get_full_name(), "SLTIU operation mismatch")
-          end
-        end
-
-        // XORI Operation: Performs a bitwise XOR between rs1 and the immediate value, then checks
-        // the result
-        xori: begin
-          logic [31:0] result;
-          // Sign-extend the immediate value based on the MSB (bit 11)
-          logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
-          imm[11:0] = instruction_intf.i_type.imm;
-
-          // Compute the expected result for the operation
-          result = reg_rs1 ^ imm;
-
-          `uvm_info(
-            get_full_name(),
-              $sformatf(
-              "XORI: %08h < %08h = %08h (expected: %08h).",
-              reg_rs1,
-              imm,
-              reg_rd,
-              result
-            ),
-            UVM_LOW
-          )
-
-          if (result === reg_rd) begin
-            `uvm_info(get_full_name(), "XORI operation match", UVM_LOW)
-          end
-          else begin
-            `uvm_error(get_full_name(), "XORI operation mismatch")
-          end
-        end
-
-        // SRLI/SRAI Operation: Shifts the value in rs1 right either logically or arithmetically,
-        // depending on the `imm` bits.
-        srli_srai: begin
-          // Get the immediate value for the shift operation
-          logic [31:0] imm = {'0, instruction_intf.i_type.imm};
-
-          // Compute the expected result for the operation
-          logic [31:0] result = (imm[11:5] === 7'b010_0000) ?
-                                  ($signed(reg_rs1) >>> imm[4:0]) :
-                                  (reg_rs1 <<< imm[4:0]);
-
-          string inst_name = (imm[11:5] === 7'b010_0000) ? "SRAI" : "SRLI";
-
-          `uvm_info(
-            get_full_name(),
-              $sformatf(
-              "%s: %08h < %08h = %08h (expected: %08h).",
-              inst_name,
-              reg_rs1,
-              imm,
-              reg_rd,
-              result
-            ),
-            UVM_LOW
-          )
-
-          if (result === reg_rd) begin
-            `uvm_info(
-              get_full_name(),
-              $sformatf("%s operation match", inst_name),
-              UVM_LOW
-            )
-          end
-          else begin
-            `uvm_error(
-              get_full_name(),
-              $sformatf("%s operation mismatch", inst_name)
-            )
-          end
-        end
-
-        // ORI Operation: Performs a bitwise OR between rs1 and the immediate value, then checks
-        // the result.
-        ori: begin
-          logic [31:0] result;
-          // Sign-extend the immediate value based on the MSB (bit 11)
-          logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
-          imm[11:0] = instruction_intf.i_type.imm;
-
-          // Compute the expected result for the operation
-          result = reg_rs1 | imm;
-
-          `uvm_info(
-            get_full_name(),
-              $sformatf(
-              "ORI: %08h < %08h = %08h (expected: %08h).",
-              reg_rs1,
-              imm,
-              reg_rd,
-              result
-            ),
-            UVM_LOW
-          )
-
-          if (result === reg_rd) begin
-            `uvm_info(get_full_name(), "ORI operation match", UVM_LOW)
-          end
-          else begin
-            `uvm_error(get_full_name(), "ORI operation mismatch")
-          end
-        end
-
-        // ANDI Operation: Performs a bitwise AND between rs1 and the immediate value, then checks
-        // the result.
-        andi: begin
-          logic [31:0] result;
-          // Sign-extend the immediate value based on the MSB (bit 11)
-          logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
-          imm[11:0] = instruction_intf.i_type.imm;
-
-          // Compute the expected result for the operation
-          result = reg_rs1 & imm;
-
-          `uvm_info(
-            get_full_name(),
-              $sformatf(
-              "ANDI: %08h < %08h = %08h (expected: %08h).",
-              reg_rs1,
-              imm,
-              reg_rd,
-              result
-            ),
-            UVM_LOW
-          )
-
-          if (result === reg_rd) begin
-            `uvm_info(get_full_name(), "ANDI operation match", UVM_LOW)
-          end
-          else begin
-            `uvm_error(get_full_name(), "ANDI operation mismatch")
-          end
-        end
-
-        // Default case for unsupported instructions
-        default: begin
+        else begin
           `uvm_error(
             get_full_name(),
-            $sformatf(
-              "Operation (funct3) with code %03b (%d) is not supported.",
-              instruction_intf.i_type.funct3,
-              instruction_intf.i_type.funct3
-            )
+            $sformatf("%s operation mismatch", inst_name)
           )
         end
-      endcase
-    end
+      end
+
+      // ORI Operation: Performs a bitwise OR between rs1 and the immediate value, then checks
+      // the result.
+      ori: begin
+        logic [31:0] result;
+        // Sign-extend the immediate value based on the MSB (bit 11)
+        logic signed [31:0] imm = i_type_imm[11] ? '1 : '0;
+        imm[11:0] = i_type_imm;
+
+        // Compute the expected result for the operation
+        result = reg_rs1 | imm;
+
+        `uvm_info(
+          get_full_name(),
+            $sformatf(
+            "ORI: %08h | %08h = %08h (expected: %08h).",
+            reg_rs1,
+            imm,
+            alu_result,
+            result
+          ),
+          UVM_LOW
+        )
+
+        if (result === alu_result) begin
+          `uvm_info(get_full_name(), "ORI operation match", UVM_LOW)
+        end
+        else begin
+          `uvm_error(get_full_name(), "ORI operation mismatch")
+        end
+      end
+
+      // ANDI Operation: Performs a bitwise AND between rs1 and the immediate value, then checks
+      // the result.
+      andi: begin
+        logic [31:0] result;
+        // Sign-extend the immediate value based on the MSB (bit 11)
+        logic signed [31:0] imm = i_type_imm[11] ? '1 : '0;
+        imm[11:0] = i_type_imm;
+
+        // Compute the expected result for the operation
+        result = reg_rs1 & imm;
+
+        `uvm_info(
+          get_full_name(),
+            $sformatf(
+            "ANDI: %08h & %08h = %08h (expected: %08h).",
+            reg_rs1,
+            imm,
+            alu_result,
+            result
+          ),
+          UVM_LOW
+        )
+
+        if (result === alu_result) begin
+          `uvm_info(get_full_name(), "ANDI operation match", UVM_LOW)
+        end
+        else begin
+          `uvm_error(get_full_name(), "ANDI operation mismatch")
+        end
+      end
+
+      // Default case for unsupported instructions
+      default: begin
+        `uvm_error(
+          get_full_name(),
+          $sformatf(
+            "Operation (funct3) with code %03b (%d) is not supported.",
+            instruction_intf.i_type.funct3,
+            instruction_intf.i_type.funct3
+          )
+        )
+      end
+    endcase
   endtask : check_operation
 
   //###############################################################################################
@@ -366,14 +372,21 @@ class i_type_checker extends base_instruction_checker;
     string inst_name;
     // Flag to indicate if sign-extension is required
     logic use_sign_ext;
-    // Simulated value of the sign-extended immediate
-    logic [31:0] simm = darksimv.core0.SIMM;
+    // Sign-extended immediate result
+    logic [31:0] simm;
+    // Funct3 value
+    logic [2:0] funct3 = instruction_intf.i_type.funct3;
     // Immediate value (either sign-extended or zero-extended)
     logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
     imm[11:0] = instruction_intf.i_type.imm;
+
+    repeat (2) @(posedge this.intf.CLK);
+
+    // Read immediate extension result
+    simm = darksimv.core0.SIMM;
   
     // Check the funct3 field to determine if the instruction uses sign-extension
-    case (instruction_intf.i_type.funct3)
+    case (funct3)
 
       // ADDI Operation: Add Immediate with sign-extension
       addi: begin
@@ -397,6 +410,12 @@ class i_type_checker extends base_instruction_checker;
       xori: begin
         inst_name = "XORI";
         use_sign_ext = 1'b1;
+      end
+
+      // SRLI/SRAI Operation: Shift Right Logical Immediate or Shift Right Arithmetic Immediate
+      srli_srai: begin
+        inst_name = (imm[11:5] === 7'b010_0000) ? "SRAI" : "SRLI";
+        use_zero_ext = 1'b1;
       end
 
       // ORI Operation: OR Immediate, requires sign-extension
@@ -462,25 +481,26 @@ class i_type_checker extends base_instruction_checker;
   //###############################################################################################
   task check_zero_extension();
     // RTL value of the sign-extended immediate
-    logic [31:0] simm = darksimv.core0.SIMM;
+    logic [31:0] simm;
     // Immediate value (either sign-extended or zero-extended)
     logic signed [31:0] imm = {20'b0, instruction_intf.i_type.imm};
+    // Funct3 value
+    logic [2:0] funct3 = instruction_intf.i_type.funct3;
     // Instruction name for logging
     string inst_name;
     // Flag to indicate if zero-extension is required
     logic use_zero_ext;
 
+    repeat (2) @(posedge this.intf.CLK);
+
+    // Read zero-extended immediate value
+    simm = darksimv.core0.SIMM;
+
     // Check the funct3 field to determine if the instruction uses zero-extension
-    case (instruction_intf.i_type.funct3)
+    case (funct3)
       // SLTIU Operation: Set Less Than Immediate Unsigned, requires zero-extension
       sltiu: begin
         inst_name = "SLTIU";
-        use_zero_ext = 1'b1;
-      end
-
-      // SRLI/SRAI Operation: Shift Right Logical Immediate or Shift Right Arithmetic Immediate
-      srli_srai: begin
-        inst_name = (imm[11:5] === 7'b010_0000) ? "SRAI" : "SRLI";
         use_zero_ext = 1'b1;
       end
 

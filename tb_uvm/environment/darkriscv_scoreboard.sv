@@ -65,7 +65,7 @@ class darkriscv_scoreboard extends uvm_scoreboard;
     driscv_drv = new("driscv_drv", this);
     driscv_mon = new("driscv_mon", this);
     // Initialize checkers
-    i_type_check = darkriscv_agent::type_id::create("i_type_check", this);
+    i_type_check = new("i_type_check", this);
   endfunction : build_phase
 
   //-----------------------------------------------------------------------------------------------
@@ -78,7 +78,13 @@ class darkriscv_scoreboard extends uvm_scoreboard;
   // - phase: Current UVM phase.
   //-----------------------------------------------------------------------------------------------
   virtual task run_phase(uvm_phase phase);
-    i_type_check.check();
+    super.run_phase(phase);
+
+    `uvm_info(get_full_name(), "Start of run_phase", UVM_LOW)
+
+    i_type_check.start_checker();
+
+    `uvm_info(get_full_name(), "End of run_phase", UVM_LOW)
   endtask : run_phase
 
   //-----------------------------------------------------------------------------------------------
