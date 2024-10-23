@@ -54,7 +54,7 @@ class darkriscv_reference_model extends uvm_component;
 
     forever begin
       mb_mn_instr.get(my_input_data);
-      my_instr = my_input_data.input_data;
+      my_instr = my_input_data.instruction_data;
 
       proccess_instructions(.my_instr(my_instr));
     end
@@ -65,7 +65,7 @@ class darkriscv_reference_model extends uvm_component;
 
     `uvm_info(get_type_name(), $sformatf("Decoding instruction %0h", my_instr), UVM_LOW)
 
-    opcode = inst_type_e'(my_instr[RISCV_INST_OPCODE_RANGE_HIGH:RISCV_INST_OPCODE_RANGE_LOW]);
+    opcode = inst_type_e'(my_instr[RISCV_INST_OPCODE_RANGE_HIGH+1:RISCV_INST_OPCODE_RANGE_LOW]);
 
     case (opcode)
       i_type : begin
@@ -73,6 +73,9 @@ class darkriscv_reference_model extends uvm_component;
       end
       s_type : begin
         decode_s_type_opcode(.my_instr(my_instr));
+      end
+      custom_0_type : begin
+        `uvm_info(get_type_name(), $sformatf("Custom0 instruction detected, this is an idle instrucction so no action needed!"), UVM_MEDIUM)
       end
       default : begin
         `uvm_error(get_type_name(), $sformatf("Instruction type %s = %0h is not supported right now in the reference model\n", opcode.name(), opcode))

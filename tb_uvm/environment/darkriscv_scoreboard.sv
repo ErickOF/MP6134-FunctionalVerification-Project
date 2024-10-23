@@ -135,7 +135,6 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
   endfunction : write_act
 
   function void check_phase(uvm_phase phase);
-    phase.raise_objection(this, "Checking results");
 
     if (expected_mb.num() > 0) begin
       `uvm_error(get_type_name(), $sformatf("There is still %0d expected items to be processed!", expected_mb.num()))
@@ -145,17 +144,14 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
       `uvm_error(get_type_name(), $sformatf("There is still %0d actual items to be processed!", actual_mb.num()))
     end
 
-    phase.drop_objection(this, "Checking results finished");
   endfunction : check_phase
 
   function void report_phase(uvm_phase phase);
-    phase.raise_objection(this, "Reporting results");
 
     `uvm_info(get_type_name(), $sformatf("Scoreboard finished with %0d matches and %0d mismatches!", match_count, mismatch_count), UVM_NONE)
     `uvm_info(get_type_name(), $sformatf("Scoreboard finished with %0d expected items waiting to be processed!", expected_mb.num()), UVM_NONE)
     `uvm_info(get_type_name(), $sformatf("Scoreboard finished with %0d actual items waiting to be processed!", actual_mb.num()), UVM_NONE)
 
-    phase.drop_objection(this, "Reporting results finished");
   endfunction : report_phase
 
 endclass : darkriscv_scoreboard
