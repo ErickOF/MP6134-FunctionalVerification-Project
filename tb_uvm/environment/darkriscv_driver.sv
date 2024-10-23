@@ -34,6 +34,8 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
 
   uvm_analysis_port #(darkriscv_input_item) driven_data_ap;
 
+  darkriscv_input_item expected_item;
+
   //-----------------------------------------------------------------------------------------------
   // Function: build_phase
   //
@@ -54,6 +56,8 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
     end
 
     driven_data_ap = new("driven_data_ap", this);
+
+    expected_item = darkriscv_input_item::type_id::create("expected_item");
   endfunction : build_phase
 
   //-----------------------------------------------------------------------------------------------
@@ -113,8 +117,6 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
   // - driscv_item: The item to be driven to the DUT.
   //-----------------------------------------------------------------------------------------------
   virtual task drive(darkriscv_item driscv_item);
-    darkriscv_input_item expected_item;
-
     // Drive the signals from the item to the DUT via the interface (implementation required).
     `uvm_info(get_type_name(), $sformatf("Driving instruction 0x%0h with data 0x%0h", driscv_item.riscv_inst, driscv_item.riscv_data), UVM_NONE)
     @ (posedge intf.CLK);
@@ -124,10 +126,9 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
     @ (posedge intf.CLK);
     intf.HLT = 1;
 
-    expected_item = darkriscv_input_item::type_id::create("expected_item");
     expected_item.instruction_data = driscv_item.riscv_inst;
     expected_item.input_data = driscv_item.riscv_data;
-    driven_data_ap.write(expected_item);
+    send_expected_item();
   endtask : drive
 
   virtual task reset();
@@ -157,5 +158,15 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
   virtual task read(darkriscv_item driscv_item);
     // Read the status/response from the DUT via the interface (implementation required).
   endtask : read
+
+  function void send_expected_item();
+    darkriscv_input_item expected_item_tmp;
+
+    if (!$cast(expected_item_tmp, expected_item.clone())) begin
+      `uvm_fatal(get_type_name(), "Couldn't cast expected_item!")
+    end
+
+    driven_data_ap.write(expected_item_tmp);
+  endfunction : send_expected_item
 
 endclass : darkriscv_driver

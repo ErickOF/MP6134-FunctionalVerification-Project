@@ -8,6 +8,8 @@ class darkriscv_reference_model extends uvm_component;
   uvm_analysis_imp_in_dat #(darkriscv_input_item, darkriscv_reference_model) input_data_ap;
   uvm_analysis_port #(darkriscv_output_item) output_data_ap;
 
+  darkriscv_output_item output_item;
+
   mailbox #(darkriscv_input_item) mb_mn_instr;
 
   logic signed [31:0] register_bank [32];
@@ -27,7 +29,9 @@ class darkriscv_reference_model extends uvm_component;
 
   function void build_phase(uvm_phase phase);
     input_data_ap = new("input_data_ap", this);
-    output_data_ap = new("input_data_ap", this);
+    output_data_ap = new("output_data_ap", this);
+
+    output_item = darkriscv_output_item::type_id::create("output_item");
   endfunction : build_phase
 
   task run_phase(uvm_phase phase);
@@ -71,7 +75,7 @@ class darkriscv_reference_model extends uvm_component;
         decode_s_type_opcode(.my_instr(my_instr));
       end
       default : begin
-        `uvm_error(get_type_name(), $sformatf("Instruction type %s is not supported right now in the reference model\n", opcode.name()))
+        `uvm_error(get_type_name(), $sformatf("Instruction type %s = %0h is not supported right now in the reference model\n", opcode.name(), opcode))
       end
     endcase
   endfunction : proccess_instructions
@@ -176,8 +180,6 @@ class darkriscv_reference_model extends uvm_component;
   endfunction : decode_i_type_opcode
 
   function void decode_s_type_opcode(logic [31:0] my_instr);
-    darkriscv_output_item output_item;
-
     func3_s_type_e funct3;
     bit [4:0] source_reg_1;
     bit [4:0] source_reg_2;
@@ -217,12 +219,23 @@ class darkriscv_reference_model extends uvm_component;
 
     `uvm_info(get_type_name(), $sformatf("Storing %0d bytes of data 0x%0h to memory address 0x%0h\n", bytes_to_transfer, result_data, result_address), UVM_MEDIUM)
 
-    output_item = darkriscv_output_item::type_id::create("output_item");
     output_item.data_address = result_address;
     output_item.output_data = result_data;
     output_item.bytes_transfered = bytes_to_transfer;
-    output_data_ap.write(output_item);
+    send_output_item();
   endfunction : decode_s_type_opcode
+
+  function void send_output_item();
+    darkriscv_output_item output_item_tmp;
+
+    if (!$cast(output_item_tmp, output_item.clone())) begin
+      `uvm_fatal(get_type_name(), "Couldn't cast output_item!")
+    end
+
+    output_data_ap.write(output_item_tmp);
+
+    `uvm_info(get_type_name(), "Sent item to scoreboard!", UVM_MEDIUM)
+  endfunction : send_output_item
 
 endclass : darkriscv_reference_model
 

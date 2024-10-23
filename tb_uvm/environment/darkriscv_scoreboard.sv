@@ -100,22 +100,6 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
     T actual_data;
 
     forever begin
-      fork
-        begin
-          fork
-            begin
-              expected_mb.peek(expected_data);
-              handle_objections(phase);
-            end
-            begin
-              actual_mb.peek(actual_data);
-              handle_objections(phase);
-            end
-          join_any
-          disable fork;
-        end
-      join
-
       expected_mb.get(expected_data);
       actual_mb.get(actual_data);
 
@@ -127,8 +111,6 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
         `uvm_error(get_type_name(), $sformatf("Data mismatched in scoreboard with expected = %s and actual = %s!", expected_data.sprint(), actual_data.sprint()))
         mismatch_count++;
       end
-
-      handle_objections(phase);
     end
   endtask : run_phase
 
@@ -152,18 +134,19 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
     actual_mb.try_put(actual_item_tmp);
   endfunction : write_act
 
-  function void handle_objections(uvm_phase phase);
-    if ((expected_mb.num() > 0) || (actual_mb.num() > 0)) begin
-      if (objection_raised == 1'b0) begin
-        phase.raise_objection(this, "Pending transactions to compare");
-      end
+  function void check_phase(uvm_phase phase);
+    phase.raise_objection(this, "Checking results");
+
+    if (expected_mb.num() > 0) begin
+      `uvm_error(get_type_name(), $sformatf("There is still %0d expected items to be processed!", expected_mb.num()))
     end
-    else begin
-      if (objection_raised == 1'b1) begin
-        phase.drop_objection(this, "Pending transactions to compare completed");
-      end
+
+    if (actual_mb.num() > 0) begin
+      `uvm_error(get_type_name(), $sformatf("There is still %0d actual items to be processed!", actual_mb.num()))
     end
-  endfunction : handle_objections
+
+    phase.drop_objection(this, "Checking results finished");
+  endfunction : check_phase
 
   function void report_phase(uvm_phase phase);
     phase.raise_objection(this, "Reporting results");
