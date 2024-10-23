@@ -27,7 +27,7 @@ class darkriscv_scoreboard extends uvm_scoreboard;
   // - parent: The parent UVM component (optional, default is null).
   //-----------------------------------------------------------------------------------------------
   function new(string name="darkriscv_scoreboard", uvm_component parent=null);
-    super.new(name, parent); // Call the base class constructor.
+    super.new(name, parent);
   endfunction : new
 
   //-----------------------------------------------------------------------------------------------
@@ -48,6 +48,8 @@ class darkriscv_scoreboard extends uvm_scoreboard;
   //-----------------------------------------------------------------------------------------------
   uvm_analysis_imp_mon #(darkriscv_item, darkriscv_scoreboard) driscv_mon;
 
+  i_type_checker i_type_check;
+
   //-----------------------------------------------------------------------------------------------
   // Function: build_phase
   //
@@ -62,6 +64,8 @@ class darkriscv_scoreboard extends uvm_scoreboard;
     // Initialize the analysis implementation ports for receiving transactions.
     driscv_drv = new("driscv_drv", this);
     driscv_mon = new("driscv_mon", this);
+    // Initialize checkers
+    i_type_check = darkriscv_agent::type_id::create("i_type_check", this);
   endfunction : build_phase
 
   //-----------------------------------------------------------------------------------------------
@@ -74,7 +78,7 @@ class darkriscv_scoreboard extends uvm_scoreboard;
   // - phase: Current UVM phase.
   //-----------------------------------------------------------------------------------------------
   virtual task run_phase(uvm_phase phase);
-    // No specific run-phase logic implemented yet.
+    i_type_check.check();
   endtask : run_phase
 
   //-----------------------------------------------------------------------------------------------
