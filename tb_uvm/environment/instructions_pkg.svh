@@ -292,6 +292,23 @@ typedef union packed {
   u_type_t u_type;
 } instruction_t;
 
+localparam int unsigned RISCV_INST_OPCODE_RANGE_LOW       = 0;
+localparam int unsigned RISCV_INST_OPCODE_RANGE_HIGH      = 6;
+localparam int unsigned RISCV_INST_RD_RANGE_LOW           = 7;
+localparam int unsigned RISCV_INST_RD_RANGE_HIGH          = 11;
+localparam int unsigned RISCV_INST_FUNC3_RANGE_LOW        = 12;
+localparam int unsigned RISCV_INST_FUNC3_RANGE_HIGH       = 14;
+localparam int unsigned RISCV_INST_RS1_RANGE_LOW          = 15;
+localparam int unsigned RISCV_INST_RS1_RANGE_HIGH         = 19;
+localparam int unsigned RISCV_INST_RS2_RANGE_LOW          = 20;
+localparam int unsigned RISCV_INST_RS2_RANGE_HIGH         = 24;
+localparam int unsigned RISCV_INST_IMM_I_11_0_RANGE_LOW   = 20;
+localparam int unsigned RISCV_INST_IMM_I_11_0_RANGE_HIGH  = 31;
+localparam int unsigned RISCV_INST_IMM_S_11_5_RANGE_LOW   = 25;
+localparam int unsigned RISCV_INST_IMM_S_11_5_RANGE_HIGH  = 31;
+localparam int unsigned RISCV_INST_IMM_S_4_0_RANGE_LOW    = 7;
+localparam int unsigned RISCV_INST_IMM_S_4_0_RANGE_HIGH   = 11;
+
 endpackage : instructions_pkg
 
 `endif // INSTRUCTIONS_PKG_SVH

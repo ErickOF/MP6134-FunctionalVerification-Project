@@ -32,7 +32,11 @@ class darkriscv_env extends uvm_env;
   darkriscv_agent driscv_ag;
 
   // Scoreboard to check the correctness of transactions
-  darkriscv_scoreboard driscv_sb;
+  darkriscv_scoreboard #(darkriscv_input_item) input_sb;
+  darkriscv_scoreboard #(darkriscv_output_item) output_sb;
+
+  // Reference model for results predictions
+  darkriscv_reference_model ref_model;
 
   //-----------------------------------------------------------------------------------------------
   // Function: build_phase
@@ -53,7 +57,11 @@ class darkriscv_env extends uvm_env;
 
     // Create the agent and scoreboard instances using the UVM factory
     driscv_ag = darkriscv_agent::type_id::create("driscv_ag", this);
-    driscv_sb = darkriscv_scoreboard::type_id::create("driscv_sb", this);
+
+    input_sb = darkriscv_scoreboard #(darkriscv_input_item)::type_id::create("input_sb", this);
+    output_sb = darkriscv_scoreboard #(darkriscv_output_item)::type_id::create("output_sb", this);
+    
+    ref_model = darkriscv_reference_model::type_id::create("ref_model", this);
 
     // Report the end of the build phase and print the component's hierarchy
     uvm_report_info(get_full_name(), "End_of_build_phase", UVM_LOW);
@@ -72,8 +80,17 @@ class darkriscv_env extends uvm_env;
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
 
-    // Connect the monitor's analysis port to the scoreboard's driver input
-    driscv_ag.driscv_mntr.mon_analysis_port.connect(driscv_sb.driscv_drv);
+    // Connect the drivers's analysis port to the scoreboard's input expected data port
+    driscv_ag.driscv_drv.driven_data_ap.connect(input_sb.expected_ap);
+
+    // Connect the monitor's analysis port to the scoreboard's input actual data port
+    driscv_ag.driscv_mntr.monitored_input_ap.connect(input_sb.actual_ap);
+
+    // Connect the reference model's analysis port to the scoreboard's output expected data port
+    ref_model.output_data_ap.connect(output_sb.expected_ap);
+
+    // Connect the monitor's analysis port to the scoreboard's output actual data port
+    driscv_ag.driscv_mntr.monitored_output_ap.connect(output_sb.actual_ap);
   endfunction : connect_phase
 
 endclass : darkriscv_env

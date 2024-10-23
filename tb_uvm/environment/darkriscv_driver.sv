@@ -32,6 +32,10 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
   //-----------------------------------------------------------------------------------------------
   virtual darkriscv_if intf;
 
+  uvm_analysis_port #(darkriscv_input_item) driven_data_ap;
+
+  darkriscv_input_item expected_item;
+
   //-----------------------------------------------------------------------------------------------
   // Function: build_phase
   //
@@ -50,6 +54,10 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
     if (uvm_config_db #(virtual darkriscv_if)::get(this, "", "VIRTUAL_INTERFACE", intf) == 0) begin
       `uvm_fatal("INTERFACE_CONNECT", "Could not get from the DB the virtual interface for the TB")
     end
+
+    driven_data_ap = new("driven_data_ap", this);
+
+    expected_item = darkriscv_input_item::type_id::create("expected_item");
   endfunction : build_phase
 
   //-----------------------------------------------------------------------------------------------
@@ -117,6 +125,10 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
     intf.DATAI = driscv_item.riscv_data;
     @ (posedge intf.CLK);
     intf.HLT = 1;
+
+    expected_item.instruction_data = driscv_item.riscv_inst;
+    expected_item.input_data = driscv_item.riscv_data;
+    send_expected_item();
   endtask : drive
 
   virtual task reset();
@@ -146,5 +158,15 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
   virtual task read(darkriscv_item driscv_item);
     // Read the status/response from the DUT via the interface (implementation required).
   endtask : read
+
+  function void send_expected_item();
+    darkriscv_input_item expected_item_tmp;
+
+    if (!$cast(expected_item_tmp, expected_item.clone())) begin
+      `uvm_fatal(get_type_name(), "Couldn't cast expected_item!")
+    end
+
+    driven_data_ap.write(expected_item_tmp);
+  endfunction : send_expected_item
 
 endclass : darkriscv_driver

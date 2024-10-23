@@ -3,9 +3,9 @@ import instructions_pkg::*;
 
 `timescale 1ns / 1ps
 `include "config.vh"
-`include "riscv_defs.svh"
 `include "helper.sv"
-//`include "instructions_pkg.svh"
+`include "darkriscv_input_item.sv"
+`include "darkriscv_output_item.sv"
 `include "darkriscv_item.sv"
 `include "darkriscv_seq.sv"
 `include "init_registers_seq.sv"
@@ -15,6 +15,7 @@ import instructions_pkg::*;
 `include "darkriscv_monitor.sv"
 `include "darkriscv_scoreboard.sv"
 `include "darkriscv_agent.sv"
+`include "darkriscv_reference_model.sv"
 `include "darkriscv_env.sv"
 `include "random_instr_test.sv"
 `include "darkriscv_test.sv"
