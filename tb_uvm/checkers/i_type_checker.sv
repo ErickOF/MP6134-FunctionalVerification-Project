@@ -1,4 +1,23 @@
+//-------------------------------------------------------------------------------------------------
+// Class: i_type_checker
+//
+// This class is used immediate instruction checkers in a UVM testbench. It checks instructions
+// being executed by the DUT.
+//
+// The class interfaces with the DUT using a virtual interface and processes the instruction and
+// data fetched from the interface.
+//-------------------------------------------------------------------------------------------------
 class i_type_checker extends base_instruction_checker;
+  //-----------------------------------------------------------------------------------------------
+  // Function: new
+  //
+  // Constructor for the i_type_checker. Initializes the checker with the given name or uses the
+  // default "i_type_checker". Calls the base class constructor "base_instruction_checker".
+  //
+  // Parameters:
+  // - name: The name of the checker (optional, default is "i_type_checker").
+  // - parent: The parent UVM component (optional, default is null).
+  //-----------------------------------------------------------------------------------------------
   function new(string name="i_type_checker", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
@@ -14,36 +33,6 @@ class i_type_checker extends base_instruction_checker;
     if (this.opcode == i_type) begin      
       `uvm_info(get_full_name(), "`check_instruction` task running", UVM_LOW)
 
-      `uvm_info(
-        get_full_name(),
-        $sformatf(
-          "\nOPCODE: 0b%07b (%s),\nRD: 0b%05b (%d),\nFUNCT3: 0b%03b (%d),\nRS1: 0b%05b (%d),\nIMM: 0x%03h (%d)\n",
-          // Opcode (7 bits)
-          instruction_intf.i_type.opcode,
-          // Opcode name
-          instruction_intf.i_type.opcode.name(),
-          // Destination register (5 bits)
-          instruction_intf.i_type.rd,
-          // RD in decimal
-          instruction_intf.i_type.rd,
-          // Function field (3 bits)
-          instruction_intf.i_type.funct3,
-          // Function field in decimal
-          instruction_intf.i_type.funct3,
-          // Source register 1 (5 bits)
-          instruction_intf.i_type.rs1,
-          // RS1 in decimal
-          instruction_intf.i_type.rs1,
-          // Immediate value (12 bits)
-          instruction_intf.i_type.imm,
-          // Immediate in decimal
-          instruction_intf.i_type.imm
-        ),
-        UVM_LOW
-      )
-
-      //@(negedge this.intf.CLK);
-
       fork
         check_sign_extension();
         check_zero_extension();
@@ -55,11 +44,11 @@ class i_type_checker extends base_instruction_checker;
 
   //###############################################################################################
   // Task: check_instruction
-  // Description: Specialized check for I-type instructions. This task handles the verification
-  //              of I-type instructions (such as ADDI, SLTIU, XORI, ORI, ANDI, SRLI, and SRAI)
-  //              by calculating the result based on the immediate value and comparing it against
-  //              the expected result in the destination register. If the result matches,
-  //              the operation is deemed successful; otherwise, an error message is printed.
+  // Description: Specialized check for I-type instructions. This task handles the verification of
+  //              I-type instructions (such as ADDI, SLTIU, XORI, ORI, ANDI, SRLI, and SRAI) by
+  //              calculating the result based on the immediate value and comparing it against the
+  //              expected result in the destination register. If the result matches, the operation
+  //              is deemed successful; otherwise, an error message is printed.
   //
   // I-type instructions involve immediate values that are added to or used with a source register
   // value (rs1) and stored in a destination register (rd).
@@ -79,8 +68,8 @@ class i_type_checker extends base_instruction_checker;
     alu_result = darksimv.core0.RMDATA;
 
     case (funct3)
-      // ADDI Operation: Performs a add operation between rs1 and the immediate value, then
-      // checks the result
+      // ADDI Operation: Performs a add operation between rs1 and the immediate value, then checks
+      // the result
       addi: begin
         logic [31:0] result;
         // Sign-extend the immediate value based on the MSB (bit 11)
@@ -274,8 +263,8 @@ class i_type_checker extends base_instruction_checker;
         end
       end
 
-      // ORI Operation: Performs a bitwise OR between rs1 and the immediate value, then checks
-      // the result.
+      // ORI Operation: Performs a bitwise OR between rs1 and the immediate value, then checks the
+      // result.
       ori: begin
         logic [31:0] result;
         // Sign-extend the immediate value based on the MSB (bit 11)
@@ -380,14 +369,14 @@ class i_type_checker extends base_instruction_checker;
     logic signed [31:0] imm = instruction_intf.i_type.imm[11] ? '1 : '0;
     imm[11:0] = instruction_intf.i_type.imm;
 
+    // Consider the HLT between instructions
     repeat (2) @(posedge this.intf.CLK);
 
     // Read immediate extension result
     simm = darksimv.core0.SIMM;
-  
+
     // Check the funct3 field to determine if the instruction uses sign-extension
     case (funct3)
-
       // ADDI Operation: Add Immediate with sign-extension
       addi: begin
         inst_name = "ADDI";
@@ -473,7 +462,7 @@ class i_type_checker extends base_instruction_checker;
   // Example: Instructions like SLLI, SLTIU, SRLI, and SRAI require zero-extension for their
   //          immediate values. The task checks that the immediate value has been correctly
   //          extended and prints the result.
-  // 
+  //
   // Notes: - If the instruction's `funct3` field matches SLLI, SLTIU, or SRLI/SRAI, zero-extension
   //          is applied.
   //        - The task prints a message indicating whether the extension is correct or if there is
@@ -491,6 +480,7 @@ class i_type_checker extends base_instruction_checker;
     // Flag to indicate if zero-extension is required
     logic use_zero_ext;
 
+    // Consider the HLT between instructions
     repeat (2) @(posedge this.intf.CLK);
 
     // Read zero-extended immediate value
@@ -540,7 +530,7 @@ class i_type_checker extends base_instruction_checker;
   //###############################################################################################
   // Task: check_valid_shift
   // Description: This task verifies the validity of the immediate (IMM) field for shift
-  //              instructionssuch as SLLI, SRLI, and SRAI. It checks whether the bit imm[5] is
+  //              instructions such as SLLI, SRLI, and SRAI. It checks whether the bit imm[5] is
   //              properly set to 0 for valid shift operations, as required by the RISC-V
   //              specification.
   //
@@ -559,10 +549,9 @@ class i_type_checker extends base_instruction_checker;
     string inst_name;
     // Flag to indicate if the instruction is a shift operation
     logic is_shift;
-  
+
     // Check the funct3 field to determine if the instruction is a shift operation
     case (instruction_intf.i_type.funct3)
-
       // SLLI Operation: Shift Left Logical Immediate
       slli: begin
         inst_name = "SLLI";
