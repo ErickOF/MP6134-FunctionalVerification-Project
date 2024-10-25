@@ -19,12 +19,22 @@ class darkriscv_monitor extends uvm_monitor;
   virtual darkriscv_if intf;
 
   //-----------------------------------------------------------------------------------------------
-  // Analysis Port: mon_analysis_port
+  // Analysis Port: monitored_input_ap
   //
-  // This analysis port is used to send observed transactions (darkriscv_item) to other UVM
-  // components, like the scoreboard. It will be used to forward the data observed in the DUT.
+  // This analysis port is used to send observed transactions (darkriscv_input_item) from the input
+  // signals to other UVM components, like the scoreboard. It will be used to forward the data 
+  // observed in the DUT.
   //-----------------------------------------------------------------------------------------------
-  uvm_analysis_port #(darkriscv_item) mon_analysis_port;
+  uvm_analysis_port #(darkriscv_input_item) monitored_input_ap;
+
+  //-----------------------------------------------------------------------------------------------
+  // Analysis Port: monitored_output_ap
+  //
+  // This analysis port is used to send observed transactions (darkriscv_output_item) from the
+  // output signals to other UVM components, like the scoreboard. It will be used to forward the
+  // data observed in the DUT.
+  //-----------------------------------------------------------------------------------------------
+  uvm_analysis_port #(darkriscv_output_item) monitored_output_ap;
 
   //-----------------------------------------------------------------------------------------------
   // Function: new
@@ -55,7 +65,8 @@ class darkriscv_monitor extends uvm_monitor;
     super.build_phase(phase);
 
     // Create the analysis port for sending observed transactions.
-    mon_analysis_port = new("mon_analysis_port", this);
+    monitored_input_ap = new("monitored_input_ap", this);
+    monitored_output_ap = new("monitored_output_ap", this);
 
     // Get the virtual interface from the UVM configuration database.
     if(uvm_config_db #(virtual darkriscv_if)::get(this, "", "VIRTUAL_INTERFACE", intf) == 0) begin
