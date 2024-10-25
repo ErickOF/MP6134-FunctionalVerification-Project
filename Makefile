@@ -27,28 +27,35 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # VCS variables
-#FILELIST = tb/filelist.f
-FILELIST = tb_uvm/filelist.f
+FILELIST_LAYERS = tb/filelist.f
+FILELIST_UVM    = tb_uvm/filelist.f
 SIMDIR = darksocv_dir
 XSIM = $(SIMDIR)/darksocv
 VCDS = $(SIMDIR)/darksocv.vcd
 TRCE = $(SIMDIR)/darksocv.txt
-UVM_HOME = /mnt/vol_NFS_alajuela/qtree_NFS_rh003/synopsys_tools/synopsys/vcs-mx/O-2018.09-SP2-3/etc/uvm-1.2
-VCS = vcs -sverilog -full64 -debug_access+all -gui +v2k +lint=all -Mdir=$(SIMDIR) \
-        +acc +vpi -debug_access+nomemcbk+dmptf -debug_region+cell \
+VCS_LAYERS = vcs -sverilog -full64 -debug_access+all -gui +v2k +lint=all -Mdir=$(SIMDIR)
+VCS_UVM = vcs -sverilog -full64 -debug_access+all -gui +v2k +lint=all -Mdir=$(SIMDIR) \
+	+acc +vpi -debug_access+nomemcbk+dmptf -debug_region+cell \
 	+define+UVM_OBJECT_MUST_HAVE_CONSTRUCTOR \
 	-ntb_opts uvm-1.2 \
 	-timescale=1ns/1ps \
 	-cm line+cond+fsm+branch+tgl -cm_dir ./coverage.vdb \
 	-CFLAGS -DVCS
 
-DEPS = $(FILELIST)
+DEPS_LAYERS = $(FILELIST_LAYERS)
+DEPS_UVM = $(FILELIST_UVM)
 
-all: compile
+layers: compile_layers
+	./$(XSIM) +vcs+dumpvars+$(VCDS)
+
+compile_layers: $(DEPS_LAYERS) $(SIMDIR)
+	$(VCS_LAYERS) -f $(FILELIST_LAYERS) -o $(XSIM)
+
+uvm: compile_uvm
 	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=random_instr_test
 
-compile: $(DEPS) $(SIMDIR)
-	$(VCS) -f $(FILELIST) -o $(XSIM)
+compile_uvm: $(DEPS_UVM) $(SIMDIR)
+	$(VCS_UVM) -f $(FILELIST_UVM) -o $(XSIM)
 
 $(SIMDIR):
 	mkdir -p $(SIMDIR)
