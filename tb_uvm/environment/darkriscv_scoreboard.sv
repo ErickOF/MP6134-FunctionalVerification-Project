@@ -108,7 +108,9 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
 
     `uvm_info(get_full_name(), "Start of run_phase", UVM_LOW)
 
-    i_type_check.start_checker();
+    fork
+      i_type_check.start_checker();
+    join_none
 
     forever begin
       expected_mb.get(expected_data);
