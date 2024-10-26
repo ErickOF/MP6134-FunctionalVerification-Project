@@ -4,6 +4,8 @@ import instructions_pkg::*;
 `timescale 1ns / 1ps
 `include "config.vh"
 `include "helper.sv"
+`include "base_instruction_checker.sv"
+`include "i_type_checker.sv"
 `include "darkriscv_input_item.sv"
 `include "darkriscv_output_item.sv"
 `include "darkriscv_item.sv"

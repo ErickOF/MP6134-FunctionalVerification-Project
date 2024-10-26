@@ -70,6 +70,8 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
     objection_raised = 1'b0;
   endfunction : new
 
+  i_type_checker i_type_check;
+
   //-----------------------------------------------------------------------------------------------
   // Function: build_phase
   //
@@ -82,8 +84,11 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
   //-----------------------------------------------------------------------------------------------
   function void build_phase(uvm_phase phase);
     // Initialize the analysis implementation ports for receiving transactions.
+
     expected_ap = new("expected_ap", this);
     actual_ap = new("actual_ap", this);
+    // Initialize checkers
+    i_type_check = new("i_type_check", this);
   endfunction : build_phase
 
   //-----------------------------------------------------------------------------------------------
@@ -98,6 +103,14 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
   virtual task run_phase(uvm_phase phase);
     T expected_data;
     T actual_data;
+    
+    super.run_phase(phase);
+
+    `uvm_info(get_full_name(), "Start of run_phase", UVM_LOW)
+
+    fork
+      i_type_check.start_checker();
+    join_none
 
     forever begin
       expected_mb.get(expected_data);
@@ -112,6 +125,8 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
         mismatch_count++;
       end
     end
+    
+    `uvm_info(get_full_name(), "End of run_phase", UVM_LOW)
   endtask : run_phase
 
   function void write_exp(T expected_item);

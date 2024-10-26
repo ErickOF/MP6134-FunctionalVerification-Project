@@ -1,4 +1,5 @@
 +incdir+$GIT_HOME/rtl/include
++incdir+$GIT_HOME/tb_uvm/checkers
 +incdir+$GIT_HOME/tb_uvm/environment
 +incdir+$GIT_HOME/tb_uvm/sequences
 +incdir+$GIT_HOME/tb_uvm/tests
