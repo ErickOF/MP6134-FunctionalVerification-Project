@@ -23,7 +23,7 @@ class darkriscv_env extends uvm_env;
   //-----------------------------------------------------------------------------------------------
   function new(string name="darkriscv_env", uvm_component parent=null);
     super.new(name, parent);
-	endfunction : new
+  endfunction : new
 
   // Virtual interface to the DUT
   virtual darkriscv_if intf;
@@ -60,7 +60,7 @@ class darkriscv_env extends uvm_env;
 
     input_sb = darkriscv_scoreboard #(darkriscv_input_item)::type_id::create("input_sb", this);
     output_sb = darkriscv_scoreboard #(darkriscv_output_item)::type_id::create("output_sb", this);
-    
+
     ref_model = darkriscv_reference_model::type_id::create("ref_model", this);
 
     // Report the end of the build phase and print the component's hierarchy
@@ -85,6 +85,9 @@ class darkriscv_env extends uvm_env;
 
     // Connect the monitor's analysis port to the scoreboard's input actual data port
     driscv_ag.driscv_mntr.monitored_input_ap.connect(input_sb.actual_ap);
+
+    // Connect the monitor's analysis port to the reference model input data port
+    driscv_ag.driscv_mntr.monitored_input_ap.connect(ref_model.input_data_ap);
 
     // Connect the reference model's analysis port to the scoreboard's output expected data port
     ref_model.output_data_ap.connect(output_sb.expected_ap);

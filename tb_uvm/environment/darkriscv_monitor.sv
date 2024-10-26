@@ -2,7 +2,7 @@
 // Class: darkriscv_monitor
 //
 // This class represents the monitor in the UVM environment for the darkriscv design.
-// The monitor's role is to passively observe signals from the DUT via the virtual interface and 
+// The monitor's role is to passively observe signals from the DUT via the virtual interface and
 // publish the observed transactions to other components like the scoreboard via the analysis port.
 //
 // The class extends uvm_monitor and contains an analysis port for sending observed transactions.
@@ -22,10 +22,12 @@ class darkriscv_monitor extends uvm_monitor;
   // Analysis Port: monitored_input_ap
   //
   // This analysis port is used to send observed transactions (darkriscv_input_item) from the input
-  // signals to other UVM components, like the scoreboard. It will be used to forward the data 
+  // signals to other UVM components, like the scoreboard. It will be used to forward the data
   // observed in the DUT.
   //-----------------------------------------------------------------------------------------------
   uvm_analysis_port #(darkriscv_input_item) monitored_input_ap;
+
+  darkriscv_input_item input_item;
 
   //-----------------------------------------------------------------------------------------------
   // Analysis Port: monitored_output_ap
@@ -35,6 +37,8 @@ class darkriscv_monitor extends uvm_monitor;
   // data observed in the DUT.
   //-----------------------------------------------------------------------------------------------
   uvm_analysis_port #(darkriscv_output_item) monitored_output_ap;
+
+  darkriscv_output_item output_item;
 
   //-----------------------------------------------------------------------------------------------
   // Function: new
@@ -72,6 +76,9 @@ class darkriscv_monitor extends uvm_monitor;
     if(uvm_config_db #(virtual darkriscv_if)::get(this, "", "VIRTUAL_INTERFACE", intf) == 0) begin
       `uvm_fatal("INTERFACE_CONNECT", "Could not get from the DB the virtual interface for the TB")
     end
+
+    input_item = darkriscv_input_item::type_id::create("expected_item");
+    output_item = darkriscv_output_item::type_id::create("output_item");
   endfunction : build_phase
 
   //-----------------------------------------------------------------------------------------------
@@ -87,7 +94,83 @@ class darkriscv_monitor extends uvm_monitor;
   virtual task run_phase(uvm_phase phase);
     super.run_phase(phase);
 
-    // Monitoring logic will be implemented here to capture and forward transactions.
+    check_transactions();
   endtask : run_phase
+
+  // Check task: Continuously monitors the read enable signal and checks the data output
+  task check_transactions();
+    logic [31:0] instruction_data;
+    logic [31:0] input_data;
+
+    logic write_op;
+    logic read_op;
+    logic [31:0] data_address;
+    logic [31:0] output_data;
+    logic [2:0] bytes_transfered;
+
+    forever begin
+      @ (negedge intf.CLK);
+      if (!intf.HLT && !intf.RES) begin
+        instruction_data = intf.IDATA;
+        input_data = intf.DATAI;
+
+        if (intf.DWR) begin
+          write_op = 1;
+          read_op = 0;
+          data_address = intf.DADDR;
+          output_data = intf.DATAO;
+          bytes_transfered = intf.DLEN;
+        end
+        else if (intf.DRD) begin
+          write_op = 0;
+          read_op = 1;
+          data_address = intf.DADDR;
+          bytes_transfered = intf.DLEN;
+        end
+        else begin
+          write_op = 0;
+          read_op = 0;
+          bytes_transfered = 0;
+        end
+
+        input_item.instruction_data = instruction_data;
+        input_item.input_data = input_data;
+        send_input_item();
+
+        `uvm_info(get_type_name(), $sformatf("Instruction IDATA: %h, Input Data: %h", instruction_data, input_data), UVM_MEDIUM)
+
+        if (write_op) begin
+          output_item.data_address = data_address;
+          output_item.output_data = output_data;
+          output_item.bytes_transfered = bytes_transfered;
+          send_output_item();
+
+          `uvm_info(get_type_name(), $sformatf("Write operation of %0d bytes: Data Address: %h, Output Data: %h", bytes_transfered, data_address, output_data), UVM_MEDIUM)
+        end
+      end
+    end
+  endtask : check_transactions
+
+  function void send_input_item();
+    darkriscv_input_item input_item_tmp;
+
+    if (!$cast(input_item_tmp, input_item.clone())) begin
+      `uvm_fatal(get_type_name(), "Couldn't cast input_item!")
+    end
+
+    monitored_input_ap.write(input_item_tmp);
+  endfunction : send_input_item
+
+  function void send_output_item();
+    darkriscv_output_item output_item_tmp;
+
+    if (!$cast(output_item_tmp, output_item.clone())) begin
+      `uvm_fatal(get_type_name(), "Couldn't cast output_item!")
+    end
+
+    monitored_output_ap.write(output_item_tmp);
+
+    `uvm_info(get_type_name(), "Sent item to scoreboard!", UVM_MEDIUM)
+  endfunction : send_output_item
 
 endclass : darkriscv_monitor
