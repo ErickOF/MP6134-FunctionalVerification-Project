@@ -86,8 +86,6 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
   virtual task run_phase(uvm_phase phase);
     super.run_phase(phase);
 
-    reset();
-
     forever begin
       darkriscv_item driscv_item;
 

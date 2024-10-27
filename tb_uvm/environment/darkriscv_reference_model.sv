@@ -14,6 +14,8 @@ class darkriscv_reference_model extends uvm_component;
 
   logic signed [31:0] register_bank [32];
 
+  logic [31:0] next_instruction_address;
+
   `uvm_component_utils(darkriscv_reference_model)
 
   function new(string name = "darkriscv_reference_model", uvm_component parent = null);
@@ -24,8 +26,15 @@ class darkriscv_reference_model extends uvm_component;
     foreach (register_bank[i]) begin
       register_bank[i] = 32'hXXXX_XXXX;
     end
-    register_bank[0] = 32'h0;
+
+    next_instruction_address = 32'hXXXX_XXXX;
   endfunction : new
+
+  function void reset();
+    register_bank[0] = 32'h0;
+
+    next_instruction_address = 32'h0;
+  endfunction : reset
 
   function void build_phase(uvm_phase phase);
     input_data_ap = new("input_data_ap", this);
@@ -81,6 +90,14 @@ class darkriscv_reference_model extends uvm_component;
         `uvm_error(get_type_name(), $sformatf("Instruction type %s = %0h is not supported right now in the reference model\n", opcode.name(), opcode))
       end
     endcase
+
+    if (opcode != s_type) begin
+      send_filler_output_item();
+    end
+
+    if ((opcode != j_type) && (opcode != b_type)) begin
+      next_instruction_address += 32'h0;
+    end
   endfunction : proccess_instructions
 
   function void decode_i_type_opcode(logic [31:0] my_instr);
@@ -222,9 +239,12 @@ class darkriscv_reference_model extends uvm_component;
 
     `uvm_info(get_type_name(), $sformatf("Storing %0d bytes of data 0x%0h to memory address 0x%0h\n", bytes_to_transfer, result_data, result_address), UVM_MEDIUM)
 
+    output_item.instruction_address = next_instruction_address;
     output_item.data_address = result_address;
     output_item.output_data = result_data;
     output_item.bytes_transfered = bytes_to_transfer;
+    output_item.write_op = 1;
+    output_item.read_op = 0;
     send_output_item();
   endfunction : decode_s_type_opcode
 
@@ -239,6 +259,14 @@ class darkriscv_reference_model extends uvm_component;
 
     `uvm_info(get_type_name(), "Sent item to scoreboard!", UVM_MEDIUM)
   endfunction : send_output_item
+
+  function void send_filler_output_item();
+    output_item.instruction_address = next_instruction_address;
+    output_item.bytes_transfered = 0;
+    output_item.write_op = 0;
+    output_item.read_op = 0;
+    send_output_item();
+  endfunction : send_filler_output_item
 
 endclass : darkriscv_reference_model
 

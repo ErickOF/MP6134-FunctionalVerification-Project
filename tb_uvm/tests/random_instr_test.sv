@@ -38,6 +38,12 @@ class random_instr_test extends uvm_test;
     print();
   endfunction : end_of_elaboration_phase
 
+  virtual task reset_phase(uvm_phase phase);
+    super.reset_phase(phase);
+
+    env.reset();
+  endtask : reset_phase
+
   virtual task run_phase(uvm_phase phase);
     // Raise an objection to keep the simulation running.
     phase.raise_objection(this);
