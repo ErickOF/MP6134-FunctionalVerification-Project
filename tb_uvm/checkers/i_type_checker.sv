@@ -43,7 +43,7 @@ class i_type_checker extends base_instruction_checker;
   endtask : check_instruction
 
   //###############################################################################################
-  // Task: check_instruction
+  // Task: check_operation
   // Description: Specialized check for I-type instructions. This task handles the verification of
   //              I-type instructions (such as ADDI, SLTIU, XORI, ORI, ANDI, SRLI, and SRAI) by
   //              calculating the result based on the immediate value and comparing it against the
