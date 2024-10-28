@@ -117,11 +117,11 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
       actual_mb.get(actual_data);
 
       if (expected_data.compare(actual_data)) begin
-        `uvm_info(get_type_name(), $sformatf("Data matched in scoreboard with expected = %s and actual = %s!", expected_data.sprint(), actual_data.sprint()), UVM_MEDIUM)
+        `uvm_info(get_name(), $sformatf("Data matched in scoreboard with expected = %s and actual = %s!", expected_data.sprint(), actual_data.sprint()), UVM_MEDIUM)
         match_count++;
       end
       else begin
-        `uvm_error(get_type_name(), $sformatf("Data mismatched in scoreboard with expected = %s and actual = %s!", expected_data.sprint(), actual_data.sprint()))
+        `uvm_error(get_name(), $sformatf("Data mismatched in scoreboard with expected = %s and actual = %s!", expected_data.sprint(), actual_data.sprint()))
         mismatch_count++;
       end
     end
@@ -133,7 +133,7 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
     T expected_item_tmp;
 
     if (!$cast(expected_item_tmp, expected_item.clone())) begin
-      `uvm_fatal(get_type_name(), "Failed to cast expected_item!")
+      `uvm_fatal(get_name(), "Failed to cast expected_item!")
     end
 
     expected_mb.try_put(expected_item_tmp);
@@ -143,7 +143,7 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
     T actual_item_tmp;
 
     if (!$cast(actual_item_tmp, actual_item.clone())) begin
-      `uvm_fatal(get_type_name(), "Failed to cast actual_item!")
+      `uvm_fatal(get_name(), "Failed to cast actual_item!")
     end
 
     actual_mb.try_put(actual_item_tmp);
@@ -152,20 +152,20 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
   function void check_phase(uvm_phase phase);
 
     if (expected_mb.num() > 0) begin
-      `uvm_error(get_type_name(), $sformatf("There is still %0d expected items to be processed!", expected_mb.num()))
+      `uvm_error(get_name(), $sformatf("There is still %0d expected items to be processed!", expected_mb.num()))
     end
 
     if (actual_mb.num() > 0) begin
-      `uvm_error(get_type_name(), $sformatf("There is still %0d actual items to be processed!", actual_mb.num()))
+      `uvm_error(get_name(), $sformatf("There is still %0d actual items to be processed!", actual_mb.num()))
     end
 
   endfunction : check_phase
 
   function void report_phase(uvm_phase phase);
 
-    `uvm_info(get_type_name(), $sformatf("Scoreboard finished with %0d matches and %0d mismatches!", match_count, mismatch_count), UVM_NONE)
-    `uvm_info(get_type_name(), $sformatf("Scoreboard finished with %0d expected items waiting to be processed!", expected_mb.num()), UVM_NONE)
-    `uvm_info(get_type_name(), $sformatf("Scoreboard finished with %0d actual items waiting to be processed!", actual_mb.num()), UVM_NONE)
+    `uvm_info(get_name(), $sformatf("Scoreboard finished with %0d matches and %0d mismatches!", match_count, mismatch_count), UVM_NONE)
+    `uvm_info(get_name(), $sformatf("Scoreboard finished with %0d expected items waiting to be processed!", expected_mb.num()), UVM_NONE)
+    `uvm_info(get_name(), $sformatf("Scoreboard finished with %0d actual items waiting to be processed!", actual_mb.num()), UVM_NONE)
 
   endfunction : report_phase
 

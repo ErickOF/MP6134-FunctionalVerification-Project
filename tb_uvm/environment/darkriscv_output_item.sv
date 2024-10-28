@@ -27,7 +27,7 @@ class darkriscv_output_item extends uvm_object;
     darkriscv_output_item rhs_;
 
     if (!$cast(rhs_, rhs)) begin
-      `uvm_fatal("Couldn't cast rhs to darkriscv_output_item!")
+      `uvm_fatal(get_type_name(), "Couldn't cast rhs to darkriscv_output_item!")
       return 1'b0;
     end
 

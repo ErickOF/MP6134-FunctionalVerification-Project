@@ -16,6 +16,8 @@ class darkriscv_reference_model extends uvm_component;
 
   logic [31:0] next_instruction_address;
 
+  bit previous_inst_s_type;
+
   `uvm_component_utils(darkriscv_reference_model)
 
   function new(string name = "darkriscv_reference_model", uvm_component parent = null);
@@ -28,6 +30,8 @@ class darkriscv_reference_model extends uvm_component;
     end
 
     next_instruction_address = 32'hXXXX_XXXX;
+
+    previous_inst_s_type = 1'b0;
   endfunction : new
 
   function void reset();
@@ -76,6 +80,11 @@ class darkriscv_reference_model extends uvm_component;
 
     opcode = inst_type_e'(my_instr[RISCV_INST_OPCODE_RANGE_HIGH+1:RISCV_INST_OPCODE_RANGE_LOW]);
 
+    if ((opcode == s_type) && (previous_inst_s_type == 1'b0)) begin
+      send_filler_output_item();
+      next_instruction_address += 32'h4;
+    end
+
     case (opcode)
       i_type : begin
         decode_i_type_opcode(.my_instr(my_instr));
@@ -92,11 +101,16 @@ class darkriscv_reference_model extends uvm_component;
     endcase
 
     if (opcode != s_type) begin
-      send_filler_output_item();
+      if (previous_inst_s_type == 1'b0) begin
+        send_filler_output_item();
+      end
+      else begin
+        previous_inst_s_type = 1'b0;
+      end
     end
 
-    if ((opcode != j_type) && (opcode != b_type)) begin
-      next_instruction_address += 32'h0;
+    if ((opcode != j_type) && (opcode != b_type) && (previous_inst_s_type == 1'b0)) begin
+      next_instruction_address += 32'h4;
     end
   endfunction : proccess_instructions
 
@@ -246,6 +260,8 @@ class darkriscv_reference_model extends uvm_component;
     output_item.write_op = 1;
     output_item.read_op = 0;
     send_output_item();
+
+    previous_inst_s_type = 1'b1;
   endfunction : decode_s_type_opcode
 
   function void send_output_item();
