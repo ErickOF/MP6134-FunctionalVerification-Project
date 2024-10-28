@@ -100,8 +100,8 @@ class darkriscv_reference_model extends uvm_component;
       end
     endcase
 
-    if (opcode != s_type) begin
-      if (previous_inst_s_type == 1'b0) begin
+    if ((opcode != s_type)) begin
+      if ((previous_inst_s_type == 1'b0) && (opcode != j_type) && (opcode != b_type)) begin
         send_filler_output_item();
       end
       else begin
