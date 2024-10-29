@@ -308,6 +308,8 @@ localparam int unsigned RISCV_INST_IMM_S_11_5_RANGE_LOW   = 25;
 localparam int unsigned RISCV_INST_IMM_S_11_5_RANGE_HIGH  = 31;
 localparam int unsigned RISCV_INST_IMM_S_4_0_RANGE_LOW    = 7;
 localparam int unsigned RISCV_INST_IMM_S_4_0_RANGE_HIGH   = 11;
+localparam int unsigned RISCV_INST_IMM_J_RANGE_LOW        = 12;
+localparam int unsigned RISCV_INST_IMM_J_RANGE_HIGH       = 31;
 
 endpackage : instructions_pkg
 

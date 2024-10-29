@@ -92,6 +92,10 @@ class darkriscv_reference_model extends uvm_component;
       s_type : begin
         decode_s_type_opcode(.my_instr(my_instr));
       end
+      j_type : begin
+        send_filler_output_item();
+        decode_j_type_opcode(.my_instr(my_instr));
+      end
       custom_0_type : begin
         `uvm_info(get_type_name(), $sformatf("Custom0 instruction detected, this is an idle instrucction so no action needed!"), UVM_MEDIUM)
       end
@@ -263,6 +267,21 @@ class darkriscv_reference_model extends uvm_component;
 
     previous_inst_s_type = 1'b1;
   endfunction : decode_s_type_opcode
+
+  function void decode_j_type_opcode(logic [31:0] my_instr);
+    bit [19:0] imm;
+    imm[4:0] = my_instr[RISCV_INST_IMM_J_RANGE_HIGH:RISCV_INST_IMM_J_RANGE_LOW];
+
+    next_instruction_address = imm;
+
+    output_item.instruction_address = next_instruction_address;
+    output_item.data_address = 0;
+    output_item.output_data = 0;
+    output_item.bytes_transfered = 0;
+    output_item.write_op = 0;
+    output_item.read_op = 0;
+    send_output_item();
+  endfunction : decode_j_type_opcode
 
   function void send_output_item();
     darkriscv_output_item output_item_tmp;

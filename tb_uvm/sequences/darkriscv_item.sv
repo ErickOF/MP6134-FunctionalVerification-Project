@@ -89,7 +89,7 @@ class darkriscv_item extends uvm_sequence_item;
   }
 
   constraint c_supported_type_only {
-    opcode inside {i_type, s_type};
+    opcode inside {i_type, s_type, j_type};
   }
 
   //-----------------------------------------------------------------------------------------------
