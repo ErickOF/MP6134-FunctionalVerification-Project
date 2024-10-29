@@ -6,6 +6,7 @@ import instructions_pkg::*;
 `include "helper.sv"
 `include "base_instruction_checker.sv"
 `include "i_type_checker.sv"
+`include "s_type_checker.sv"
 `include "darkriscv_input_item.sv"
 `include "darkriscv_output_item.sv"
 `include "darkriscv_item.sv"

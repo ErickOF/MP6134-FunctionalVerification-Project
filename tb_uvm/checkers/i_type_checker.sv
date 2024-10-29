@@ -404,7 +404,7 @@ class i_type_checker extends base_instruction_checker;
       // SRLI/SRAI Operation: Shift Right Logical Immediate or Shift Right Arithmetic Immediate
       srli_srai: begin
         inst_name = (imm[11:5] === 7'b010_0000) ? "SRAI" : "SRLI";
-        use_zero_ext = 1'b1;
+        use_sign_ext = 1'b1;
       end
 
       // ORI Operation: OR Immediate, requires sign-extension

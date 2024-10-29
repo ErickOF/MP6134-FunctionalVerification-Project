@@ -39,6 +39,8 @@ class s_type_checker extends base_instruction_checker;
       `uvm_info(get_full_name(), "`check_instruction` task running", UVM_LOW)
 
       fork
+        check_data_address();
+        check_data_bus();
         check_data_len();
         check_drw();
         check_dwr();
@@ -46,6 +48,116 @@ class s_type_checker extends base_instruction_checker;
       join_none
     end
   endtask : check_instruction
+
+  task check_data_address();
+    // Retrieve the `funct3` field from the instruction interface.
+    logic [2:0] funct3 = this.instruction_intf.s_type.funct3;
+
+    // Determine the instruction name for logging purposes
+    string inst_name = (funct3 == 3'd2) ?
+                        "SW" : (funct3 == 3'd1) ?
+                          "SH" : "SB";
+
+    // Fetch the source register value from the DUT register file
+    logic [31:0] reg_rs1 = darksimv.core0.REGS[instruction_intf.s_type.rs1];
+
+    // Declare a 32-bit signed logic variable for the immediate value
+    logic signed [31:0] imm;
+
+    logic [31:0] data_address;
+    logic [31:0] expected_data_address;
+
+    // Set the sign bit based on the MSB of imm2[6]
+    // If imm2[6] is set, sign-extension is applied, else zero-extension
+    imm = instruction_intf.s_type.imm2[6] ? '1 : '0;
+
+    // Populate the imm variable with the upper (imm2) and lower (imm) parts
+    imm[11:5] = instruction_intf.s_type.imm2;
+    imm[4:0] = instruction_intf.s_type.imm1;
+
+    expected_data_address = reg_rs1 + imm;
+
+    // Introduce a delay to account for the HLT signal processing between instructions
+    repeat (2) @(posedge this.intf.CLK);
+
+    // Retrieve the data address from the DUT
+    data_address = darksimv.core0.DADDR;
+
+    // Log the data lengths for debugging purposes
+    `uvm_info(
+      get_full_name(),
+      $sformatf(
+        "%s data address: %08h (expected: %08h)",
+        inst_name,
+        data_address,
+        expected_data_address
+      ),
+      UVM_LOW
+    );
+
+    // Compare the DUT's data address with the expected data address
+    if (data_address === expected_data_address) begin
+      `uvm_info(
+        get_full_name(),
+        $sformatf("Data address for %s match", inst_name),
+        UVM_LOW
+      );
+    end
+    else begin
+      `uvm_error(
+        get_full_name(),
+        $sformatf("Data address for %s mismatch", inst_name)
+      );
+    end
+  endtask : check_data_address
+
+  task check_data_bus();
+    // Retrieve the `funct3` field from the instruction interface.
+    logic [2:0] funct3 = this.instruction_intf.s_type.funct3;
+
+    // Determine the instruction name for logging purposes
+    string inst_name = (funct3 == 3'd2) ?
+                        "SW" : (funct3 == 3'd1) ?
+                          "SH" : "SB";
+
+    // Fetch the source register 2 value from the DUT register file
+    logic [31:0] data_bus = darksimv.core0.REGS[instruction_intf.s_type.rs2];
+
+    logic [31:0] expected_data_bus;
+
+    // Introduce a delay to account for the HLT signal processing between instructions
+    repeat (2) @(posedge this.intf.CLK);
+
+    // Retrieve the data bus from the DUT
+    expected_data_bus = darksimv.core0.DATAO;
+
+    // Log the data lengths for debugging purposes
+    `uvm_info(
+      get_full_name(),
+      $sformatf(
+        "%s data bus: %08h (expected: %08h)",
+        inst_name,
+        data_bus,
+        expected_data_bus
+      ),
+      UVM_LOW
+    );
+
+    // Compare the DUT's data bus with the expected data bus
+    if (data_bus === expected_data_bus) begin
+      `uvm_info(
+        get_full_name(),
+        $sformatf("Data bus for %s match", inst_name),
+        UVM_LOW
+      );
+    end
+    else begin
+      `uvm_error(
+        get_full_name(),
+        $sformatf("Data bus for %s mismatch", inst_name)
+      );
+    end
+  endtask : check_data_bus
 
   //-----------------------------------------------------------------------------------------------
   // Task: check_data_len
@@ -224,16 +336,27 @@ class s_type_checker extends base_instruction_checker;
   //   opcode requirements, and compares it against the RTL value (`SIMM`) to ensure correctness.
   //-----------------------------------------------------------------------------------------------
   task check_sign_extension();
+    // Retrieve the `funct3` field from the instruction interface to identify the instruction type
+    logic [2:0] funct3 = this.instruction_intf.s_type.funct3;
+
+    // Determine the instruction name for logging purposes
+    string inst_name = (funct3 == 3'd2) ?
+                        "SW" : (funct3 == 3'd1) ?
+                          "SH" : "SB";
+
     // Declare a 32-bit signed logic variable for the immediate value
     logic signed [31:0] imm;
 
+    // RTL value of the sign-extended immediate
+    logic [31:0] simm;
+
     // Set the sign bit based on the MSB of imm2[6]
     // If imm2[6] is set, sign-extension is applied, else zero-extension
-    imm = instruction_intf.i_type.imm2[6] ? '1 : '0;
+    imm = instruction_intf.s_type.imm2[6] ? '1 : '0;
 
     // Populate the imm variable with the upper (imm2) and lower (imm) parts
-    imm[31:25] = instruction_intf.i_type.imm2;
-    imm[11:7] = instruction_intf.i_type.imm;
+    imm[11:5] = instruction_intf.s_type.imm2;
+    imm[4:0] = instruction_intf.s_type.imm1;
 
     // Introduce a delay to account for the HLT signal processing between instructions
     repeat (2) @(posedge this.intf.CLK);
