@@ -139,12 +139,15 @@ class darkriscv_monitor extends uvm_monitor;
 
         `uvm_info(get_type_name(), $sformatf("Instruction IDATA: %h, Input Data: %h", instruction_data, input_data), UVM_MEDIUM)
 
-        if (write_op) begin
-          output_item.data_address = data_address;
-          output_item.output_data = output_data;
-          output_item.bytes_transfered = bytes_transfered;
-          send_output_item();
+        output_item.instruction_address = intf.IADDR;
+        output_item.data_address = data_address;
+        output_item.output_data = output_data;
+        output_item.bytes_transfered = bytes_transfered;
+        output_item.write_op = write_op;
+        output_item.read_op = read_op;
+        send_output_item();
 
+        if (write_op) begin
           `uvm_info(get_type_name(), $sformatf("Write operation of %0d bytes: Data Address: %h, Output Data: %h", bytes_transfered, data_address, output_data), UVM_MEDIUM)
         end
       end

@@ -96,4 +96,10 @@ class darkriscv_env extends uvm_env;
     driscv_ag.driscv_mntr.monitored_output_ap.connect(output_sb.actual_ap);
   endfunction : connect_phase
 
+  task reset();
+    driscv_ag.driscv_drv.reset();
+
+    ref_model.reset();
+  endtask : reset
+
 endclass : darkriscv_env

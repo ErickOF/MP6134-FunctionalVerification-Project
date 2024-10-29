@@ -38,9 +38,26 @@ class random_instr_test extends uvm_test;
     print();
   endfunction : end_of_elaboration_phase
 
-  virtual task run_phase(uvm_phase phase);
+  virtual task reset_phase(uvm_phase phase);
+    super.reset_phase(phase);
+
+    phase.raise_objection(this, "Starting reset!");
+
+    `uvm_info(get_type_name(), $sformatf("Starting with reset_phase!"), UVM_NONE)
+
+    env.reset();
+
+    `uvm_info(get_type_name(), $sformatf("Finishing with reset_phase!"), UVM_NONE)
+
+    phase.drop_objection(this, "Finishing reset!");
+  endtask : reset_phase
+
+  virtual task main_phase(uvm_phase phase);
     // Raise an objection to keep the simulation running.
-    phase.raise_objection(this);
+    phase.raise_objection(this, "Starting main_phase!");
+
+    `uvm_info(get_type_name(), $sformatf("Starting with main_phase!"), UVM_NONE)
+
     init_regs_seq = init_registers_seq::type_id::create("init_regs_seq");
     if ( ! init_regs_seq.randomize() with {
       num_of_regs == 32;
@@ -68,8 +85,10 @@ class random_instr_test extends uvm_test;
     end
     save_regs_seq.start(env.driscv_ag.driscv_seqr);
 
+    `uvm_info(get_type_name(), $sformatf("Finishing with main_phase!"), UVM_NONE)
+
     // Drop the objection to end the test.
-    phase.drop_objection(this);
-  endtask : run_phase
+    phase.drop_objection(this, "Finishing main_phase!");
+  endtask : main_phase
 
 endclass : random_instr_test
