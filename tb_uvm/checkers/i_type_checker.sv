@@ -8,6 +8,9 @@
 // data fetched from the interface.
 //-------------------------------------------------------------------------------------------------
 class i_type_checker extends base_instruction_checker;
+
+  `uvm_component_utils(i_type_checker)
+
   //-----------------------------------------------------------------------------------------------
   // Function: new
   //
