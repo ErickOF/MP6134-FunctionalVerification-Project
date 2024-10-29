@@ -86,10 +86,25 @@ class darkriscv_item extends uvm_sequence_item;
     if (opcode == s_type) {
       funct3 dist {3'b000 := 32, 3'b001 := 32, 3'b010 := 32, [3'b011:3'b111] := 4};
     }
+    solve opcode before funct3;
+  }
+
+  constraint c_funct7 {
+    if (opcode == r_type) {
+      if ((funct3 == add_sub) || (funct3 == srl_sra)) {
+        funct7[4:0] dist {5'b0_0000 := 96, [5'b0_0001:5'b1_1111] := 4};
+        funct7[6] dist {1'b0 := 96, 1'b1 := 4};
+      }
+      else {
+        funct7 dist {7'b000_0000 := 96, [7'b000_0001:7'b111_1111] := 4};
+      }
+    }
+    solve opcode before funct7;
+    solve funct3 before funct7;
   }
 
   constraint c_supported_type_only {
-    opcode inside {i_type, s_type};
+    opcode inside {r_type, i_type, s_type};
   }
 
   //-----------------------------------------------------------------------------------------------

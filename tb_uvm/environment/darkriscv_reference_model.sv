@@ -86,6 +86,9 @@ class darkriscv_reference_model extends uvm_component;
     end
 
     case (opcode)
+      r_type : begin
+        decode_r_type_opcode(.my_instr(my_instr));
+      end
       i_type : begin
         decode_i_type_opcode(.my_instr(my_instr));
       end
@@ -113,6 +116,107 @@ class darkriscv_reference_model extends uvm_component;
       next_instruction_address += 32'h4;
     end
   endfunction : proccess_instructions
+
+  function void decode_r_type_opcode(logic [31:0] my_instr);
+    func3_r_type_e funct3;
+    bit [4:0] dest_reg;
+    bit [4:0] source_reg_1;
+    bit [4:0] source_reg_2;
+    bit [6:0] funct7;
+
+    bit signed [31:0] result;
+
+    funct3 = func3_r_type_e'(my_instr[RISCV_INST_FUNC3_RANGE_HIGH:RISCV_INST_FUNC3_RANGE_LOW]);
+    dest_reg = my_instr[RISCV_INST_RD_RANGE_HIGH:RISCV_INST_RD_RANGE_LOW];
+    source_reg_1 = my_instr[RISCV_INST_RS1_RANGE_HIGH:RISCV_INST_RS1_RANGE_LOW];
+    source_reg_2 = my_instr[RISCV_INST_RS2_RANGE_HIGH:RISCV_INST_RS2_RANGE_LOW];
+    funct7 = my_instr[RISCV_INST_FUNC7_RANGE_HIGH:RISCV_INST_FUNC7_RANGE_LOW];
+
+    if (dest_reg != 'h0) begin
+      case (funct3)
+        add_sub : begin
+          // if (funct7 == 7'b000_0000) begin // RISCV spec shows funct7[4:0] = 0 and funct7[6] = 0, but the design doesn't check for that
+          if (funct7[5] == 1'b0) begin
+            result = register_bank[source_reg_1] + register_bank[source_reg_2];
+            `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from adding R%0d = %0d and R%0d = %0d to R%0d = %0d\n", result, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+            register_bank[dest_reg] = result;
+          end
+          // else if (funct7 == 7'b010_0000) begin // RISCV spec shows funct7[4:0] = 0 and funct7[6] = 0, but the design doesn't check for that
+          else if (funct7[5] == 1'b1) begin
+            result = register_bank[source_reg_1] - register_bank[source_reg_2];
+            `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from subtracting R%0d = %0d and R%0d = %0d to R%0d = %0d\n", result, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+            register_bank[dest_reg] = result;
+          end
+          else begin
+            `uvm_info(get_type_name(), $sformatf("Seven bits of FUNCT7 are not recognized 0x%0h!\n", funct7), UVM_MEDIUM)
+          end
+        end
+        sll : begin
+          result = unsigned'(register_bank[source_reg_1]) << register_bank[source_reg_2][4:0];
+          `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from logic shifting to the left R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h\n", result, source_reg_1, register_bank[source_reg_1], register_bank[source_reg_2][4:0], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+          register_bank[dest_reg] = result;
+        end
+        slt : begin
+          if (register_bank[source_reg_1] < register_bank[source_reg_2]) begin
+            `uvm_info(get_type_name(), $sformatf("Saving value 0x1 to R%0d = %0d since R%0d = %0d is smaller than R%0d = %0d\n", dest_reg, register_bank[dest_reg], source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
+            register_bank[dest_reg] = 1;
+          end
+          else begin
+            `uvm_info(get_type_name(), $sformatf("Saving value of 0 to R%0d = %0d since R%0d = %0d is greater or equal than R%0d = %0d\n", dest_reg, register_bank[dest_reg], source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
+            register_bank[dest_reg] = 0;
+          end
+        end
+        sltu : begin
+          if (unsigned'(register_bank[source_reg_1]) < unsigned'(register_bank[source_reg_2])) begin
+            `uvm_info(get_type_name(), $sformatf("Saving value of 0x1 to R%0d = %0d since R%0d = %0d is smaller than R%0d = %0d\n", dest_reg, unsigned'(register_bank[dest_reg]), source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
+            register_bank[dest_reg] = 1;
+          end
+          else begin
+            `uvm_info(get_type_name(), $sformatf("Saving value of 0 to R%0d = %0d since R%0d = %0d is greater or equal than R%0d = %0d\n", dest_reg, unsigned'(register_bank[dest_reg]), source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
+            register_bank[dest_reg] = 0;
+          end
+        end
+        xor_ : begin
+          result = register_bank[source_reg_1] ^ register_bank[source_reg_2];
+          `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from performing XOR bitwise between R%0d = 0x%0h and R%0d = 0x%0h to R%0d = 0x%0h\n", result, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+          register_bank[dest_reg] = result;
+        end
+        srl_sra : begin
+          // if (funct7 == 7'b000_0000) begin // RISCV spec shows funct7[4:0] = 0 and funct7[6] = 0, but the design doesn't check for that
+          if (funct7[5] == 1'b0) begin
+            result = unsigned'(register_bank[source_reg_1]) >> register_bank[source_reg_2][4:0];
+            `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from logic shifting to the right R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h\n", result, source_reg_1, register_bank[source_reg_1], register_bank[source_reg_2][4:0], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+            register_bank[dest_reg] = result;
+          end
+          // else if (funct7 == 7'b010_0000) begin // RISCV spec shows funct7[4:0] = 0 and funct7[6] = 0, but the design doesn't check for that
+          else if (funct7[5] == 1'b1) begin
+            result = unsigned'(register_bank[source_reg_1]) >>> register_bank[source_reg_2][4:0];
+            `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from arithmetic shifting to the right R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h\n", result, source_reg_1, register_bank[source_reg_1], register_bank[source_reg_2][4:0], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+            register_bank[dest_reg] = result;
+          end
+          else begin
+            `uvm_info(get_type_name(), $sformatf("Seven bits of FUNCT7 are not recognized 0x%0h!\n", funct7), UVM_MEDIUM)
+          end
+        end
+        or_ : begin
+          result = register_bank[source_reg_1] | register_bank[source_reg_2];
+          `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from performing OR bitwise between R%0d = 0x%0h and R%0d = 0x%0h to R%0d = 0x%0h\n", result, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+          register_bank[dest_reg] = result;
+        end
+        and_ : begin
+          result = register_bank[source_reg_1] & register_bank[source_reg_2];
+          `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from performing AND bitwise between R%0d = 0x%0h and R%0d = 0x%0h to R%0d = 0x%0h\n", result, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+          register_bank[dest_reg] = result;
+        end
+        default : begin
+          `uvm_info(get_type_name(), $sformatf("Function %0d was not recognized in I-type decoding!\n", funct3), UVM_MEDIUM)
+        end
+      endcase
+    end
+    else begin
+      `uvm_info(get_type_name(), $sformatf("Destination register 0 is trying to be used, this will result in the same value of 0 being stored, so no operation is done!\n"), UVM_MEDIUM)
+    end
+  endfunction : decode_r_type_opcode
 
   function void decode_i_type_opcode(logic [31:0] my_instr);
     func3_i_type_e funct3;
@@ -251,7 +355,7 @@ class darkriscv_reference_model extends uvm_component;
     result_data = register_bank[source_reg_2];
     result_address = register_bank[source_reg_1] + imm_signed;
 
-    `uvm_info(get_type_name(), $sformatf("Storing %0d bytes of data 0x%0h to memory address 0x%0h\n", bytes_to_transfer, result_data, result_address), UVM_MEDIUM)
+    `uvm_info(get_type_name(), $sformatf("Storing %0d bytes of data R%0d = 0x%0h to memory address 0x%0h\n", bytes_to_transfer, source_reg_2, result_data, result_address), UVM_MEDIUM)
 
     output_item.instruction_address = next_instruction_address;
     output_item.data_address = result_address;
