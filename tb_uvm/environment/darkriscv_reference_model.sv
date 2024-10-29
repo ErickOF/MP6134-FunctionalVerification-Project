@@ -272,21 +272,15 @@ class darkriscv_reference_model extends uvm_component;
   endfunction : decode_s_type_opcode
 
   function void decode_j_type_opcode(logic [31:0] my_instr);
-    bit [19:0] imm;
     bit [4:0] destiny_rd_reg;
-    imm = my_instr[RISCV_INST_IMM_J_RANGE_HIGH:RISCV_INST_IMM_J_RANGE_LOW];
     destiny_rd_reg = my_instr[RISCV_INST_RD_RANGE_HIGH:RISCV_INST_RD_RANGE_LOW];
-    next_instruction_address_for_j = next_instruction_address;
 
-    //next_instruction_address += {signed'({imm[20], imm[7:0], imm[8], imm[19:10]}), 1'b0};
-    next_instruction_address_for_j += {signed'({my_instr[31], my_instr[19:12], my_instr[20], my_instr[30:21]}), 1'b0};
+    next_instruction_address_for_j = next_instruction_address - 32'h4;
+    next_instruction_address_for_j += 32'(signed'({my_instr[31], my_instr[19:12], my_instr[20], my_instr[30:21], 1'b0}));
     register_bank[destiny_rd_reg] = next_instruction_address + 32'h4;
     next_instruction_address = next_instruction_address_for_j;
 
     output_item.instruction_address = next_instruction_address_for_j;
-    //output_item.bytes_transfered = 0;
-    //output_item.write_op = 0;
-    //output_item.read_op = 0;
     send_output_item();
   endfunction : decode_j_type_opcode
 
