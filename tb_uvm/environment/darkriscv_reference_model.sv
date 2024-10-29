@@ -95,6 +95,9 @@ class darkriscv_reference_model extends uvm_component;
       s_type : begin
         decode_s_type_opcode(.my_instr(my_instr));
       end
+      b_type : begin
+        decode_b_type_opcode(.my_instr(my_instr));
+      end
       custom_0_type : begin
         `uvm_info(get_type_name(), $sformatf("Custom0 instruction detected, this is an idle instrucction so no action needed!"), UVM_MEDIUM)
       end
@@ -361,6 +364,105 @@ class darkriscv_reference_model extends uvm_component;
 
     next_instruction_address += 32'h4;
   endfunction : decode_s_type_opcode
+
+  function void decode_b_type_opcode(logic [31:0] my_instr);
+    func3_b_type_e funct3;
+    bit [4:0] source_reg_1;
+    bit [4:0] source_reg_2;
+
+    bit [12:0] imm;
+    bit signed [31:0] imm_signed = 0;
+
+    bit signed [31:0] result_offset = 0;
+
+    bit [31:0] result_address;
+
+    funct3 = func3_b_type_e'(my_instr[RISCV_INST_FUNC3_RANGE_HIGH:RISCV_INST_FUNC3_RANGE_LOW]);
+    source_reg_1 = my_instr[RISCV_INST_RS1_RANGE_HIGH:RISCV_INST_RS1_RANGE_LOW];
+    source_reg_2 = my_instr[RISCV_INST_RS2_RANGE_HIGH:RISCV_INST_RS2_RANGE_LOW];
+    imm[12] = my_instr[RISCV_INST_IMM_R_12];
+    imm[11] = my_instr[RISCV_INST_IMM_R_11];
+    imm[10:5] = my_instr[RISCV_INST_IMM_R_10_5_RANGE_HIGH:RISCV_INST_IMM_R_10_5_RANGE_LOW];
+    imm[4:1] = my_instr[RISCV_INST_IMM_R_4_1_RANGE_HIGH:RISCV_INST_IMM_R_4_1_RANGE_LOW];
+    imm[0] = 1'b0;
+    imm_signed = signed'(imm);
+    imm_signed *= 2;
+
+    case (funct3)
+      beq : begin
+        if (register_bank[source_reg_1] == register_bank[source_reg_2]) begin
+          result_offset = imm_signed;
+          `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since R%0d = %0h and R%0d = %0h were equal", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
+        end
+        else begin
+          result_offset = 32'h4;
+          `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since R%0d = %0h and R%0d = %0h were not equal", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
+        end
+      end
+      bne : begin
+        if (register_bank[source_reg_1] != register_bank[source_reg_2]) begin
+          result_offset = imm_signed;
+          `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since R%0d = %0h and R%0d = %0h were not equal", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
+        end
+        else begin
+          result_offset = 32'h4;
+          `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since R%0d = %0h and R%0d = %0h were equal", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
+        end
+      end
+      blt : begin
+        if (register_bank[source_reg_1] < register_bank[source_reg_2]) begin
+          result_offset = imm_signed;
+          `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since signed R%0d = %0h was less than signed R%0d = %0h", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
+        end
+        else begin
+          result_offset = 32'h4;
+          `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since signed R%0d = %0h was greater or equal than signed R%0d = %0h", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
+        end
+      end
+      bge : begin
+        if (register_bank[source_reg_1] > register_bank[source_reg_2]) begin
+          result_offset = imm_signed;
+          `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since signed R%0d = %0h was greater than signed R%0d = %0h", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
+        end
+        else begin
+          result_offset = 32'h4;
+          `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since signed R%0d = %0h was less or equal than signed R%0d = %0h", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
+        end
+      end
+      bltu : begin
+        if (unsigned'(register_bank[source_reg_1]) < unsigned'(register_bank[source_reg_2])) begin
+          result_offset = imm_signed;
+          `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since unsigned R%0d = %0h was less than unsigned R%0d = %0h", imm_signed, source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
+        end
+        else begin
+          result_offset = 32'h4;
+          `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since unsigned R%0d = %0h was greater or equal than unsigned R%0d = %0h", imm_signed, source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
+        end
+      end
+      bgeu : begin
+        if (unsigned'(register_bank[source_reg_1]) > unsigned'(register_bank[source_reg_2])) begin
+          result_offset = imm_signed;
+          `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since unsigned R%0d = %0h was greater than unsigned R%0d = %0h", imm_signed, source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
+        end
+        else begin
+          result_offset = 32'h4;
+          `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since unsigned R%0d = %0h was less or equal than unsigned R%0d = %0h", imm_signed, source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
+        end
+      end
+      default : begin
+        result_offset = 32'h4;
+        `uvm_info(get_type_name(), $sformatf("Function %0d was not recognized in R-type decoding, using the default offset of 4!", funct3), UVM_MEDIUM)
+      end
+    endcase
+
+    result_address = unsigned'(signed'(next_instruction_address) + result_offset);
+
+    `uvm_info(get_type_name(), $sformatf("On result from R-type decoding, advancing instruction address from %0h to %0h", next_instruction_address, result_address), UVM_MEDIUM)
+
+    send_filler_output_item();
+
+    next_instruction_address = result_address;
+  endfunction : decode_b_type_opcode
 
   function void send_output_item();
     darkriscv_output_item output_item_tmp;

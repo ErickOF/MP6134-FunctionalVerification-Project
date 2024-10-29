@@ -25,6 +25,7 @@ class darkriscv_item extends uvm_sequence_item;
   rand func3_r_type_e funct3_r_type;
   rand func3_i_type_e funct3_i_type;
   rand func3_s_type_e funct3_s_type;
+  rand func3_b_type_e funct3_b_type;
 
   `uvm_object_utils_begin(darkriscv_item)
     `uvm_field_int(opcode,     UVM_ALL_ON)
@@ -97,10 +98,15 @@ class darkriscv_item extends uvm_sequence_item;
 //      funct3 dist {funct3_s_type := 96, [3'b011:3'b111] := 4};
       funct3 == funct3_s_type;
     }
+    else if (opcode == b_type) {
+//      funct3 dist {funct3_b_type := 96, [3'b010:3'b011] := 4};
+      funct3 == funct3_b_type;
+    }
     solve opcode before funct3;
     solve funct3_r_type before funct3;
     solve funct3_i_type before funct3;
     solve funct3_s_type before funct3;
+    solve funct3_b_type before funct3;
   }
 
   constraint c_funct7 {

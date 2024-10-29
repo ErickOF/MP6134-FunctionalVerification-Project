@@ -82,6 +82,15 @@ typedef enum logic [2:0] {
 } func3_s_type_e;
 
 typedef enum logic [2:0] {
+  beq  = 3'b000,
+  bne  = 3'b001,
+  blt  = 3'b100,
+  bge  = 3'b101,
+  bltu = 3'b110,
+  bgeu = 3'b111
+} func3_b_type_e;
+
+typedef enum logic [2:0] {
   idle = 3'b000
 } func3_custom_0_type_e;
 
@@ -321,6 +330,12 @@ localparam int unsigned RISCV_INST_IMM_S_4_0_RANGE_LOW    = 7;
 localparam int unsigned RISCV_INST_IMM_S_4_0_RANGE_HIGH   = 11;
 localparam int unsigned RISCV_INST_FUNC7_RANGE_LOW        = 25;
 localparam int unsigned RISCV_INST_FUNC7_RANGE_HIGH       = 31;
+localparam int unsigned RISCV_INST_IMM_R_12               = 31;
+localparam int unsigned RISCV_INST_IMM_R_11               = 7;
+localparam int unsigned RISCV_INST_IMM_R_10_5_RANGE_LOW   = 25;
+localparam int unsigned RISCV_INST_IMM_R_10_5_RANGE_HIGH  = 30;
+localparam int unsigned RISCV_INST_IMM_R_4_1_RANGE_LOW    = 8;
+localparam int unsigned RISCV_INST_IMM_R_4_1_RANGE_HIGH   = 11;
 
 endpackage : instructions_pkg
 
