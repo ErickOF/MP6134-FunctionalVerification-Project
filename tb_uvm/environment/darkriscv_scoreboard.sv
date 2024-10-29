@@ -88,9 +88,6 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
 
     expected_ap = new("expected_ap", this);
     actual_ap = new("actual_ap", this);
-    // Initialize checkers
-    i_type_check = new("i_type_check", this);
-    s_type_check = new("s_type_check", this);
   endfunction : build_phase
 
   //-----------------------------------------------------------------------------------------------
@@ -109,11 +106,6 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
     super.run_phase(phase);
 
     `uvm_info(get_full_name(), "Start of run_phase", UVM_LOW)
-
-    fork
-      i_type_check.start_checker();
-      s_type_check.start_checker();
-    join_none
 
     forever begin
       expected_mb.get(expected_data);

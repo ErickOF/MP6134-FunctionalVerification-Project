@@ -38,6 +38,10 @@ class darkriscv_env extends uvm_env;
   // Reference model for results predictions
   darkriscv_reference_model ref_model;
 
+  // Checkers to make sure that the instructions are processed as expected
+  i_type_checker i_type_check;
+  s_type_checker s_type_check;
+
   //-----------------------------------------------------------------------------------------------
   // Function: build_phase
   //
@@ -62,6 +66,9 @@ class darkriscv_env extends uvm_env;
     output_sb = darkriscv_scoreboard #(darkriscv_output_item)::type_id::create("output_sb", this);
 
     ref_model = darkriscv_reference_model::type_id::create("ref_model", this);
+
+    i_type_check = i_type_checker::type_id::create("i_type_check", this);
+    s_type_check = s_type_checker::type_id::create("s_type_check", this);
 
     // Report the end of the build phase and print the component's hierarchy
     uvm_report_info(get_full_name(), "End_of_build_phase", UVM_LOW);

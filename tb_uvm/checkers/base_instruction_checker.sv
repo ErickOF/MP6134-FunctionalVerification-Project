@@ -61,6 +61,19 @@ virtual class base_instruction_checker extends uvm_component;
   endfunction : build_phase
 
   //-----------------------------------------------------------------------------------------------
+  // Task: run_phase
+  //
+  // This task is part of the UVM run phase. It currently does not contain any specific logic but
+  // can be used to perform any operations that need to happen during the run-time simulation.
+  //
+  // Parameters:
+  // - phase: Current UVM phase.
+  //-----------------------------------------------------------------------------------------------
+  virtual task run_phase(uvm_phase phase);
+    start_checker();
+  endtask : run_phase
+
+  //-----------------------------------------------------------------------------------------------
   // Task: start_checker
   //
   // This task is responsible for continuously monitoring the interface and checking instructions
