@@ -71,6 +71,7 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
   endfunction : new
 
   i_type_checker i_type_check;
+  s_type_checker s_type_check;
 
   //-----------------------------------------------------------------------------------------------
   // Function: build_phase
@@ -89,6 +90,7 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
     actual_ap = new("actual_ap", this);
     // Initialize checkers
     i_type_check = new("i_type_check", this);
+    s_type_check = new("s_type_check", this);
   endfunction : build_phase
 
   //-----------------------------------------------------------------------------------------------
@@ -110,6 +112,7 @@ class darkriscv_scoreboard #(type T = uvm_object) extends uvm_scoreboard;
 
     fork
       i_type_check.start_checker();
+      s_type_check.start_checker();
     join_none
 
     forever begin
