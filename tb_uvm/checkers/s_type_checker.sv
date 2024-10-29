@@ -22,7 +22,7 @@ class s_type_checker extends base_instruction_checker;
     super.new(name, parent);
   endfunction : new
 
-  //###############################################################################################
+  //-----------------------------------------------------------------------------------------------
   // Task: check_instruction
   // Description: Specialized check for S-type instructions.
   //
@@ -32,7 +32,7 @@ class s_type_checker extends base_instruction_checker;
   //
   // Example: S-type instructions calculate a memory address from a base register and an immediate
   //          value, then store a value from a source register to that address.
-  //###############################################################################################
+  //-----------------------------------------------------------------------------------------------
   task check_instruction();
     // Specialized check for S-type instructions
     if (this.opcode == s_type) begin
@@ -49,8 +49,21 @@ class s_type_checker extends base_instruction_checker;
     end
   endtask : check_instruction
 
+  //-----------------------------------------------------------------------------------------------
+  // Task: check_data_address
+  //
+  // Description:
+  //   This task verifies the data address calculation for S-type instructions (SW, SH, SB) in the
+  //   DUT. It computes the expected data address by adding the base register value (rs1) and the
+  //   immediate offset, then compares this to the address from the DUT.
+  //
+  // Notes:
+  //   - The task identifies the instruction type based on `funct3` and assigns a specific name
+  //     (SB, SH, SW) for more readable logs.
+  //   - A delay allows for proper signal stability before verification.
+  //-----------------------------------------------------------------------------------------------
   task check_data_address();
-    // Retrieve the `funct3` field from the instruction interface.
+    // Retrieve the `funct3` field from the instruction interface to identify the instruction type
     logic [2:0] funct3 = this.instruction_intf.s_type.funct3;
 
     // Determine the instruction name for logging purposes
@@ -58,32 +71,33 @@ class s_type_checker extends base_instruction_checker;
                         "SW" : (funct3 == 3'd1) ?
                           "SH" : "SB";
 
-    // Fetch the source register value from the DUT register file
+    // Fetch the source register value (rs1) from the DUT register file
     logic [31:0] reg_rs1 = darksimv.core0.REGS[instruction_intf.s_type.rs1];
 
     // Declare a 32-bit signed logic variable for the immediate value
     logic signed [31:0] imm;
 
+    // Variables for data addresses: expected and from DUT
     logic [31:0] data_address;
     logic [31:0] expected_data_address;
 
-    // Set the sign bit based on the MSB of imm2[6]
-    // If imm2[6] is set, sign-extension is applied, else zero-extension
+    // Set the sign bit based on the MSB of imm2[6] for sign extension if needed
     imm = instruction_intf.s_type.imm2[6] ? '1 : '0;
 
-    // Populate the imm variable with the upper (imm2) and lower (imm) parts
+    // Populate `imm` with the upper (imm2) and lower (imm1) parts of the immediate value
     imm[11:5] = instruction_intf.s_type.imm2;
     imm[4:0] = instruction_intf.s_type.imm1;
 
+    // Calculate the expected data address
     expected_data_address = reg_rs1 + imm;
 
-    // Introduce a delay to account for the HLT signal processing between instructions
+    // Introduce a delay for HLT signal processing
     repeat (2) @(posedge this.intf.CLK);
 
     // Retrieve the data address from the DUT
     data_address = darksimv.core0.DADDR;
 
-    // Log the data lengths for debugging purposes
+    // Log the data address values for debugging purposes
     `uvm_info(
       get_full_name(),
       $sformatf(
@@ -111,8 +125,22 @@ class s_type_checker extends base_instruction_checker;
     end
   endtask : check_data_address
 
+  //-----------------------------------------------------------------------------------------------
+  // Task: check_data_bus
+  //
+  // Description:
+  //   This task verifies the data bus value for S-type instructions (SW, SH, SB) by comparing the
+  //   expected value from the source register `rs2` with the actual value on the data bus
+  //   (`DATAO`) in the DUT.
+  //
+  // Notes:
+  //   - The task identifies the instruction type based on `funct3` and assigns a specific name
+  //     (SB, SH, SW) for more readable logs.
+  //   - A delay allows for signal stability before verification.
+  //
+  //-----------------------------------------------------------------------------------------------
   task check_data_bus();
-    // Retrieve the `funct3` field from the instruction interface.
+    // Retrieve the `funct3` field from the instruction interface to determine the instruction type
     logic [2:0] funct3 = this.instruction_intf.s_type.funct3;
 
     // Determine the instruction name for logging purposes
@@ -120,18 +148,19 @@ class s_type_checker extends base_instruction_checker;
                         "SW" : (funct3 == 3'd1) ?
                           "SH" : "SB";
 
-    // Fetch the source register 2 value from the DUT register file
+    // Fetch the source register 2 value (`rs2`) from the DUT register file
     logic [31:0] data_bus = darksimv.core0.REGS[instruction_intf.s_type.rs2];
 
+    // Declare expected data bus value from the DUT
     logic [31:0] expected_data_bus;
 
     // Introduce a delay to account for the HLT signal processing between instructions
     repeat (2) @(posedge this.intf.CLK);
 
-    // Retrieve the data bus from the DUT
+    // Retrieve the actual data bus value from the DUT
     expected_data_bus = darksimv.core0.DATAO;
 
-    // Log the data lengths for debugging purposes
+    // Log the data bus values for debugging purposes
     `uvm_info(
       get_full_name(),
       $sformatf(
@@ -143,7 +172,7 @@ class s_type_checker extends base_instruction_checker;
       UVM_LOW
     );
 
-    // Compare the DUT's data bus with the expected data bus
+    // Compare the DUT's data bus with the expected data bus value
     if (data_bus === expected_data_bus) begin
       `uvm_info(
         get_full_name(),
