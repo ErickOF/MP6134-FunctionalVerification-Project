@@ -54,6 +54,17 @@ typedef enum logic [6:0] {
 } inst_type_e;
 
 typedef enum logic [2:0] {
+  add_sub   = 3'b000,
+  sll       = 3'b001,
+  slt       = 3'b010,
+  sltu      = 3'b011,
+  xor_      = 3'b100,
+  srl_sra   = 3'b101,
+  or_       = 3'b110,
+  and_      = 3'b111
+} func3_r_type_e;
+
+typedef enum logic [2:0] {
   addi      = 3'b000,
   slli      = 3'b001,
   slti      = 3'b010,
@@ -308,6 +319,8 @@ localparam int unsigned RISCV_INST_IMM_S_11_5_RANGE_LOW   = 25;
 localparam int unsigned RISCV_INST_IMM_S_11_5_RANGE_HIGH  = 31;
 localparam int unsigned RISCV_INST_IMM_S_4_0_RANGE_LOW    = 7;
 localparam int unsigned RISCV_INST_IMM_S_4_0_RANGE_HIGH   = 11;
+localparam int unsigned RISCV_INST_FUNC7_RANGE_LOW        = 25;
+localparam int unsigned RISCV_INST_FUNC7_RANGE_HIGH       = 31;
 
 endpackage : instructions_pkg
 
