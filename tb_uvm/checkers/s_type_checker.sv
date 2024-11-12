@@ -75,7 +75,7 @@ class s_type_checker extends base_instruction_checker;
                           "SH" : "SB";
 
     // Fetch the source register value (rs1) from the DUT register file
-    logic [31:0] reg_rs1 = darksimv.core0.REGS[instruction_intf.s_type.rs1];
+    logic [31:0] reg_rs1 = `HDL_TOP.REGS[instruction_intf.s_type.rs1];
 
     // Declare a 32-bit signed logic variable for the immediate value
     logic signed [31:0] imm;
@@ -98,7 +98,7 @@ class s_type_checker extends base_instruction_checker;
     repeat (2) @(posedge this.intf.CLK);
 
     // Retrieve the data address from the DUT
-    data_address = darksimv.core0.DADDR;
+    data_address = `HDL_TOP.DADDR;
 
     // Log the data address values for debugging purposes
     `uvm_info(
@@ -110,7 +110,7 @@ class s_type_checker extends base_instruction_checker;
         expected_data_address
       ),
       UVM_LOW
-    );
+    )
 
     // Compare the DUT's data address with the expected data address
     if (data_address === expected_data_address) begin
@@ -118,13 +118,13 @@ class s_type_checker extends base_instruction_checker;
         get_full_name(),
         $sformatf("Data address for %s match", inst_name),
         UVM_LOW
-      );
+      )
     end
     else begin
       `uvm_error(
         get_full_name(),
         $sformatf("Data address for %s mismatch", inst_name)
-      );
+      )
     end
   endtask : check_data_address
 
@@ -152,7 +152,7 @@ class s_type_checker extends base_instruction_checker;
                           "SH" : "SB";
 
     // Fetch the source register 2 value (`rs2`) from the DUT register file
-    logic [31:0] data_bus = darksimv.core0.REGS[instruction_intf.s_type.rs2];
+    logic [31:0] data_bus = `HDL_TOP.REGS[instruction_intf.s_type.rs2];
 
     // Declare expected data bus value from the DUT
     logic [31:0] expected_data_bus;
@@ -161,7 +161,7 @@ class s_type_checker extends base_instruction_checker;
     repeat (2) @(posedge this.intf.CLK);
 
     // Retrieve the actual data bus value from the DUT
-    expected_data_bus = darksimv.core0.DATAO;
+    expected_data_bus = `HDL_TOP.DATAO;
 
     // Log the data bus values for debugging purposes
     `uvm_info(
@@ -173,7 +173,7 @@ class s_type_checker extends base_instruction_checker;
         expected_data_bus
       ),
       UVM_LOW
-    );
+    )
 
     // Compare the DUT's data bus with the expected data bus value
     if (data_bus === expected_data_bus) begin
@@ -181,13 +181,13 @@ class s_type_checker extends base_instruction_checker;
         get_full_name(),
         $sformatf("Data bus for %s match", inst_name),
         UVM_LOW
-      );
+      )
     end
     else begin
       `uvm_error(
         get_full_name(),
         $sformatf("Data bus for %s mismatch", inst_name)
-      );
+      )
     end
   endtask : check_data_bus
 
@@ -238,7 +238,7 @@ class s_type_checker extends base_instruction_checker;
         expected_data_len
       ),
       UVM_LOW
-    );
+    )
 
     // Compare the DUT's data length with the expected data length
     if (data_len === expected_data_len) begin
@@ -246,13 +246,13 @@ class s_type_checker extends base_instruction_checker;
         get_full_name(),
         $sformatf("Data len for %s match", inst_name),
         UVM_LOW
-      );
+      )
     end
     else begin
       `uvm_error(
         get_full_name(),
         $sformatf("Data len for %s mismatch", inst_name)
-      );
+      )
     end
   endtask : check_data_len
 
@@ -289,7 +289,7 @@ class s_type_checker extends base_instruction_checker;
         this.intf.DRW
       ),
       UVM_LOW
-    );
+    )
 
     // Compare the DUT's DRW with the expected DRW value of 1'b0
     if (this.intf.DRW === 1'b0) begin
@@ -297,13 +297,13 @@ class s_type_checker extends base_instruction_checker;
         get_full_name(),
         $sformatf("DRW for %s match", inst_name),
         UVM_LOW
-      );
+      )
     end
     else begin
       `uvm_error(
         get_full_name(),
         $sformatf("DRW for %s mismatch", inst_name)
-      );
+      )
     end
   endtask : check_drw
 
@@ -341,7 +341,7 @@ class s_type_checker extends base_instruction_checker;
         this.intf.DWR
       ),
       UVM_LOW
-    );
+    )
 
     // Compare the DUT's DWR with the expected DWR value of 1'b1
     if (this.intf.DWR === 1'b1) begin
@@ -349,13 +349,13 @@ class s_type_checker extends base_instruction_checker;
         get_full_name(),
         $sformatf("DWR for %s match", inst_name),
         UVM_LOW
-      );
+      )
     end
     else begin
       `uvm_error(
         get_full_name(),
         $sformatf("DWR for %s mismatch", inst_name)
-      );
+      )
     end
   endtask : check_dwr
 
@@ -394,7 +394,7 @@ class s_type_checker extends base_instruction_checker;
     repeat (2) @(posedge this.intf.CLK);
 
     // Retrieve the sign-extended immediate result from the DUT
-    simm = darksimv.core0.SIMM;
+    simm = `HDL_TOP.SIMM;
 
     // Print the immediate values for debugging
     `uvm_info(
@@ -406,7 +406,7 @@ class s_type_checker extends base_instruction_checker;
         imm
       ),
       UVM_LOW
-    );
+    )
 
     // Compare the RTL immediate (`simm`) with the expected (`imm`)
     if (simm === imm) begin
@@ -414,13 +414,13 @@ class s_type_checker extends base_instruction_checker;
         get_full_name(),
         $sformatf("IMM sign/zero-extension for %s match", inst_name),
         UVM_LOW
-      );
+      )
     end
     else begin
       `uvm_error(
         get_full_name(),
         $sformatf("IMM sign/zero-extension for %s mismatch", inst_name)
-      );
+      )
     end
   endtask : check_sign_extension
 endclass : s_type_checker

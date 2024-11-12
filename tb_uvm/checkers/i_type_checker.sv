@@ -60,7 +60,7 @@ class i_type_checker extends base_instruction_checker;
   //###############################################################################################
   task check_operation();
     // Fetch the source register value from the DUT register file
-    logic [31:0] reg_rs1 = darksimv.core0.REGS[instruction_intf.i_type.rs1];
+    logic [31:0] reg_rs1 = `HDL_TOP.REGS[instruction_intf.i_type.rs1];
     logic [11:0] i_type_imm = instruction_intf.i_type.imm;
     logic [2:0] funct3 = instruction_intf.i_type.funct3;
     logic [31:0] alu_result;
@@ -68,7 +68,7 @@ class i_type_checker extends base_instruction_checker;
     repeat (2) @(posedge this.intf.CLK);
 
     // Fetch the destination register value from the DUT
-    alu_result = darksimv.core0.RMDATA;
+    alu_result = `HDL_TOP.RMDATA;
 
     case (funct3)
       // ADDI Operation: Performs a add operation between rs1 and the immediate value, then checks
@@ -376,7 +376,7 @@ class i_type_checker extends base_instruction_checker;
     repeat (2) @(posedge this.intf.CLK);
 
     // Read immediate extension result
-    simm = darksimv.core0.SIMM;
+    simm = `HDL_TOP.SIMM;
 
     // Check the funct3 field to determine if the instruction uses sign-extension
     case (funct3)
@@ -487,7 +487,7 @@ class i_type_checker extends base_instruction_checker;
     repeat (2) @(posedge this.intf.CLK);
 
     // Read zero-extended immediate value
-    simm = darksimv.core0.SIMM;
+    simm = `HDL_TOP.SIMM;
 
     // Check the funct3 field to determine if the instruction uses zero-extension
     case (funct3)
