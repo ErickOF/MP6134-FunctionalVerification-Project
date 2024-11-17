@@ -132,7 +132,9 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
   virtual task reset();
     `uvm_info(get_type_name(), "Driving signals to initial/known values" , UVM_NONE)
     intf.HLT     = 0;
+`ifdef __INTERRUPT__
     intf.IRQ     = 0;
+`endif
     intf.IDATA   = 0;
     intf.DATAI   = 0;
 `ifdef SIMULATION

@@ -33,9 +33,9 @@ SIMDIR = darksocv_dir
 XSIM = $(SIMDIR)/darksocv
 VCDS = $(SIMDIR)/darksocv.vcd
 TRCE = $(SIMDIR)/darksocv.txt
-VCS = vcs -sverilog -full64 -debug_access+all +v2k +lint=all -Mdir=$(SIMDIR)
+VCS = vcs -sverilog -full64 -debug_access+all +v2k +lint=none -Mdir=$(SIMDIR)
 VCS_UVM = $(VCS) \
-	+acc +vpi -debug_access+nomemcbk+dmptf -debug_region+cell \
+	+acc +vpi -debug_access+dmptf -debug_region+cell \
 	+define+UVM_OBJECT_MUST_HAVE_CONSTRUCTOR \
 	-ntb_opts uvm-1.2 \
 	-timescale=1ns/1ps \

@@ -68,6 +68,10 @@ class i_type_checker extends base_instruction_checker;
 
     repeat (2) @(negedge this.intf.CLK);
 
+    if (`HDL_TOP.FLUSH > 0) begin
+      return;
+    end
+
     // Fetch the source register value from the DUT register file
     reg_rs1 = `HDL_TOP.REGS[reg_rs1_ptr];
 
@@ -239,7 +243,7 @@ class i_type_checker extends base_instruction_checker;
 
         // Compute the expected result for the operation
         logic [31:0] result = (imm[11:5] === 7'b010_0000) ?
-                                (reg_rs1 >>> $signed(imm[4:0])) :
+                                ($signed($signed(reg_rs1) >>> imm[4:0])) :
                                 (reg_rs1 >> imm[4:0]);
 
         string inst_name = (imm[11:5] === 7'b010_0000) ? "SRAI" : "SRLI";
@@ -382,6 +386,10 @@ class i_type_checker extends base_instruction_checker;
 
     // Consider the HLT between instructions
     repeat (2) @(negedge this.intf.CLK);
+
+    if (`HDL_TOP.FLUSH > 0) begin
+      return;
+    end
 
     // Read immediate extension result
     simm = `HDL_TOP.SIMM;

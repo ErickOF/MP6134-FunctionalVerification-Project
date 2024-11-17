@@ -28,7 +28,7 @@ class darkriscv_item extends uvm_sequence_item;
   rand func3_b_type_e funct3_b_type;
 
   `uvm_object_utils_begin(darkriscv_item)
-    `uvm_field_int(opcode,     UVM_ALL_ON)
+    `uvm_field_enum(inst_type_e, opcode, UVM_ALL_ON)
     `uvm_field_int(rd,         UVM_ALL_ON)
     `uvm_field_int(rs1,        UVM_ALL_ON)
     `uvm_field_int(rs2,        UVM_ALL_ON)
@@ -131,7 +131,7 @@ class darkriscv_item extends uvm_sequence_item;
   constraint c_imm_valid {
     if (opcode == i_type) {
       if ((funct3_i_type == slli) || (funct3_i_type == srli_srai)) {
-        imm[9:5] == 5'b000_0000;
+        imm[9:5] == 5'b0_0000;
         imm[11] == 1'b0;
         if (funct3_i_type == slli) {
           imm[10] == 1'b0;
@@ -143,7 +143,7 @@ class darkriscv_item extends uvm_sequence_item;
   }
 
   constraint c_supported_type_only {
-    opcode inside {r_type, i_type, s_type};
+    opcode inside {r_type, i_type, s_type, b_type};
   }
 
   constraint c_avoid_bugs {

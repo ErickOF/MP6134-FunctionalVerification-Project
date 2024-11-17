@@ -16,7 +16,15 @@ class darkriscv_reference_model extends uvm_component;
 
   logic [31:0] next_instruction_address;
 
+  logic [31:0] pc[4];
+
   bit previous_inst_s_type;
+
+  bit previous_inst_b_j_type;
+
+  darkriscv_output_item next_output_item_queue[$];
+
+  int flushing_pipeline;
 
   `uvm_component_utils(darkriscv_reference_model)
 
@@ -30,14 +38,33 @@ class darkriscv_reference_model extends uvm_component;
     end
 
     next_instruction_address = 32'hXXXX_XXXX;
+    foreach (pc[i]) begin
+      pc[i] = 32'hXXXX_XXXX;
+    end
 
     previous_inst_s_type = 1'b0;
+
+    previous_inst_b_j_type = 1'b0;
+
+    flushing_pipeline = 0;
   endfunction : new
 
   function void reset();
     register_bank[0] = 32'h0;
 
     next_instruction_address = 32'h0;
+    pc[3] = 32'h0;
+    pc[2] = 32'h0;
+    pc[1] = 32'h4;
+    pc[0] = 32'h8;
+
+    previous_inst_s_type = 1'b0;
+
+    previous_inst_b_j_type = 1'b0;
+
+    next_output_item_queue.delete();
+
+    flushing_pipeline = 0;
   endfunction : reset
 
   function void build_phase(uvm_phase phase);
@@ -47,9 +74,19 @@ class darkriscv_reference_model extends uvm_component;
     output_item = darkriscv_output_item::type_id::create("output_item");
   endfunction : build_phase
 
-  task run_phase(uvm_phase phase);
-    wait_for_instructions();
-  endtask : run_phase
+  task main_phase(uvm_phase phase);
+    super.main_phase(phase);
+    fork
+      wait_for_instructions();
+    join_none
+  endtask : main_phase
+
+  task post_main_phse(uvm_phase phase);
+    super.post_main_phase(phase);
+    while (next_output_item_queue.size() > 0) begin
+      send_output_item();
+    end
+  endtask : post_main_phse
 
   function void write_in_dat(darkriscv_input_item input_item);
     darkriscv_input_item input_item_tmp;
@@ -80,42 +117,52 @@ class darkriscv_reference_model extends uvm_component;
 
     opcode = inst_type_e'(my_instr[RISCV_INST_OPCODE_RANGE_HIGH+1:RISCV_INST_OPCODE_RANGE_LOW]);
 
-    if ((opcode == s_type) && (previous_inst_s_type == 1'b0)) begin
-      send_filler_output_item();
-      next_instruction_address += 32'h4;
+    send_output_item();
+
+    if (flushing_pipeline > 0) begin
+      `uvm_info(get_type_name(), $sformatf("The pipeline is being flushed after B/J instructions!"), UVM_LOW)
+    end
+    else begin
+      case (opcode)
+        r_type : begin
+          `uvm_info(get_type_name(), $sformatf("R instruction detected"), UVM_MEDIUM)
+          decode_r_type_opcode(.my_instr(my_instr));
+        end
+        i_type : begin
+          `uvm_info(get_type_name(), $sformatf("I instruction detected"), UVM_MEDIUM)
+          decode_i_type_opcode(.my_instr(my_instr));
+        end
+        s_type : begin
+          `uvm_info(get_type_name(), $sformatf("S instruction detected"), UVM_MEDIUM)
+          decode_s_type_opcode(.my_instr(my_instr));
+        end
+        b_type : begin
+          `uvm_info(get_type_name(), $sformatf("B instruction detected"), UVM_MEDIUM)
+          decode_b_type_opcode(.my_instr(my_instr));
+        end
+        custom_0_type : begin
+          `uvm_info(get_type_name(), $sformatf("Custom0 instruction detected, this is an idle instrucction so no action needed!"), UVM_MEDIUM)
+        end
+        default : begin
+          `uvm_error(get_type_name(), $sformatf("Instruction type %s = %0h is not supported right now in the reference model\n", opcode.name(), opcode))
+        end
+      endcase
     end
 
-    case (opcode)
-      r_type : begin
-        decode_r_type_opcode(.my_instr(my_instr));
-      end
-      i_type : begin
-        decode_i_type_opcode(.my_instr(my_instr));
-      end
-      s_type : begin
-        decode_s_type_opcode(.my_instr(my_instr));
-      end
-      b_type : begin
-        decode_b_type_opcode(.my_instr(my_instr));
-      end
-      custom_0_type : begin
-        `uvm_info(get_type_name(), $sformatf("Custom0 instruction detected, this is an idle instrucction so no action needed!"), UVM_MEDIUM)
-      end
-      default : begin
-        `uvm_error(get_type_name(), $sformatf("Instruction type %s = %0h is not supported right now in the reference model\n", opcode.name(), opcode))
-      end
-    endcase
-
-    if ((opcode != s_type)) begin
-      if ((previous_inst_s_type == 1'b0) && (opcode != j_type) && (opcode != b_type)) begin
-        send_filler_output_item();
-        next_instruction_address += 32'h4;
-      end
-      else begin
-        previous_inst_s_type = 1'b0;
-      end
+    if (((opcode != j_type) && (opcode != b_type)) || ((flushing_pipeline > 0) && (flushing_pipeline < 3))) begin
+      update_pc();
+      pc[0] += 32'h4;
     end
   endfunction : proccess_instructions
+
+  function void update_pc();
+    `uvm_info(get_type_name(), $sformatf("PC[3] = %0h PC[2] = %0h PC[1] = %0h PC[0] = %0h", pc[3], pc[2], pc[1], pc[0]), UVM_MEDIUM)
+
+    pc[3] = pc[2];
+    pc[2] = pc[1];
+    pc[1] = pc[0];
+    next_instruction_address = pc[2];
+  endfunction : update_pc
 
   function void decode_r_type_opcode(logic [31:0] my_instr);
     func3_r_type_e funct3;
@@ -312,6 +359,8 @@ class darkriscv_reference_model extends uvm_component;
   endfunction : decode_i_type_opcode
 
   function void decode_s_type_opcode(logic [31:0] my_instr);
+    darkriscv_output_item output_item_tmp;
+
     func3_s_type_e funct3;
     bit [4:0] source_reg_1;
     bit [4:0] source_reg_2;
@@ -352,17 +401,18 @@ class darkriscv_reference_model extends uvm_component;
 
     `uvm_info(get_type_name(), $sformatf("Storing %0d bytes of data R%0d = 0x%0h to memory address 0x%0h\n", bytes_to_transfer, source_reg_2, result_data, result_address), UVM_MEDIUM)
 
-    output_item.instruction_address = next_instruction_address;
+    output_item.instruction_address = 32'hXXXX_XXXX;
     output_item.data_address = result_address;
     output_item.output_data = result_data;
     output_item.bytes_transfered = bytes_to_transfer;
     output_item.write_op = 1;
     output_item.read_op = 0;
-    send_output_item();
 
-    previous_inst_s_type = 1'b1;
+    if (!$cast(output_item_tmp, output_item.clone())) begin
+      `uvm_fatal(get_type_name(), "Couldn't cast output_item!")
+    end
 
-    next_instruction_address += 32'h4;
+    next_output_item_queue.push_back(output_item_tmp);
   endfunction : decode_s_type_opcode
 
   function void decode_b_type_opcode(logic [31:0] my_instr);
@@ -377,6 +427,8 @@ class darkriscv_reference_model extends uvm_component;
 
     bit [31:0] result_address;
 
+    bit taking_branch;
+
     funct3 = func3_b_type_e'(my_instr[RISCV_INST_FUNC3_RANGE_HIGH:RISCV_INST_FUNC3_RANGE_LOW]);
     source_reg_1 = my_instr[RISCV_INST_RS1_RANGE_HIGH:RISCV_INST_RS1_RANGE_LOW];
     source_reg_2 = my_instr[RISCV_INST_RS2_RANGE_HIGH:RISCV_INST_RS2_RANGE_LOW];
@@ -386,86 +438,128 @@ class darkriscv_reference_model extends uvm_component;
     imm[4:1] = my_instr[RISCV_INST_IMM_R_4_1_RANGE_HIGH:RISCV_INST_IMM_R_4_1_RANGE_LOW];
     imm[0] = 1'b0;
     imm_signed = signed'(imm);
-    imm_signed *= 2;
 
     case (funct3)
       beq : begin
         if (register_bank[source_reg_1] == register_bank[source_reg_2]) begin
           result_offset = imm_signed;
+          taking_branch = 1'b1;
           `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since R%0d = %0h and R%0d = %0h were equal", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
         end
         else begin
           result_offset = 32'h4;
+          taking_branch = 1'b0;
           `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since R%0d = %0h and R%0d = %0h were not equal", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
         end
       end
       bne : begin
         if (register_bank[source_reg_1] != register_bank[source_reg_2]) begin
           result_offset = imm_signed;
+          taking_branch = 1'b1;
           `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since R%0d = %0h and R%0d = %0h were not equal", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
         end
         else begin
           result_offset = 32'h4;
+          taking_branch = 1'b0;
           `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since R%0d = %0h and R%0d = %0h were equal", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
         end
       end
       blt : begin
         if (register_bank[source_reg_1] < register_bank[source_reg_2]) begin
           result_offset = imm_signed;
+          taking_branch = 1'b1;
           `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since signed R%0d = %0h was less than signed R%0d = %0h", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
         end
         else begin
           result_offset = 32'h4;
+          taking_branch = 1'b0;
           `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since signed R%0d = %0h was greater or equal than signed R%0d = %0h", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
         end
       end
       bge : begin
         if (register_bank[source_reg_1] > register_bank[source_reg_2]) begin
           result_offset = imm_signed;
+          taking_branch = 1'b1;
           `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since signed R%0d = %0h was greater than signed R%0d = %0h", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
         end
         else begin
           result_offset = 32'h4;
+          taking_branch = 1'b0;
           `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since signed R%0d = %0h was less or equal than signed R%0d = %0h", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
         end
       end
       bltu : begin
         if (unsigned'(register_bank[source_reg_1]) < unsigned'(register_bank[source_reg_2])) begin
           result_offset = imm_signed;
+          taking_branch = 1'b1;
           `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since unsigned R%0d = %0h was less than unsigned R%0d = %0h", imm_signed, source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
         end
         else begin
           result_offset = 32'h4;
+          taking_branch = 1'b0;
           `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since unsigned R%0d = %0h was greater or equal than unsigned R%0d = %0h", imm_signed, source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
         end
       end
       bgeu : begin
         if (unsigned'(register_bank[source_reg_1]) > unsigned'(register_bank[source_reg_2])) begin
           result_offset = imm_signed;
+          taking_branch = 1'b1;
           `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since unsigned R%0d = %0h was greater than unsigned R%0d = %0h", imm_signed, source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
         end
         else begin
           result_offset = 32'h4;
+          taking_branch = 1'b0;
           `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since unsigned R%0d = %0h was less or equal than unsigned R%0d = %0h", imm_signed, source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
         end
       end
       default : begin
         result_offset = 32'h4;
+          taking_branch = 1'b0;
         `uvm_info(get_type_name(), $sformatf("Function %0d was not recognized in R-type decoding, using the default offset of 4!", funct3), UVM_MEDIUM)
       end
     endcase
 
-    result_address = unsigned'(signed'(next_instruction_address) + result_offset);
+    if (taking_branch == 1'b1) begin
+      result_address = unsigned'(signed'(pc[3]) + result_offset);
 
-    `uvm_info(get_type_name(), $sformatf("On result from R-type decoding, advancing instruction address from %0h to %0h", next_instruction_address, result_address), UVM_MEDIUM)
+      `uvm_info(get_type_name(), $sformatf("On result from B-type decoding, advancing instruction address from %0h to %0h", pc[1], result_address), UVM_MEDIUM)
 
-    send_filler_output_item();
+      pc[0] = result_address;
 
-    next_instruction_address = result_address;
+      result_address += 32'h4;
+
+      flushing_pipeline = 3;
+    end
+    else begin
+      result_address = unsigned'(signed'(pc[0]) + result_offset);
+
+      `uvm_info(get_type_name(), $sformatf("On result from B-type decoding, advancing instruction address from %0h to %0h", pc[0], result_address), UVM_MEDIUM)
+    end
+
+    update_pc();
+    pc[0] = result_address;
   endfunction : decode_b_type_opcode
 
   function void send_output_item();
     darkriscv_output_item output_item_tmp;
+
+    if (next_output_item_queue.size() > 0) begin
+      output_item = next_output_item_queue.pop_front();
+    end
+    else begin
+      output_item.bytes_transfered = 0;
+      output_item.write_op = 0;
+      output_item.read_op = 0;
+    end
+
+    if (flushing_pipeline > 0) begin
+      output_item.bytes_transfered = 0;
+      output_item.write_op = 0;
+      output_item.read_op = 0;
+      flushing_pipeline--;
+    end
+
+    output_item.instruction_address = next_instruction_address;
 
     if (!$cast(output_item_tmp, output_item.clone())) begin
       `uvm_fatal(get_type_name(), "Couldn't cast output_item!")
@@ -473,16 +567,8 @@ class darkriscv_reference_model extends uvm_component;
 
     output_data_ap.write(output_item_tmp);
 
-    `uvm_info(get_type_name(), "Sent item to scoreboard!", UVM_MEDIUM)
+    `uvm_info(get_type_name(), $sformatf("Sent item to scoreboard!\n%s", output_item_tmp.sprint()), UVM_MEDIUM)
   endfunction : send_output_item
-
-  function void send_filler_output_item();
-    output_item.instruction_address = next_instruction_address;
-    output_item.bytes_transfered = 0;
-    output_item.write_op = 0;
-    output_item.read_op = 0;
-    send_output_item();
-  endfunction : send_filler_output_item
 
 endclass : darkriscv_reference_model
 
