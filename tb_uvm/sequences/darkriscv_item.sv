@@ -24,6 +24,7 @@ class darkriscv_item extends uvm_sequence_item;
 
   rand func3_r_type_e funct3_r_type;
   rand func3_i_type_e funct3_i_type;
+  rand func3_l_type_e funct3_l_type;
   rand func3_s_type_e funct3_s_type;
   rand func3_b_type_e funct3_b_type;
 
@@ -44,6 +45,9 @@ class darkriscv_item extends uvm_sequence_item;
       riscv_inst == {funct7, rs2, rs1, funct3, rd, opcode};
     }
     else if (opcode == i_type) {
+      riscv_inst == {imm[11:0], rs1, funct3, rd, opcode};
+    }
+    else if (opcode == l_type) {
       riscv_inst == {imm[11:0], rs1, funct3, rd, opcode};
     }
     else if (opcode == s_type) {
@@ -68,7 +72,7 @@ class darkriscv_item extends uvm_sequence_item;
     if (opcode == r_type) {
       imm == 32'd0; // There are no immediate values for R-type registers, so keep those bits low
     }
-    else if (opcode inside {i_type, s_type}) {
+    else if (opcode inside {i_type, s_type, l_type}) {
       imm[31:12] == 'd0; // Bits at positions higher than 11 are not going to be used, so let's force them low in order to randomize values within [11:0] frame
     }
     else if (opcode == b_type) {
@@ -94,6 +98,9 @@ class darkriscv_item extends uvm_sequence_item;
     else if (opcode == i_type) {
       funct3 == funct3_i_type;
     }
+    else if (opcode == l_type) {
+      funct3 == funct3_l_type;
+    }
     else if (opcode == s_type) {
 //      funct3 dist {funct3_s_type := 96, [3'b011:3'b111] := 4};
       funct3 == funct3_s_type;
@@ -105,6 +112,7 @@ class darkriscv_item extends uvm_sequence_item;
     solve opcode before funct3;
     solve funct3_r_type before funct3;
     solve funct3_i_type before funct3;
+    solve funct3_l_type before funct3;
     solve funct3_s_type before funct3;
     solve funct3_b_type before funct3;
   }
@@ -143,7 +151,7 @@ class darkriscv_item extends uvm_sequence_item;
   }
 
   constraint c_supported_type_only {
-    opcode inside {r_type, i_type, s_type, b_type, u_lui_type, u_auipc_type};
+    opcode inside {r_type, i_type, l_type, s_type, b_type, u_lui_type, u_auipc_type};
   }
 
   constraint c_avoid_bugs {

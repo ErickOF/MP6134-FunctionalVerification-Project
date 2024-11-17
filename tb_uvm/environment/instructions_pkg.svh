@@ -39,6 +39,8 @@ typedef enum logic [6:0] {
   // I-type instructions (immediate)
   // TODO: only for: ADDI, XORI, ORI, ANDI, SLLI, SRLI, SRAI, SLTI and SLTIU
   i_type = 7'b001_0011,
+  // S-type instructions (load)
+  l_type = 7'b000_0011,
   // S-type instructions (store)
   s_type = 7'b010_0011,
   // B-type instructions (branch)
@@ -76,6 +78,14 @@ typedef enum logic [2:0] {
   ori       = 3'b110,
   andi      = 3'b111
 } func3_i_type_e;
+
+typedef enum logic [2:0] {
+  lb  = 3'b000,
+  lh  = 3'b001,
+  lw  = 3'b010,
+  lbu = 3'b100,
+  lhu = 3'b101
+} func3_l_type_e;
 
 typedef enum logic [2:0] {
   sb = 3'b000,

@@ -23,6 +23,7 @@ class darkriscv_reference_model extends uvm_component;
   bit previous_inst_b_j_type;
 
   darkriscv_output_item next_output_item_queue[$];
+  darkriscv_output_item next_load_queue[$];
 
   int flushing_pipeline;
 
@@ -63,6 +64,7 @@ class darkriscv_reference_model extends uvm_component;
     previous_inst_b_j_type = 1'b0;
 
     next_output_item_queue.delete();
+    next_load_queue.delete();
 
     flushing_pipeline = 0;
   endfunction : reset
@@ -101,21 +103,25 @@ class darkriscv_reference_model extends uvm_component;
   task wait_for_instructions();
     darkriscv_input_item my_input_data;
     logic [31:0] my_instr;
+    logic [31:0] my_data;
 
     forever begin
       mb_mn_instr.get(my_input_data);
       my_instr = my_input_data.instruction_data;
+      my_data = my_input_data.input_data;
 
-      proccess_instructions(.my_instr(my_instr));
+      proccess_instructions(.my_instr(my_instr), .my_data(my_data));
     end
   endtask : wait_for_instructions
 
-  function void proccess_instructions(logic [31:0] my_instr);
+  function void proccess_instructions(logic [31:0] my_instr, logic[31:0] my_data);
     inst_type_e opcode;
 
     `uvm_info(get_type_name(), $sformatf("Decoding instruction %0h", my_instr), UVM_LOW)
 
     opcode = inst_type_e'(my_instr[RISCV_INST_OPCODE_RANGE_HIGH+1:RISCV_INST_OPCODE_RANGE_LOW]);
+
+    check_for_prev_load(.my_data(my_data));
 
     send_output_item();
 
@@ -131,6 +137,10 @@ class darkriscv_reference_model extends uvm_component;
         i_type : begin
           `uvm_info(get_type_name(), $sformatf("I instruction detected"), UVM_MEDIUM)
           decode_i_type_opcode(.my_instr(my_instr));
+        end
+        l_type : begin
+          `uvm_info(get_type_name(), $sformatf("L instruction detected"), UVM_MEDIUM)
+          decode_l_type_opcode(.my_instr(my_instr));
         end
         s_type : begin
           `uvm_info(get_type_name(), $sformatf("S instruction detected"), UVM_MEDIUM)
@@ -361,6 +371,64 @@ class darkriscv_reference_model extends uvm_component;
       `uvm_info(get_type_name(), $sformatf("Destination register 0 is trying to be used, this will result in the same value of 0 being stored, so no operation is done!\n"), UVM_MEDIUM)
     end
   endfunction : decode_i_type_opcode
+
+  function void decode_l_type_opcode(logic [31:0] my_instr);
+    darkriscv_output_item output_item_tmp;
+
+    func3_l_type_e funct3;
+    bit [4:0] dest_reg;
+    bit [4:0] source_reg_1;
+
+    bit [11:0] imm;
+    bit signed [31:0] imm_signed = 0;
+
+    bit signed [31:0] result_address = 0;
+    int bytes_to_load = 0;
+
+    funct3 = func3_l_type_e'(my_instr[RISCV_INST_FUNC3_RANGE_HIGH:RISCV_INST_FUNC3_RANGE_LOW]);
+    dest_reg = my_instr[RISCV_INST_RD_RANGE_HIGH:RISCV_INST_RD_RANGE_LOW];
+    source_reg_1 = my_instr[RISCV_INST_RS1_RANGE_HIGH:RISCV_INST_RS1_RANGE_LOW];
+    imm[11:0] = my_instr[RISCV_INST_IMM_I_11_0_RANGE_HIGH:RISCV_INST_IMM_I_11_0_RANGE_LOW];
+    imm_signed = signed'(imm);
+
+    case (funct3)
+      lw : begin
+        bytes_to_load = 4;
+      end
+      lh, lhu : begin
+        bytes_to_load = 2;
+      end
+      lb, lbu : begin
+        bytes_to_load = 1;
+      end
+      default : begin
+        bytes_to_load = 0;
+        `uvm_info(get_type_name(), $sformatf("Function %0d was not recognized in L-type decoding, loading 0 bytes of data!\n", funct3), UVM_MEDIUM)
+      end
+    endcase
+
+    `uvm_info("DEBUG", $sformatf("rs1 %08h imm %08h", register_bank[source_reg_1], imm_signed), UVM_LOW)
+    result_address = register_bank[source_reg_1] + imm_signed;
+
+    `uvm_info(get_type_name(), $sformatf("Loading %0d bytes of data from memory address 0x%0h to R%0d = 0x%0h", bytes_to_load, result_address, dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+
+    output_item.instruction_address = 32'hXXXX_XXXX;
+    output_item.data_address = result_address;
+    output_item.output_data = 32'h0;
+    // Use the output data to hold the destination register and the funct3 value
+    output_item.output_data[4:0] = dest_reg;
+    output_item.output_data[7:5] = funct3;
+    output_item.bytes_transfered = bytes_to_load;
+    output_item.write_op = 0;
+    output_item.read_op = 1;
+
+    if (!$cast(output_item_tmp, output_item.clone())) begin
+      `uvm_fatal(get_type_name(), "Couldn't cast output_item!")
+    end
+
+    next_output_item_queue.push_back(output_item_tmp);
+    next_load_queue.push_back(output_item_tmp);
+  endfunction : decode_l_type_opcode
 
   function void decode_s_type_opcode(logic [31:0] my_instr);
     darkriscv_output_item output_item_tmp;
@@ -605,6 +673,66 @@ class darkriscv_reference_model extends uvm_component;
 
     `uvm_info(get_type_name(), $sformatf("Sent item to scoreboard!\n%s", output_item_tmp.sprint()), UVM_MEDIUM)
   endfunction : send_output_item
+
+  function void check_for_prev_load(logic [31:0] my_data);
+    darkriscv_output_item output_item_tmp;
+
+    if (next_load_queue.size() == 0) begin
+      return;
+    end
+    output_item_tmp = next_load_queue.pop_front();
+
+    if (flushing_pipeline == 0) begin
+      func3_l_type_e funct3;
+      bit [4:0] dest_reg;
+
+      bit signed [31:0] result_s;
+
+      funct3 = func3_l_type_e'(output_item_tmp.output_data[7:5]);
+      dest_reg = output_item_tmp.output_data[4:0];
+      
+      case (funct3)
+        lw : begin
+          bit [31:0] result;
+          result = my_data[31:0];
+          result_s = signed'(result);
+          `uvm_info(get_type_name(), $sformatf("Loading 4 bytes of data = 0x%0h from memory address 0x%0h to R%0d = 0x%0h", result_s, output_item_tmp.data_address, dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+          register_bank[dest_reg] = result_s;
+        end
+        lh, lhu : begin
+          bit [15:0] result;
+          result = my_data[15:0];
+          if (funct3 == lh) begin
+            result_s = signed'(result);
+            `uvm_info(get_type_name(), $sformatf("Loading 4 bytes of data = 0x%0h after sign-extending 2 bytes of data = 0x%0h from memory address 0x%0h to R%0d = 0x%0h", result_s, result, output_item_tmp.data_address, dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+            register_bank[dest_reg] = result_s;
+          end
+          else begin
+            result_s = unsigned'(result);
+            `uvm_info(get_type_name(), $sformatf("Loading 4 bytes of data = 0x%0h after zero-extending 2 bytes of data = 0x%0h from memory address 0x%0h to R%0d = 0x%0h", result_s, result, output_item_tmp.data_address, dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+            register_bank[dest_reg] = result_s;
+          end
+        end
+        lb, lbu : begin
+          bit [7:0] result;
+          result = my_data[7:0];
+          if (funct3 == lb) begin
+            result_s = signed'(result);
+            `uvm_info(get_type_name(), $sformatf("Loading 4 bytes of data = 0x%0h after sign-extending 1 byte of data = 0x%0h from memory address 0x%0h to R%0d = 0x%0h", result_s, result, output_item_tmp.data_address, dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+            register_bank[dest_reg] = result_s;
+          end
+          else begin
+            result_s = unsigned'(result);
+            `uvm_info(get_type_name(), $sformatf("Loading 4 bytes of data = 0x%0h after zero-extending 1 byte of data = 0x%0h from memory address 0x%0h to R%0d = 0x%0h", result_s, result, output_item_tmp.data_address, dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+            register_bank[dest_reg] = result_s;
+          end
+        end
+        default : begin
+          `uvm_info(get_type_name(), $sformatf("Function %0d was not recognized in L-type decoding, loading 0 bytes of data!", funct3), UVM_MEDIUM)
+        end
+      endcase
+    end
+  endfunction : check_for_prev_load
 
 endclass : darkriscv_reference_model
 
