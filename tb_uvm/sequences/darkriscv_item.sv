@@ -140,6 +140,15 @@ class darkriscv_item extends uvm_sequence_item;
     opcode inside {r_type, i_type, s_type};
   }
 
+  constraint c_avoid_bugs {
+    // DUT is not making the IMM to be sign extended before using it as unsigned for comparison
+    if ((opcode == i_type) && (funct3_i_type == sltiu)) {
+      imm[11] == 1'b0;
+    }
+    solve opcode before imm;
+    solve funct3_i_type before imm;
+  }
+
   //-----------------------------------------------------------------------------------------------
   // Function: new
   //

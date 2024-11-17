@@ -156,14 +156,19 @@ class s_type_checker extends base_instruction_checker;
                         "SW" : (funct3 == 3'd1) ?
                           "SH" : "SB";
 
-    // Fetch the source register 2 value (`rs2`) from the DUT register file
-    logic [31:0] data_bus = `HDL_TOP.REGS[instruction_intf.s_type.rs2];
+    logic [4:0] reg_rs2_ptr = instruction_intf.s_type.rs2;
+
+    // Source register 2 value (`rs2`) from the DUT register file
+    logic [31:0] data_bus;
 
     // Declare expected data bus value from the DUT
     logic [31:0] expected_data_bus;
 
     // Introduce a delay to account for the HLT signal processing between instructions
     repeat (2) @(negedge this.intf.CLK);
+
+    // Fetch the source register 2 value (`rs2`) from the DUT register file
+    data_bus = `HDL_TOP.REGS[reg_rs2_ptr];
 
     // Retrieve the actual data bus value from the DUT
     expected_data_bus = `HDL_TOP.DATAO;
