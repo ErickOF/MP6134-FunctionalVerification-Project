@@ -45,7 +45,9 @@ typedef enum logic [6:0] {
   b_type = 7'b110_0011,
   // U-type instructions (AUIPC)
   // TODO: only for AUIPC
-  u_type = 7'b001_0111,
+  u_auipc_type = 7'b001_0111,
+  // TODO: only for LUI
+  u_lui_type = 7'b011_0111,
   // J-type instructions (JAL)
   // TODO: only for JAL
   j_type = 7'b110_1111,
@@ -336,6 +338,8 @@ localparam int unsigned RISCV_INST_IMM_R_10_5_RANGE_LOW   = 25;
 localparam int unsigned RISCV_INST_IMM_R_10_5_RANGE_HIGH  = 30;
 localparam int unsigned RISCV_INST_IMM_R_4_1_RANGE_LOW    = 8;
 localparam int unsigned RISCV_INST_IMM_R_4_1_RANGE_HIGH   = 11;
+localparam int unsigned RISCV_INST_IMM_U_31_12_RANGE_LOW  = 12;
+localparam int unsigned RISCV_INST_IMM_U_31_12_RANGE_HIGH = 31;
 
 endpackage : instructions_pkg
 

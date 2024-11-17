@@ -140,6 +140,10 @@ class darkriscv_reference_model extends uvm_component;
           `uvm_info(get_type_name(), $sformatf("B instruction detected"), UVM_MEDIUM)
           decode_b_type_opcode(.my_instr(my_instr));
         end
+        u_lui_type, u_auipc_type : begin
+          `uvm_info(get_type_name(), $sformatf("U instruction detected"), UVM_MEDIUM)
+          decode_u_type_opcode(.my_instr(my_instr));
+        end
         custom_0_type : begin
           `uvm_info(get_type_name(), $sformatf("Custom0 instruction detected, this is an idle instrucction so no action needed!"), UVM_MEDIUM)
         end
@@ -477,15 +481,15 @@ class darkriscv_reference_model extends uvm_component;
         end
       end
       bge : begin
-        if (register_bank[source_reg_1] > register_bank[source_reg_2]) begin
+        if (register_bank[source_reg_1] >= register_bank[source_reg_2]) begin
           result_offset = imm_signed;
           taking_branch = 1'b1;
-          `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since signed R%0d = %0h was greater than signed R%0d = %0h", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
+          `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since signed R%0d = %0h was greater or equal than signed R%0d = %0h", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
         end
         else begin
           result_offset = 32'h4;
           taking_branch = 1'b0;
-          `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since signed R%0d = %0h was less or equal than signed R%0d = %0h", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
+          `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since signed R%0d = %0h was less than signed R%0d = %0h", imm_signed, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2]), UVM_MEDIUM)
         end
       end
       bltu : begin
@@ -501,15 +505,15 @@ class darkriscv_reference_model extends uvm_component;
         end
       end
       bgeu : begin
-        if (unsigned'(register_bank[source_reg_1]) > unsigned'(register_bank[source_reg_2])) begin
+        if (unsigned'(register_bank[source_reg_1]) >= unsigned'(register_bank[source_reg_2])) begin
           result_offset = imm_signed;
           taking_branch = 1'b1;
-          `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since unsigned R%0d = %0h was greater than unsigned R%0d = %0h", imm_signed, source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
+          `uvm_info(get_type_name(), $sformatf("Taking branch with offset %0d since unsigned R%0d = %0h was greater or equal than unsigned R%0d = %0h", imm_signed, source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
         end
         else begin
           result_offset = 32'h4;
           taking_branch = 1'b0;
-          `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since unsigned R%0d = %0h was less or equal than unsigned R%0d = %0h", imm_signed, source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
+          `uvm_info(get_type_name(), $sformatf("Not taking branch with offset %0d since unsigned R%0d = %0h was less than unsigned R%0d = %0h", imm_signed, source_reg_1, unsigned'(register_bank[source_reg_1]), source_reg_2, unsigned'(register_bank[source_reg_2])), UVM_MEDIUM)
         end
       end
       default : begin
@@ -539,6 +543,38 @@ class darkriscv_reference_model extends uvm_component;
     update_pc();
     pc[0] = result_address;
   endfunction : decode_b_type_opcode
+
+  function void decode_u_type_opcode(logic [31:0] my_instr);
+    inst_type_e opcode;
+
+    bit [4:0] dest_reg;
+
+    bit [31:0] imm;
+
+    bit [31:0] result;
+
+    opcode = inst_type_e'(my_instr[RISCV_INST_OPCODE_RANGE_HIGH+1:RISCV_INST_OPCODE_RANGE_LOW]);
+
+    dest_reg = my_instr[RISCV_INST_RD_RANGE_HIGH:RISCV_INST_RD_RANGE_LOW];
+    imm[31:12] = my_instr[RISCV_INST_IMM_U_31_12_RANGE_HIGH:RISCV_INST_IMM_U_31_12_RANGE_LOW];
+    imm[11:0] = 12'h0;
+
+    case (opcode)
+      u_lui_type : begin
+        result = imm;
+        `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from LUI to R%0d = 0x%0h\n", result, dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+        register_bank[dest_reg] = result;
+      end
+      u_auipc_type : begin
+        result = imm + pc[3];
+        `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from adding IMM = 0x%0h and PC = 0x%0h to R%0d = 0x%0h\n", result, imm, pc[3], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+        register_bank[dest_reg] = result;
+      end
+      default : begin
+        `uvm_fatal(get_type_name(), $sformatf("Illegal opcode %0d was not recognized in U-type decoding!", opcode))
+      end
+    endcase
+  endfunction : decode_u_type_opcode
 
   function void send_output_item();
     darkriscv_output_item output_item_tmp;

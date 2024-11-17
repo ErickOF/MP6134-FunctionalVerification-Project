@@ -52,7 +52,7 @@ class darkriscv_item extends uvm_sequence_item;
     else if (opcode == b_type) {
       riscv_inst == {imm[12], imm[10:5], rs2, rs1, funct3, imm[4:1], imm[11], opcode};
     }
-    else if (opcode == u_type) {
+    else if ((opcode == u_auipc_type) || (opcode == u_lui_type)) {
       riscv_inst == {imm[31:12], rd, opcode};
     }
     else if (opcode == j_type) {
@@ -74,7 +74,7 @@ class darkriscv_item extends uvm_sequence_item;
     else if (opcode == b_type) {
       imm[31:13] == 'd0; // Bits at positions higher than 12 are not going to be used, so let's force them low in order to randomize values within [12:0] frame
     }
-    else if (opcode == u_type) {
+    else if ((opcode == u_auipc_type) || (opcode == u_lui_type)) {
       imm[11:0]  == 'd0; // Bits at positions lower than 11 are not going to be used, so let's force them low in order to randomize values within [31:12] frame
     }
     else if (opcode == j_type) {
@@ -143,7 +143,7 @@ class darkriscv_item extends uvm_sequence_item;
   }
 
   constraint c_supported_type_only {
-    opcode inside {r_type, i_type, s_type, b_type};
+    opcode inside {r_type, i_type, s_type, b_type, u_lui_type, u_auipc_type};
   }
 
   constraint c_avoid_bugs {
