@@ -22,6 +22,10 @@ class darkriscv_item extends uvm_sequence_item;
   rand logic [31:0] riscv_inst;
   rand logic [31:0] riscv_data;
 
+  rand func3_r_type_e funct3_r_type;
+  rand func3_i_type_e funct3_i_type;
+  rand func3_s_type_e funct3_s_type;
+
   `uvm_object_utils_begin(darkriscv_item)
     `uvm_field_int(opcode,     UVM_ALL_ON)
     `uvm_field_int(rd,         UVM_ALL_ON)
@@ -83,24 +87,53 @@ class darkriscv_item extends uvm_sequence_item;
   }
 
   constraint c_funct3 {
-    if (opcode == s_type) {
-      funct3 dist {3'b000 := 32, 3'b001 := 32, 3'b010 := 32, [3'b011:3'b111] := 4};
+    if (opcode == r_type) {
+      funct3 == funct3_r_type;
+    }
+    else if (opcode == i_type) {
+      funct3 == funct3_i_type;
+    }
+    else if (opcode == s_type) {
+//      funct3 dist {funct3_s_type := 96, [3'b011:3'b111] := 4};
+      funct3 == funct3_s_type;
     }
     solve opcode before funct3;
+    solve funct3_r_type before funct3;
+    solve funct3_i_type before funct3;
+    solve funct3_s_type before funct3;
   }
 
   constraint c_funct7 {
     if (opcode == r_type) {
-      if ((funct3 == add_sub) || (funct3 == srl_sra)) {
-        funct7[4:0] dist {5'b0_0000 := 96, [5'b0_0001:5'b1_1111] := 4};
-        funct7[6] dist {1'b0 := 96, 1'b1 := 4};
+//      if ((funct3 == add_sub) || (funct3 == srl_sra)) {
+//        funct7[4:0] dist {5'b0_0000 := 96, [5'b0_0001:5'b1_1111] := 4};
+//        funct7[6] dist {1'b0 := 96, 1'b1 := 4};
+//      }
+//      else {
+//        funct7 dist {7'b000_0000 := 96, [7'b000_0001:7'b111_1111] := 4};
+//      }
+      if ((funct3 != add_sub) && (funct3 != srl_sra)) {
+        funct7[5] == 1'b0;
       }
-      else {
-        funct7 dist {7'b000_0000 := 96, [7'b000_0001:7'b111_1111] := 4};
-      }
+      funct7[4:0] == 5'b0_0000;
+      funct7[6] == 1'b0;
     }
     solve opcode before funct7;
     solve funct3 before funct7;
+  }
+
+  constraint c_imm_valid {
+    if (opcode == i_type) {
+      if ((funct3_i_type == slli) || (funct3_i_type == srli_srai)) {
+        imm[9:5] == 5'b000_0000;
+        imm[11] == 1'b0;
+        if (funct3_i_type == slli) {
+          imm[10] == 1'b0;
+        }
+      }
+    }
+    solve opcode before imm;
+    solve funct3_i_type before imm;
   }
 
   constraint c_supported_type_only {

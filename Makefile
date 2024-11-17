@@ -33,14 +33,16 @@ SIMDIR = darksocv_dir
 XSIM = $(SIMDIR)/darksocv
 VCDS = $(SIMDIR)/darksocv.vcd
 TRCE = $(SIMDIR)/darksocv.txt
-VCS_LAYERS = vcs -sverilog -full64 -debug_access+all -gui +v2k +lint=all -Mdir=$(SIMDIR)
-VCS_UVM = vcs -sverilog -full64 -debug_access+all -gui +v2k +lint=all -Mdir=$(SIMDIR) \
+VCS = vcs -sverilog -full64 -debug_access+all +v2k +lint=all -Mdir=$(SIMDIR)
+VCS_UVM = $(VCS) \
 	+acc +vpi -debug_access+nomemcbk+dmptf -debug_region+cell \
 	+define+UVM_OBJECT_MUST_HAVE_CONSTRUCTOR \
 	-ntb_opts uvm-1.2 \
 	-timescale=1ns/1ps \
 	-cm line+cond+fsm+branch+tgl -cm_dir ./coverage.vdb \
 	-CFLAGS -DVCS
+VCS_GUI_LAYERS = $(VCS) -gui
+VCS_GUI_UVM = $(VCS_UVM) -gui
 
 DEPS_LAYERS = $(FILELIST_LAYERS)
 DEPS_UVM = $(FILELIST_UVM)
@@ -49,7 +51,13 @@ layers: compile_layers
 	./$(XSIM) +vcs+dumpvars+$(VCDS)
 
 compile_layers: $(DEPS_LAYERS) $(SIMDIR)
-	$(VCS_LAYERS) -f $(FILELIST_LAYERS) -o $(XSIM)
+	$(VCS) -f $(FILELIST_LAYERS) -o $(XSIM)
+
+layers_gui: compile_layers_gui
+	./$(XSIM) +vcs+dumpvars+$(VCDS)
+
+compile_layers_gui: $(DEPS_LAYERS) $(SIMDIR)
+	$(VCS_GUI_LAYERS) -f $(FILELIST_LAYERS) -o $(XSIM)
 
 uvm: compile_uvm
 	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=random_instr_test
@@ -57,14 +65,23 @@ uvm: compile_uvm
 compile_uvm: $(DEPS_UVM) $(SIMDIR)
 	$(VCS_UVM) -f $(FILELIST_UVM) -o $(XSIM)
 
+uvm_gui: compile_uvm_gui
+	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=random_instr_test
+
+compile_uvm_gui: $(DEPS_UVM) $(SIMDIR)
+	$(VCS_GUI_UVM) -f $(FILELIST_UVM) -o $(XSIM)
+
 $(SIMDIR):
 	mkdir -p $(SIMDIR)
 
 clean:
-	-rm -rf $(SIMDIR)
+	-rm -rf $(SIMDIR) DVEfiles ucli.key vc_hdrs.h .inter.vpd.uvm  inter.vpd
 #	-rm -rf $(VCDS) $(XSIM) $(TRCE) csrc DVEfiles ucli.key $(XSIM).daidir
 
 print_vcs:
 	echo $(VCS)
+
+print_vcs_uvm:
+	echo $(VCS_UVM)
 
 .PHONY: clean all

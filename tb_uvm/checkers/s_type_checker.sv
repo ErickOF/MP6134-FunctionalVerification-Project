@@ -74,8 +74,10 @@ class s_type_checker extends base_instruction_checker;
                         "SW" : (funct3 == 3'd1) ?
                           "SH" : "SB";
 
-    // Fetch the source register value (rs1) from the DUT register file
-    logic [31:0] reg_rs1 = `HDL_TOP.REGS[instruction_intf.s_type.rs1];
+    logic[4:0] reg_rs1_ptr = instruction_intf.s_type.rs1;
+
+    // Source register value (rs1) from the DUT register file
+    logic [31:0] reg_rs1;
 
     // Declare a 32-bit signed logic variable for the immediate value
     logic signed [31:0] imm;
@@ -91,11 +93,14 @@ class s_type_checker extends base_instruction_checker;
     imm[11:5] = instruction_intf.s_type.imm2;
     imm[4:0] = instruction_intf.s_type.imm1;
 
+    // Introduce a delay for HLT signal processing
+    repeat (2) @(negedge this.intf.CLK);
+
+    // Fetch the source register value (rs1) from the DUT register file
+    reg_rs1 = `HDL_TOP.REGS[reg_rs1_ptr];
+
     // Calculate the expected data address
     expected_data_address = reg_rs1 + imm;
-
-    // Introduce a delay for HLT signal processing
-    repeat (2) @(posedge this.intf.CLK);
 
     // Retrieve the data address from the DUT
     data_address = `HDL_TOP.DADDR;
@@ -158,7 +163,7 @@ class s_type_checker extends base_instruction_checker;
     logic [31:0] expected_data_bus;
 
     // Introduce a delay to account for the HLT signal processing between instructions
-    repeat (2) @(posedge this.intf.CLK);
+    repeat (2) @(negedge this.intf.CLK);
 
     // Retrieve the actual data bus value from the DUT
     expected_data_bus = `HDL_TOP.DATAO;
@@ -223,7 +228,7 @@ class s_type_checker extends base_instruction_checker;
     logic [2:0] expected_data_len;
 
     // Introduce a delay for HLT signal processing
-    repeat (2) @(posedge this.intf.CLK);
+    repeat (2) @(negedge this.intf.CLK);
 
     // Retrieve the actual data length from the RTL
     expected_data_len = this.intf.DLEN;
@@ -278,7 +283,7 @@ class s_type_checker extends base_instruction_checker;
                           "SH" : "SB";
 
     // Introduce a delay for HLT signal processing
-    repeat (2) @(posedge this.intf.CLK);
+    repeat (2) @(negedge this.intf.CLK);
 
     // Log the DRW value for debugging purposes, expecting DRW to be 1'b0
     `uvm_info(
@@ -330,7 +335,7 @@ class s_type_checker extends base_instruction_checker;
                           "SH" : "SB";
 
     // Introduce a delay for HLT signal processing
-    repeat (2) @(posedge this.intf.CLK);
+    repeat (2) @(negedge this.intf.CLK);
 
     // Log the expected DWR value for debugging, expecting it to be 1'b1
     `uvm_info(
@@ -391,7 +396,7 @@ class s_type_checker extends base_instruction_checker;
     imm[4:0] = instruction_intf.s_type.imm1;
 
     // Introduce a delay to account for the HLT signal processing between instructions
-    repeat (2) @(posedge this.intf.CLK);
+    repeat (2) @(negedge this.intf.CLK);
 
     // Retrieve the sign-extended immediate result from the DUT
     simm = `HDL_TOP.SIMM;

@@ -97,6 +97,8 @@ virtual class base_instruction_checker extends uvm_component;
     @(negedge this.intf.RES);
     repeat (5) @(posedge this.intf.CLK);
 
+    @(negedge this.intf.CLK);
+
     // Continuous checking loop
     forever begin
       // Update halt signal
@@ -118,7 +120,7 @@ virtual class base_instruction_checker extends uvm_component;
       end
 
       // Wait for the next clock edge
-      @(posedge this.intf.CLK);
+      @(negedge this.intf.CLK);
     end
   endtask : start_checker
 
