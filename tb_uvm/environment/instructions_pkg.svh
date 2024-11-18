@@ -52,7 +52,9 @@ typedef enum logic [6:0] {
   u_lui_type = 7'b011_0111,
   // J-type instructions (JAL)
   // TODO: only for JAL
-  j_type = 7'b110_1111,
+  j_jal_type = 7'b110_1111,
+  // TODO: only for JAL
+  j_jalr_type = 7'b110_0111,
   // Custom-0-type instructions
   custom_0_type = 7'b000_1011
 } inst_type_e;
@@ -350,6 +352,12 @@ localparam int unsigned RISCV_INST_IMM_R_4_1_RANGE_LOW    = 8;
 localparam int unsigned RISCV_INST_IMM_R_4_1_RANGE_HIGH   = 11;
 localparam int unsigned RISCV_INST_IMM_U_31_12_RANGE_LOW  = 12;
 localparam int unsigned RISCV_INST_IMM_U_31_12_RANGE_HIGH = 31;
+localparam int unsigned RISCV_INST_IMM_J_20               = 31;
+localparam int unsigned RISCV_INST_IMM_J_19_12_LOW        = 12;
+localparam int unsigned RISCV_INST_IMM_J_19_12_HIGH       = 19;
+localparam int unsigned RISCV_INST_IMM_J_11               = 20;
+localparam int unsigned RISCV_INST_IMM_J_10_1_RANGE_LOW   = 21;
+localparam int unsigned RISCV_INST_IMM_J_10_1_RANGE_HIGH  = 30;
 
 endpackage : instructions_pkg
 

@@ -18,10 +18,6 @@ class darkriscv_reference_model extends uvm_component;
 
   logic [31:0] pc[4];
 
-  bit previous_inst_s_type;
-
-  bit previous_inst_b_j_type;
-
   darkriscv_output_item next_output_item_queue[$];
   darkriscv_output_item next_load_queue[$];
 
@@ -43,10 +39,6 @@ class darkriscv_reference_model extends uvm_component;
       pc[i] = 32'hXXXX_XXXX;
     end
 
-    previous_inst_s_type = 1'b0;
-
-    previous_inst_b_j_type = 1'b0;
-
     flushing_pipeline = 0;
   endfunction : new
 
@@ -58,10 +50,6 @@ class darkriscv_reference_model extends uvm_component;
     pc[2] = 32'h0;
     pc[1] = 32'h4;
     pc[0] = 32'h8;
-
-    previous_inst_s_type = 1'b0;
-
-    previous_inst_b_j_type = 1'b0;
 
     next_output_item_queue.delete();
     next_load_queue.delete();
@@ -154,6 +142,10 @@ class darkriscv_reference_model extends uvm_component;
           `uvm_info(get_type_name(), $sformatf("U instruction detected"), UVM_MEDIUM)
           decode_u_type_opcode(.my_instr(my_instr));
         end
+        j_jal_type, j_jalr_type : begin
+          `uvm_info(get_type_name(), $sformatf("J instruction detected"), UVM_MEDIUM)
+          decode_j_type_opcode(.my_instr(my_instr));
+        end
         custom_0_type : begin
           `uvm_info(get_type_name(), $sformatf("Custom0 instruction detected, this is an idle instrucction so no action needed!"), UVM_MEDIUM)
         end
@@ -163,7 +155,7 @@ class darkriscv_reference_model extends uvm_component;
       endcase
     end
 
-    if (((opcode != j_type) && (opcode != b_type)) || ((flushing_pipeline > 0) && (flushing_pipeline < 3))) begin
+    if (((opcode != j_jal_type) && (opcode != j_jalr_type) && (opcode != b_type)) || ((flushing_pipeline > 0) && (flushing_pipeline < 3))) begin
       update_pc();
       pc[0] += 32'h4;
     end
@@ -643,6 +635,101 @@ class darkriscv_reference_model extends uvm_component;
       end
     endcase
   endfunction : decode_u_type_opcode
+
+  function void decode_j_type_opcode(logic [31:0] my_instr);
+    inst_type_e opcode;
+    bit [4:0] dest_reg;
+
+    bit signed [31:0] imm_signed = 0;
+
+    bit signed [31:0] result_offset = 0;
+
+    bit [31:0] result_address;
+
+    bit taking_branch;
+
+    opcode = inst_type_e'(my_instr[RISCV_INST_OPCODE_RANGE_HIGH+1:RISCV_INST_OPCODE_RANGE_LOW]);
+    dest_reg = my_instr[RISCV_INST_RD_RANGE_HIGH:RISCV_INST_RD_RANGE_LOW];
+
+    case (opcode)
+      j_jal_type : begin
+        bit [20:0] imm;
+
+        imm[20] = my_instr[RISCV_INST_IMM_J_20];
+        imm[19:12] = my_instr[RISCV_INST_IMM_J_19_12_HIGH:RISCV_INST_IMM_J_19_12_LOW];
+        imm[19:12] = my_instr[RISCV_INST_IMM_J_19_12_HIGH:RISCV_INST_IMM_J_19_12_LOW];
+        imm[11] = my_instr[RISCV_INST_IMM_J_11];
+        imm[10:1] = my_instr[RISCV_INST_IMM_J_10_1_RANGE_HIGH:RISCV_INST_IMM_J_10_1_RANGE_LOW];
+        imm[0] = 1'b0;
+        imm_signed = signed'(imm);
+
+        result_offset = imm_signed;
+
+        `uvm_info(get_type_name(), $sformatf("Taking offset %0d from IMM", result_offset), UVM_MEDIUM)
+
+        taking_branch = 1'b1;
+      end
+      j_jalr_type : begin
+        bit [2:0] funct3;
+
+        funct3 = my_instr[RISCV_INST_FUNC3_RANGE_HIGH:RISCV_INST_FUNC3_RANGE_LOW];
+
+        if (funct3 == 3'b000) begin
+          bit [4:0] source_reg_1;
+          bit [11:0] imm;
+
+          source_reg_1 = my_instr[RISCV_INST_RS1_RANGE_HIGH:RISCV_INST_RS1_RANGE_LOW];
+          imm[11:0] = my_instr[RISCV_INST_IMM_I_11_0_RANGE_HIGH:RISCV_INST_IMM_I_11_0_RANGE_LOW];
+          imm_signed = signed'(imm);
+
+          result_offset = imm_signed + register_bank[source_reg_1];
+          if (result_offset[0] == 1'b1) begin
+            // result_offset[0] = 1'b0;
+            `uvm_error(get_type_name(), $sformatf("JALR is supposed to set the least significant bit of the resulting address to 0, but the RLT doesn't consider it, leaving at 1 to keep matching onwards!"))
+          end
+
+          `uvm_info(get_type_name(), $sformatf("Taking new address %0h from adding sign-extended IMM = 0x%0h and R%0d = 0x%0h", result_offset, imm_signed, source_reg_1, register_bank[source_reg_1]), UVM_MEDIUM)
+
+          taking_branch = 1'b1;
+        end
+        else begin
+          result_offset = 32'h4;
+          taking_branch = 1'b0;
+          `uvm_info(get_type_name(), $sformatf("Function %0d was not recognized in J-JALR-type decoding!", funct3), UVM_MEDIUM)
+        end
+      end
+      default : begin
+        `uvm_fatal(get_type_name(), $sformatf("Illegal opcode %0d was not recognized in J-type decoding!", opcode))
+      end
+    endcase
+
+    if (taking_branch == 1'b1) begin
+      if (opcode == j_jal_type) begin
+        result_address = unsigned'(signed'(pc[3]) + result_offset);
+      end
+      else begin
+        result_address = result_offset;
+      end
+
+      `uvm_info(get_type_name(), $sformatf("On result from J-type decoding, advancing instruction address from %0h to %0h and saving the previous next address %0h to R%0d = 0x%0h", pc[1], result_address, pc[2], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+
+      register_bank[dest_reg] = pc[2];
+
+      pc[0] = result_address;
+
+      result_address += 32'h4;
+
+      flushing_pipeline = 3;
+    end
+    else begin
+      result_address = unsigned'(signed'(pc[0]) + result_offset);
+
+      `uvm_info(get_type_name(), $sformatf("On result from J-type decoding, advancing instruction address from %0h to %0h", pc[0], result_address), UVM_MEDIUM)
+    end
+
+    update_pc();
+    pc[0] = result_address;
+  endfunction : decode_j_type_opcode
 
   function void send_output_item();
     darkriscv_output_item output_item_tmp;
