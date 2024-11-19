@@ -15,11 +15,11 @@ class save_registers_seq extends uvm_sequence;
       // First send the s-type instruction
       start_item(driscv_item);
       if ( ! driscv_item.randomize() with {
-        opcode == s_type;    // S-type instruction
-		    funct3 == 3'b010;    // encoding for a "word" width store instruction
-		    rs1    == 5'b0_0000; // Register with hardcoded zero value. Therefore, memory address = 0 + imm
-				rs2    == i;         // Iterate over all the registers
-				imm    == 12'h100;   // Arbitrary offset
+        opcode        == s_type;    // S-type instruction
+		    funct3_s_type == sw;        // encoding for a "word" width store instruction
+		    rs1           == 5'b0_0000; // Register with hardcoded zero value. Therefore, memory address = 0 + imm
+				rs2           == i;         // Iterate over all the registers
+				imm           == 12'h100;   // Arbitrary offset
       }
       ) begin
         `uvm_fatal(get_type_name(), "Randomize failed")

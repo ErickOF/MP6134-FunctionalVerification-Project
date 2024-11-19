@@ -47,6 +47,8 @@ VCS_GUI_UVM = $(VCS_UVM) -gui
 DEPS_LAYERS = $(FILELIST_LAYERS)
 DEPS_UVM = $(FILELIST_UVM)
 
+TARGET_TEST = darkriscv_base_test
+
 layers: compile_layers
 	./$(XSIM) +vcs+dumpvars+$(VCDS)
 
@@ -60,13 +62,17 @@ compile_layers_gui: $(DEPS_LAYERS) $(SIMDIR)
 	$(VCS_GUI_LAYERS) -f $(FILELIST_LAYERS) -o $(XSIM)
 
 uvm: compile_uvm
-	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=random_instr_test
+	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=$(TARGET_TEST)
 
 compile_uvm: $(DEPS_UVM) $(SIMDIR)
 	$(VCS_UVM) -f $(FILELIST_UVM) -o $(XSIM)
 
+uvm_run_%:
+	@echo "Running UVM test: $*"
+	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=$*
+
 uvm_gui: compile_uvm_gui
-	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=random_instr_test
+	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=$(TARGET_TEST)
 
 compile_uvm_gui: $(DEPS_UVM) $(SIMDIR)
 	$(VCS_GUI_UVM) -f $(FILELIST_UVM) -o $(XSIM)
