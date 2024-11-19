@@ -56,6 +56,8 @@ module darksimv_hdl();
         .DEBUG  (cpu_if.DEBUG)
     );
 
+    r_type_assertions i_r_type_assertions(cpu_if);
+
     initial begin
         uvm_config_db #(virtual darkriscv_if)::set(null, "", "VIRTUAL_INTERFACE", cpu_if);
     end

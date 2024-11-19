@@ -1,0 +1,235 @@
+module r_type_assertions(darkriscv_if intf);
+  property check_r_type_add;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    // The property will be disabled if reset (`RES`), flush (`FLUSH`), or the instruction type is
+    // not an `r_type` (based on the instruction's opcode bits)
+    @(posedge intf.CLK)
+    disable iff (
+      // Check if the DUT is in reset state
+      intf.RES ||
+      // Check if flush is not zero (flush state)
+      (`HDL_TOP.FLUSH !== 0)
+    )
+    // The property will only proceed if the conditions above are not met
+    // Fetch the values of registers `r1` and `r2` based on instruction data
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === add_sub) && (intf.IDATA[31:25] === 7'b000_0000), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 time units, check if the sum of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((r1 + r2) === `HDL_TOP.RMDATA);
+  endproperty
+
+  property check_r_type_sub;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    // The property will be disabled if reset (`RES`), flush (`FLUSH`), or the instruction type is
+    // not an `r_type` (based on the instruction's opcode bits)
+    @(posedge intf.CLK)
+    disable iff (
+      // Check if the DUT is in reset state
+      intf.RES ||
+      // Check if flush is not zero (flush state)
+      (`HDL_TOP.FLUSH !== 0)
+    )
+    // The property will only proceed if the conditions above are not met
+    // Fetch the values of registers `r1` and `r2` based on instruction data
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === add_sub) && (intf.IDATA[31:25] === 7'b010_0000), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 time units, check if the sum of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((r1 - r2) === `HDL_TOP.RMDATA);
+  endproperty
+
+  property check_r_type_sll;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    // The property will be disabled if reset (`RES`), flush (`FLUSH`), or the instruction type is
+    // not an `r_type` (based on the instruction's opcode bits)
+    @(posedge intf.CLK)
+    disable iff (
+      // Check if the DUT is in reset state
+      intf.RES ||
+      // Check if flush is not zero (flush state)
+      (`HDL_TOP.FLUSH !== 0)
+    )
+    // The property will only proceed if the conditions above are not met
+    // Fetch the values of registers `r1` and `r2` based on instruction data
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === sll), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 time units, check if the sum of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((unsigned'(r1) << r2[4:0]) === `HDL_TOP.RMDATA);
+  endproperty
+
+  property check_r_type_slt;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    // The property will be disabled if reset (`RES`), flush (`FLUSH`), or the instruction type is
+    // not an `r_type` (based on the instruction's opcode bits)
+    @(posedge intf.CLK)
+    disable iff (
+      // Check if the DUT is in reset state
+      intf.RES ||
+      // Check if flush is not zero (flush state)
+      (`HDL_TOP.FLUSH !== 0)
+    )
+    // The property will only proceed if the conditions above are not met
+    // Fetch the values of registers `r1` and `r2` based on instruction data
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === slt), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 time units, check if the sum of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((r1 < r2) === `HDL_TOP.RMDATA, $display("%h, %h, %h", r1, r2, r1 < r2));
+  endproperty
+
+  property check_r_type_sltu;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    // The property will be disabled if reset (`RES`), flush (`FLUSH`), or the instruction type is
+    // not an `r_type` (based on the instruction's opcode bits)
+    @(posedge intf.CLK)
+    disable iff (
+      // Check if the DUT is in reset state
+      intf.RES ||
+      // Check if flush is not zero (flush state)
+      (`HDL_TOP.FLUSH !== 0)
+    )
+    // The property will only proceed if the conditions above are not met
+    // Fetch the values of registers `r1` and `r2` based on instruction data
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === sltu), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 time units, check if the sum of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((unsigned'(r1) < unsigned'(r2)) === `HDL_TOP.RMDATA);
+  endproperty
+
+  property check_r_type_xor;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    // The property will be disabled if reset (`RES`), flush (`FLUSH`), or the instruction type is
+    // not an `r_type` (based on the instruction's opcode bits)
+    @(posedge intf.CLK)
+    disable iff (
+      // Check if the DUT is in reset state
+      intf.RES ||
+      // Check if flush is not zero (flush state)
+      (`HDL_TOP.FLUSH !== 0)
+    )
+    // The property will only proceed if the conditions above are not met
+    // Fetch the values of registers `r1` and `r2` based on instruction data
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === xor_), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 time units, check if the sum of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((r1 ^ r2) === `HDL_TOP.RMDATA);
+  endproperty
+
+  property check_r_type_srl;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    // The property will be disabled if reset (`RES`), flush (`FLUSH`), or the instruction type is
+    // not an `r_type` (based on the instruction's opcode bits)
+    @(posedge intf.CLK)
+    disable iff (
+      // Check if the DUT is in reset state
+      intf.RES ||
+      // Check if flush is not zero (flush state)
+      (`HDL_TOP.FLUSH !== 0)
+    )
+    // The property will only proceed if the conditions above are not met
+    // Fetch the values of registers `r1` and `r2` based on instruction data
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === srl_sra) && (intf.IDATA[31:25] === 7'b000_0000), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 time units, check if the sum of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((unsigned'(r1) >> r2[4:0]) === `HDL_TOP.RMDATA);
+  endproperty
+
+  property check_r_type_sra;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    // The property will be disabled if reset (`RES`), flush (`FLUSH`), or the instruction type is
+    // not an `r_type` (based on the instruction's opcode bits)
+    @(posedge intf.CLK)
+    disable iff (
+      // Check if the DUT is in reset state
+      intf.RES ||
+      // Check if flush is not zero (flush state)
+      (`HDL_TOP.FLUSH !== 0)
+    )
+    // The property will only proceed if the conditions above are not met
+    // Fetch the values of registers `r1` and `r2` based on instruction data
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === srl_sra) && (intf.IDATA[31:25] === 7'b010_0000), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 time units, check if the sum of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((unsigned'(r1) >>> r2[4:0]) === `HDL_TOP.RMDATA);
+  endproperty
+
+  property check_r_type_or;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    // The property will be disabled if reset (`RES`), flush (`FLUSH`), or the instruction type is
+    // not an `r_type` (based on the instruction's opcode bits)
+    @(posedge intf.CLK)
+    disable iff (
+      // Check if the DUT is in reset state
+      intf.RES ||
+      // Check if flush is not zero (flush state)
+      (`HDL_TOP.FLUSH !== 0)
+    )
+    // The property will only proceed if the conditions above are not met
+    // Fetch the values of registers `r1` and `r2` based on instruction data
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === or_), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 time units, check if the sum of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((r1 | r2) === `HDL_TOP.RMDATA);
+  endproperty
+
+  property check_r_type_and;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    // The property will be disabled if reset (`RES`), flush (`FLUSH`), or the instruction type is
+    // not an `r_type` (based on the instruction's opcode bits)
+    @(posedge intf.CLK)
+    disable iff (
+      // Check if the DUT is in reset state
+      intf.RES ||
+      // Check if flush is not zero (flush state)
+      (`HDL_TOP.FLUSH !== 0)
+    )
+    // The property will only proceed if the conditions above are not met
+    // Fetch the values of registers `r1` and `r2` based on instruction data
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === and_), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 time units, check if the sum of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((r1 & r2) === `HDL_TOP.RMDATA);
+  endproperty
+
+  // Call assertions
+  assert_check_r_type_add: assert property (check_r_type_add);
+  assert_check_r_type_sub: assert property (check_r_type_sub);
+  assert_check_r_type_sll: assert property (check_r_type_sll);
+  assert_check_r_type_slt: assert property (check_r_type_slt);
+  assert_check_r_type_sltu: assert property (check_r_type_sltu);
+  assert_check_r_type_xor: assert property (check_r_type_xor);
+  assert_check_r_type_srl: assert property (check_r_type_srl);
+  assert_check_r_type_sra: assert property (check_r_type_sra);
+  assert_check_r_type_or: assert property (check_r_type_or);
+  assert_check_r_type_and: assert property (check_r_type_and);
+
+  // Call cover properties
+  cover_check_r_type_add: cover property (check_r_type_add);
+  cover_check_r_type_sub: cover property (check_r_type_sub);
+  cover_check_r_type_sll: cover property (check_r_type_sll);
+  cover_check_r_type_slt: cover property (check_r_type_slt);
+  cover_check_r_type_sltu: cover property (check_r_type_sltu);
+  cover_check_r_type_xor: cover property (check_r_type_xor);
+  cover_check_r_type_srl: cover property (check_r_type_srl);
+  cover_check_r_type_sra: cover property (check_r_type_sra);
+  cover_check_r_type_or: cover property (check_r_type_or);
+  cover_check_r_type_and: cover property (check_r_type_and);
+endmodule : r_type_assertions

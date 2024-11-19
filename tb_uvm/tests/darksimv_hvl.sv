@@ -23,6 +23,7 @@ import instructions_pkg::*;
 `include "darkriscv_env.sv"
 `include "random_instr_test.sv"
 `include "darkriscv_test.sv"
+`include "r_type_assertions.sva"
 
 module darksimv_hvl();
   initial begin
