@@ -106,14 +106,11 @@ class darkriscv_reference_model extends uvm_component;
     if ((opcode != s_type)) begin
       if ((previous_inst_s_type == 1'b0) && (opcode != j_type) && (opcode != b_type)) begin
         send_filler_output_item();
+        next_instruction_address += 32'h4;
       end
       else begin
         previous_inst_s_type = 1'b0;
       end
-    end
-
-    if ((opcode != j_type) && (opcode != b_type) && (previous_inst_s_type == 1'b0)) begin
-      next_instruction_address += 32'h4;
     end
   endfunction : proccess_instructions
 
@@ -135,14 +132,12 @@ class darkriscv_reference_model extends uvm_component;
     if (dest_reg != 'h0) begin
       case (funct3)
         add_sub : begin
-          // if (funct7 == 7'b000_0000) begin // RISCV spec shows funct7[4:0] = 0 and funct7[6] = 0, but the design doesn't check for that
-          if (funct7[5] == 1'b0) begin
+          if (funct7 == 7'b000_0000) begin // RISCV spec shows funct7[4:0] = 0 and funct7[6] = 0
             result = register_bank[source_reg_1] + register_bank[source_reg_2];
             `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from adding R%0d = %0d and R%0d = %0d to R%0d = %0d\n", result, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
             register_bank[dest_reg] = result;
           end
-          // else if (funct7 == 7'b010_0000) begin // RISCV spec shows funct7[4:0] = 0 and funct7[6] = 0, but the design doesn't check for that
-          else if (funct7[5] == 1'b1) begin
+          else if (funct7 == 7'b010_0000) begin // RISCV spec shows funct7[4:0] = 0 and funct7[6] = 0
             result = register_bank[source_reg_1] - register_bank[source_reg_2];
             `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from subtracting R%0d = %0d and R%0d = %0d to R%0d = %0d\n", result, source_reg_1, register_bank[source_reg_1], source_reg_2, register_bank[source_reg_2], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
             register_bank[dest_reg] = result;
@@ -182,14 +177,12 @@ class darkriscv_reference_model extends uvm_component;
           register_bank[dest_reg] = result;
         end
         srl_sra : begin
-          // if (funct7 == 7'b000_0000) begin // RISCV spec shows funct7[4:0] = 0 and funct7[6] = 0, but the design doesn't check for that
-          if (funct7[5] == 1'b0) begin
+          if (funct7 == 7'b000_0000) begin // RISCV spec shows funct7[4:0] = 0 and funct7[6] = 0
             result = unsigned'(register_bank[source_reg_1]) >> register_bank[source_reg_2][4:0];
             `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from logic shifting to the right R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h\n", result, source_reg_1, register_bank[source_reg_1], register_bank[source_reg_2][4:0], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
             register_bank[dest_reg] = result;
           end
-          // else if (funct7 == 7'b010_0000) begin // RISCV spec shows funct7[4:0] = 0 and funct7[6] = 0, but the design doesn't check for that
-          else if (funct7[5] == 1'b1) begin
+          else if (funct7 == 7'b010_0000) begin // RISCV spec shows funct7[4:0] = 0 and funct7[6] = 0
             result = unsigned'(register_bank[source_reg_1]) >>> register_bank[source_reg_2][4:0];
             `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from arithmetic shifting to the right R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h\n", result, source_reg_1, register_bank[source_reg_1], register_bank[source_reg_2][4:0], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
             register_bank[dest_reg] = result;
@@ -246,14 +239,14 @@ class darkriscv_reference_model extends uvm_component;
           register_bank[dest_reg] = result;
         end
         slli : begin
-          // if (imm[11:5] == 7'b000_0000) begin // RISCV spec shows IMM[11:5] = 0, but the design doesn't check for that
+          if (imm[11:5] == 7'b000_0000) begin // RISCV spec shows IMM[11:5] = 0
             result = register_bank[source_reg] << shamt;
             `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from logic shifting to the left R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h\n", result, source_reg, register_bank[source_reg], shamt, dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
             register_bank[dest_reg] = result;
-          // end
-          // else begin
-          //   `uvm_info(get_type_name(), "Upper seven bits of IMM is not recognized 0x%0h!\n", imm[11:5]);
-          // end
+          end
+          else begin
+            `uvm_info(get_type_name(), "Upper seven bits of IMM is not recognized 0x%0h!\n", imm[11:5]);
+          end
         end
         slti : begin
           if (register_bank[source_reg] < imm_signed) begin
@@ -281,21 +274,19 @@ class darkriscv_reference_model extends uvm_component;
           register_bank[dest_reg] = result;
         end
         srli_srai : begin
-          // if (imm[11:5] == 7'b000_0000) begin // RISCV spec shows IMM[11:5] = 0, but the design doesn't check for that, only for imm[10] == 0
-          if (imm[10] == 1'b0) begin
+          if (imm[11:5] == 7'b000_0000) begin // RISCV spec shows IMM[11:5] = 0
             result = register_bank[source_reg] >> shamt;
             `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from logic shifting to the right R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h\n", result, source_reg, register_bank[source_reg], shamt, dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
             register_bank[dest_reg] = result;
           end
-          // else if (imm[11:5] == 7'b010_0000) begin // RISCV spec shows IMM[11:5] = 0, but the design doesn't check for that, only for imm[10] != 0
-          else begin
+          else if (imm[11:5] == 7'b010_0000) begin // RISCV spec shows IMM[11] = 0 and IMM[9:5] = 0
             result = register_bank[source_reg] >>> shamt;
             `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from arithmetic shifting to the right R%0d = 0x%0h N_bits = %0d to R%0d = 0x%0h\n", result, source_reg, register_bank[source_reg], shamt, dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
             register_bank[dest_reg] = result;
           end
-          // else begin
-          //   `uvm_info(get_type_name(), "Upper seven bits of IMM is not recognized 0x%0h!\n", imm[11:5]);
-          // end
+          else begin
+            `uvm_info(get_type_name(), "Upper seven bits of IMM is not recognized 0x%0h!\n", imm[11:5]);
+          end
         end
         ori : begin
           result = register_bank[source_reg] | imm_signed;
@@ -353,6 +344,7 @@ class darkriscv_reference_model extends uvm_component;
     endcase
 
     result_data = register_bank[source_reg_2];
+    `uvm_info("DEBUG", $sformatf("rs1 %08h imm %08h", register_bank[source_reg_1], imm_signed), UVM_LOW)
     result_address = register_bank[source_reg_1] + imm_signed;
 
     `uvm_info(get_type_name(), $sformatf("Storing %0d bytes of data R%0d = 0x%0h to memory address 0x%0h\n", bytes_to_transfer, source_reg_2, result_data, result_address), UVM_MEDIUM)
@@ -366,6 +358,8 @@ class darkriscv_reference_model extends uvm_component;
     send_output_item();
 
     previous_inst_s_type = 1'b1;
+
+    next_instruction_address += 32'h4;
   endfunction : decode_s_type_opcode
 
   function void send_output_item();

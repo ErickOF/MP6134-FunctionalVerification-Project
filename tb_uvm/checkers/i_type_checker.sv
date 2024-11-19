@@ -38,7 +38,7 @@ class i_type_checker extends base_instruction_checker;
 
       fork
         check_sign_extension();
-        check_zero_extension();
+        // check_zero_extension();
         check_valid_shift();
         check_operation();
       join_none
@@ -59,13 +59,17 @@ class i_type_checker extends base_instruction_checker;
   // Example: I-type instructions include ADDI, XORI, ORI, SLTIU, ANDI, SRLI, and SRAI.
   //###############################################################################################
   task check_operation();
-    // Fetch the source register value from the DUT register file
-    logic [31:0] reg_rs1 = `HDL_TOP.REGS[instruction_intf.i_type.rs1];
+    logic [4:0] reg_rs1_ptr = instruction_intf.i_type.rs1;
+    // Source register value from the DUT register file
+    logic [31:0] reg_rs1;
     logic [11:0] i_type_imm = instruction_intf.i_type.imm;
     logic [2:0] funct3 = instruction_intf.i_type.funct3;
     logic [31:0] alu_result;
 
-    repeat (2) @(posedge this.intf.CLK);
+    repeat (2) @(negedge this.intf.CLK);
+
+    // Fetch the source register value from the DUT register file
+    reg_rs1 = `HDL_TOP.REGS[reg_rs1_ptr];
 
     // Fetch the destination register value from the DUT
     alu_result = `HDL_TOP.RMDATA;
@@ -166,11 +170,15 @@ class i_type_checker extends base_instruction_checker;
       // SLTIU Operation: Compares rs1 with the immediate value (unsigned comparison) and stores
       // the result in rd
       sltiu: begin
+        // Expected result for the operation
+        logic [31:0] result;
+
         // Get the immediate value for the shift operation
-        logic [31:0] imm = {20'b0, i_type_imm};
+        logic [31:0] imm = i_type_imm[11] ? '1 : '0;
+        imm[11:0] = i_type_imm;
 
         // Compute the expected result for the operation
-        logic [31:0] result = reg_rs1 < imm;
+        result = reg_rs1 < imm;
 
         `uvm_info(
           get_full_name(),
@@ -373,7 +381,7 @@ class i_type_checker extends base_instruction_checker;
     imm[11:0] = instruction_intf.i_type.imm;
 
     // Consider the HLT between instructions
-    repeat (2) @(posedge this.intf.CLK);
+    repeat (2) @(negedge this.intf.CLK);
 
     // Read immediate extension result
     simm = `HDL_TOP.SIMM;
@@ -484,7 +492,7 @@ class i_type_checker extends base_instruction_checker;
     logic use_zero_ext;
 
     // Consider the HLT between instructions
-    repeat (2) @(posedge this.intf.CLK);
+    repeat (2) @(negedge this.intf.CLK);
 
     // Read zero-extended immediate value
     simm = `HDL_TOP.SIMM;
