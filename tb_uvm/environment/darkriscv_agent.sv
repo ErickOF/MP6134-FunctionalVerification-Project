@@ -37,6 +37,10 @@ class darkriscv_agent extends uvm_agent;
   // Monitor
   darkriscv_monitor driscv_mntr;
 
+  // Functional coverage
+  darkriscv_input_cov driscv_input_cov;
+  darkriscv_output_cov driscv_output_cov;
+
   //-----------------------------------------------------------------------------------------------
   // Function: build_phase
   //
@@ -58,6 +62,8 @@ class darkriscv_agent extends uvm_agent;
     driscv_drv = darkriscv_driver::type_id::create("driscv_drv", this);
     driscv_seqr = uvm_sequencer#(darkriscv_item)::type_id::create("driscv_seqr", this);
     driscv_mntr = darkriscv_monitor::type_id::create("driscv_mntr", this);
+    driscv_input_cov = darkriscv_input_cov::type_id::create("driscv_input_cov", this);
+    driscv_output_cov = darkriscv_output_cov::type_id::create("driscv_output_cov", this);
   endfunction : build_phase
 
   //-----------------------------------------------------------------------------------------------
@@ -75,6 +81,8 @@ class darkriscv_agent extends uvm_agent;
 
     // Connect the sequencer's item export to the driver's item port
     driscv_drv.seq_item_port.connect(driscv_seqr.seq_item_export);
+    driscv_mntr.monitored_input_ap.connect(driscv_input_cov.analysis_export);
+    driscv_mntr.monitored_output_ap.connect(driscv_output_cov.analysis_export);
   endfunction : connect_phase
 
 endclass : darkriscv_agent
