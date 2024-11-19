@@ -619,21 +619,26 @@ class darkriscv_reference_model extends uvm_component;
     imm[31:12] = my_instr[RISCV_INST_IMM_U_31_12_RANGE_HIGH:RISCV_INST_IMM_U_31_12_RANGE_LOW];
     imm[11:0] = 12'h0;
 
-    case (opcode)
-      u_lui_type : begin
-        result = imm;
-        `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from LUI to R%0d = 0x%0h\n", result, dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
-        register_bank[dest_reg] = result;
-      end
-      u_auipc_type : begin
-        result = imm + pc[3];
-        `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from adding IMM = 0x%0h and PC = 0x%0h to R%0d = 0x%0h\n", result, imm, pc[3], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
-        register_bank[dest_reg] = result;
-      end
-      default : begin
-        `uvm_fatal(get_type_name(), $sformatf("Illegal opcode %0d was not recognized in U-type decoding!", opcode))
-      end
-    endcase
+    if (dest_reg != 0) begin
+      case (opcode)
+        u_lui_type : begin
+          result = imm;
+          `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from LUI to R%0d = 0x%0h\n", result, dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+          register_bank[dest_reg] = result;
+        end
+        u_auipc_type : begin
+          result = imm + pc[3];
+          `uvm_info(get_type_name(), $sformatf("Saving result 0x%0h from adding IMM = 0x%0h and PC = 0x%0h to R%0d = 0x%0h\n", result, imm, pc[3], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
+          register_bank[dest_reg] = result;
+        end
+        default : begin
+          `uvm_fatal(get_type_name(), $sformatf("Illegal opcode %0d was not recognized in U-type decoding!", opcode))
+        end
+      endcase
+    end
+    else begin
+      `uvm_info(get_type_name(), $sformatf("Destination register 0 is trying to be used, this will result in the same value of 0 being stored, so no operation is done!"), UVM_MEDIUM)
+    end
   endfunction : decode_u_type_opcode
 
   function void decode_j_type_opcode(logic [31:0] my_instr);
@@ -713,7 +718,12 @@ class darkriscv_reference_model extends uvm_component;
 
       `uvm_info(get_type_name(), $sformatf("On result from J-type decoding, advancing instruction address from %0h to %0h and saving the previous next address %0h to R%0d = 0x%0h", pc[1], result_address, pc[2], dest_reg, register_bank[dest_reg]), UVM_MEDIUM)
 
-      register_bank[dest_reg] = pc[2];
+      if (dest_reg == 0) begin
+        `uvm_info(get_type_name(), $sformatf("Destination register 0 is trying to be used, this will result in the same value of 0 being stored, so no operation is done!"), UVM_MEDIUM)
+      end
+      else begin
+        register_bank[dest_reg] = pc[2];
+      end
 
       pc[0] = result_address;
 
@@ -777,6 +787,11 @@ class darkriscv_reference_model extends uvm_component;
 
       funct3 = func3_l_type_e'(output_item_tmp.output_data[7:5]);
       dest_reg = output_item_tmp.output_data[4:0];
+
+      if (dest_reg == 0) begin
+        `uvm_info(get_type_name(), $sformatf("Destination register 0 is trying to be used, this will result in the same value of 0 being stored, so no operation is done!"), UVM_MEDIUM)
+        return;
+      end
       
       case (funct3)
         lw : begin
