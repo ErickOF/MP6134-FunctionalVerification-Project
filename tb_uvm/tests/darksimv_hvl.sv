@@ -18,6 +18,8 @@ import instructions_pkg::*;
 `include "darkriscv_driver.sv"
 `include "darkriscv_monitor.sv"
 `include "darkriscv_scoreboard.sv"
+`include "darkriscv_output_cov.sv"
+`include "darkriscv_input_cov.sv"
 `include "darkriscv_agent.sv"
 `include "darkriscv_reference_model.sv"
 `include "darkriscv_env.sv"
