@@ -69,7 +69,7 @@ compile_uvm: $(DEPS_UVM) $(SIMDIR)
 
 uvm_run_%:
 	@echo "Running UVM test: $*"
-	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=$*
+	./$(XSIM) +vcs+dumpvars+$(VCDS) -cm line+cond+fsm+branch+tgl +UVM_TESTNAME=$* -cm_name $*_$$RANDOM +ntb_random_seed=$$RANDOM
 
 uvm_gui: compile_uvm_gui
 	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=$(TARGET_TEST)
