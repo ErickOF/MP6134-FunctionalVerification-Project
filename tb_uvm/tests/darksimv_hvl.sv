@@ -44,6 +44,8 @@ import instructions_pkg::*;
 `include "j_instr_test.sv"
 `include "random_instr_test.sv"
 
+`include "r_type_assertions.sva"
+
 module darksimv_hvl();
   initial begin
     run_test();
