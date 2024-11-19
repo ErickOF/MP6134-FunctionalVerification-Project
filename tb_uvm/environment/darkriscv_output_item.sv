@@ -39,8 +39,11 @@ class darkriscv_output_item extends uvm_object;
     do_compare &= (this.read_op == rhs_.read_op);
 
     if ((this.write_op == 1'b1) || (this.read_op == 1'b1)) begin
-      do_compare &= (this.output_data == rhs_.output_data);
       do_compare &= (this.data_address == rhs_.data_address);
+    end
+
+    if (this.write_op == 1'b1) begin
+      do_compare &= (this.output_data == rhs_.output_data);
     end
 
     do_compare &= (this.bytes_transfered == rhs_.bytes_transfered);

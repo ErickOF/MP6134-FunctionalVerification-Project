@@ -39,16 +39,22 @@ typedef enum logic [6:0] {
   // I-type instructions (immediate)
   // TODO: only for: ADDI, XORI, ORI, ANDI, SLLI, SRLI, SRAI, SLTI and SLTIU
   i_type = 7'b001_0011,
+  // S-type instructions (load)
+  l_type = 7'b000_0011,
   // S-type instructions (store)
   s_type = 7'b010_0011,
   // B-type instructions (branch)
   b_type = 7'b110_0011,
   // U-type instructions (AUIPC)
   // TODO: only for AUIPC
-  u_type = 7'b001_0111,
+  u_auipc_type = 7'b001_0111,
+  // TODO: only for LUI
+  u_lui_type = 7'b011_0111,
   // J-type instructions (JAL)
   // TODO: only for JAL
-  j_type = 7'b110_1111,
+  j_jal_type = 7'b110_1111,
+  // TODO: only for JAL
+  j_jalr_type = 7'b110_0111,
   // Custom-0-type instructions
   custom_0_type = 7'b000_1011
 } inst_type_e;
@@ -76,10 +82,27 @@ typedef enum logic [2:0] {
 } func3_i_type_e;
 
 typedef enum logic [2:0] {
+  lb  = 3'b000,
+  lh  = 3'b001,
+  lw  = 3'b010,
+  lbu = 3'b100,
+  lhu = 3'b101
+} func3_l_type_e;
+
+typedef enum logic [2:0] {
   sb = 3'b000,
   sh = 3'b001,
   sw = 3'b010
 } func3_s_type_e;
+
+typedef enum logic [2:0] {
+  beq  = 3'b000,
+  bne  = 3'b001,
+  blt  = 3'b100,
+  bge  = 3'b101,
+  bltu = 3'b110,
+  bgeu = 3'b111
+} func3_b_type_e;
 
 typedef enum logic [2:0] {
   idle = 3'b000
@@ -321,6 +344,20 @@ localparam int unsigned RISCV_INST_IMM_S_4_0_RANGE_LOW    = 7;
 localparam int unsigned RISCV_INST_IMM_S_4_0_RANGE_HIGH   = 11;
 localparam int unsigned RISCV_INST_FUNC7_RANGE_LOW        = 25;
 localparam int unsigned RISCV_INST_FUNC7_RANGE_HIGH       = 31;
+localparam int unsigned RISCV_INST_IMM_R_12               = 31;
+localparam int unsigned RISCV_INST_IMM_R_11               = 7;
+localparam int unsigned RISCV_INST_IMM_R_10_5_RANGE_LOW   = 25;
+localparam int unsigned RISCV_INST_IMM_R_10_5_RANGE_HIGH  = 30;
+localparam int unsigned RISCV_INST_IMM_R_4_1_RANGE_LOW    = 8;
+localparam int unsigned RISCV_INST_IMM_R_4_1_RANGE_HIGH   = 11;
+localparam int unsigned RISCV_INST_IMM_U_31_12_RANGE_LOW  = 12;
+localparam int unsigned RISCV_INST_IMM_U_31_12_RANGE_HIGH = 31;
+localparam int unsigned RISCV_INST_IMM_J_20               = 31;
+localparam int unsigned RISCV_INST_IMM_J_19_12_LOW        = 12;
+localparam int unsigned RISCV_INST_IMM_J_19_12_HIGH       = 19;
+localparam int unsigned RISCV_INST_IMM_J_11               = 20;
+localparam int unsigned RISCV_INST_IMM_J_10_1_RANGE_LOW   = 21;
+localparam int unsigned RISCV_INST_IMM_J_10_1_RANGE_HIGH  = 30;
 
 endpackage : instructions_pkg
 

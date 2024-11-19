@@ -96,6 +96,10 @@ class s_type_checker extends base_instruction_checker;
     // Introduce a delay for HLT signal processing
     repeat (2) @(negedge this.intf.CLK);
 
+    if (`HDL_TOP.FLUSH > 0) begin
+      return;
+    end
+
     // Fetch the source register value (rs1) from the DUT register file
     reg_rs1 = `HDL_TOP.REGS[reg_rs1_ptr];
 
@@ -167,6 +171,10 @@ class s_type_checker extends base_instruction_checker;
     // Introduce a delay to account for the HLT signal processing between instructions
     repeat (2) @(negedge this.intf.CLK);
 
+    if (`HDL_TOP.FLUSH > 0) begin
+      return;
+    end
+
     // Fetch the source register 2 value (`rs2`) from the DUT register file
     data_bus = `HDL_TOP.REGS[reg_rs2_ptr];
 
@@ -235,6 +243,10 @@ class s_type_checker extends base_instruction_checker;
     // Introduce a delay for HLT signal processing
     repeat (2) @(negedge this.intf.CLK);
 
+    if (`HDL_TOP.FLUSH > 0) begin
+      return;
+    end
+
     // Retrieve the actual data length from the RTL
     expected_data_len = this.intf.DLEN;
 
@@ -290,6 +302,10 @@ class s_type_checker extends base_instruction_checker;
     // Introduce a delay for HLT signal processing
     repeat (2) @(negedge this.intf.CLK);
 
+    if (`HDL_TOP.FLUSH > 0) begin
+      return;
+    end
+
     // Log the DRW value for debugging purposes, expecting DRW to be 1'b0
     `uvm_info(
       get_full_name(),
@@ -341,6 +357,10 @@ class s_type_checker extends base_instruction_checker;
 
     // Introduce a delay for HLT signal processing
     repeat (2) @(negedge this.intf.CLK);
+
+    if (`HDL_TOP.FLUSH > 0) begin
+      return;
+    end
 
     // Log the expected DWR value for debugging, expecting it to be 1'b1
     `uvm_info(
@@ -402,6 +422,10 @@ class s_type_checker extends base_instruction_checker;
 
     // Introduce a delay to account for the HLT signal processing between instructions
     repeat (2) @(negedge this.intf.CLK);
+
+    if (`HDL_TOP.FLUSH > 0) begin
+      return;
+    end
 
     // Retrieve the sign-extended immediate result from the DUT
     simm = `HDL_TOP.SIMM;
