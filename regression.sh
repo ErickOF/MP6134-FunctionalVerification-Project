@@ -17,6 +17,8 @@ do
 	make uvm_run_random_instr_test
 	make uvm_run_s_instr_test
 	make uvm_run_u_instr_test
+	make uvm_run_i_instr_sltiu_bug_0_test
+	make uvm_run_j_instr_jalr_bug_0_test
 done
 # Create the coverage database report using Synopsys URG tool
 /mnt/vol_NFS_alajuela/qtree_NFS_rh003/synopsys_tools/synopsys/vcs-mx/O-2018.09-SP2-3/bin/urg -dir coverage.vdb/

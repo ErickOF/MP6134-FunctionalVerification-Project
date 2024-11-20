@@ -23,6 +23,8 @@ class darkriscv_reference_model extends uvm_component;
 
   int flushing_pipeline;
 
+  bit jalr_bug_0_bypass;
+
   `uvm_component_utils(darkriscv_reference_model)
 
   function new(string name = "darkriscv_reference_model", uvm_component parent = null);
@@ -40,6 +42,8 @@ class darkriscv_reference_model extends uvm_component;
     end
 
     flushing_pipeline = 0;
+
+    jalr_bug_0_bypass = 1'b1;
   endfunction : new
 
   function void reset();
@@ -688,9 +692,11 @@ class darkriscv_reference_model extends uvm_component;
           imm_signed = signed'(imm);
 
           result_offset = imm_signed + register_bank[source_reg_1];
-          if (result_offset[0] == 1'b1) begin
-            // result_offset[0] = 1'b0;
-            `uvm_error(get_type_name(), $sformatf("JALR is supposed to set the least significant bit of the resulting address to 0, but the RLT doesn't consider it, leaving at 1 to keep matching onwards!"))
+          if (jalr_bug_0_bypass == 1'b1 && result_offset[0] == 1'b1) begin
+            `uvm_error(get_type_name(), $sformatf("JALR is supposed to set the least significant bit of the resulting address to 0, but the RTL doesn't consider it, leaving at 1 to keep matching onwards!"))
+          end
+          else begin
+            result_offset[0] = 1'b0;
           end
 
           `uvm_info(get_type_name(), $sformatf("Taking new address %0h from adding sign-extended IMM = 0x%0h and R%0d = 0x%0h", result_offset, imm_signed, source_reg_1, register_bank[source_reg_1]), UVM_MEDIUM)
