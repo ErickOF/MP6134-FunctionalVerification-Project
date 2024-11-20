@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="Author" content="<username>"> <meta name="GENERATOR" content="urg/version [en] (platform name) [urg]">
+<title>Unified Coverage Report :: Assertions</title>
+<link type="text/css" rel="stylesheet" href="css/.urg.css">
+<link type="text/css" rel="stylesheet" href="css/.layout.css">
+<link type="text/css" rel="stylesheet" href="css/.breadcrumb.css">
+<script type="text/javascript" src="js/.jquery.js"></script>
+<script type="text/javascript" src="js/.jquery-ui.js"></script>
+<script type="text/javascript" src="js/.sortable.js"></script>
+<script type="text/javascript" src="js/.layout.js"></script>
+<script type="text/javascript" src="js/.breadcrumb.js"></script>
+<script type="text/javascript">
+var layout, westLayout, centerLayout;
+$(document).ready(function () {
+  if ($("#north-bread-crumb")) {
+    $("#north-bread-crumb").jBreadCrumb({easing:'swing'})
+  }
+  layout = $("body").layout({ 
+    resizable: true,
+    spacing_open: 4,
+    spacing_closed: 4,
+    north: {
+      size: 76
+    },
+    south: {
+      size: 45,
+      initClosed: true
+    },
+    west: {
+      size: 500,
+      resizable: true,
+      initClosed: false
+    }
+  });
+  centerLayout = $('div.ui-layout-center').layout({
+    north__paneSelector: ".ui-layout-center-inner-north",
+    center__paneSelector: ".ui-layout-center-inner-center", 
+    north__size: 50,
+    spacing_open: 4,
+    spacing_closed: 4
+  });
+});
+</script>
+</head>
+<body onLoad="initPage();"><div class="ui-layout-north">
+<div class="logo"></div>
+<center class="pagetitle">Assertions</center>
+<div align="center"><a href="dashboard.html" ><b>dashboard</b></a> | <a href="hierarchy.html" ><b>hierarchy</b></a> | <a href="modlist.html" ><b>modlist</b></a> | <a href="groups.html" ><b>groups</b></a> | <a href="tests.html" ><b>tests</b></a> | <a href="asserts.html" ><b>asserts</b></a></div>
+
+</div>
+<br clear=all>
+<div class="ui-layout-west">
+<b>Assertions by Category</b><table class="noborder">
+<col width="180">
+<col span="3" width="60"><tr class="sortablehead"><td> </td><td>ASSERT</td><td>PROPERTIES</td><td>SEQUENCES</td>
+<tr class="wht"><td class="lf">Total</td><td>0</td><td>10</td><td>0</td></tr>
+<tr class="wht"><td class="lf">Category 0</td><td>0</td><td>10</td><td>0</td></tr>
+</table>
+<hr>
+<br clear=all>
+<b>Assertions by Severity</b><table class="noborder">
+<col width="180">
+<col span="3" width="60"><tr class="sortablehead"><td> </td><td>ASSERT</td><td>PROPERTIES</td><td>SEQUENCES</td>
+<tr class="wht"><td class="lf">Total</td><td>0</td><td>10</td><td>0</td></tr>
+<tr class="wht"><td class="lf">Severity 0</td><td>0</td><td>10</td><td>0</td></tr>
+</table>
+<hr>
+<br clear=all>
+<b>Summary for Cover Properties</b><table class="noborder">
+<col width="180">
+<col span="2" width="60"><tr class="sortablehead"><td> </td><td>NUMBER</td><td>PERCENT</td>
+<tr class="wht"><td class="lf">Total Number</td><td>10</td><td>100.00</td></tr>
+<tr class="wht"><td class="lf">Uncovered</td><td>0</td><td>0.00</td></tr>
+<tr class="wht"><td class="lf"><a href="#tag_pro_match">Matches</a></td><td>10</td><td>100.00</td></tr>
+</table>
+</div>
+<div class="ui-layout-center">
+<div class="ui-layout-center-inner-center">
+<hr>
+<br clear=all>
+<b>Detail Report for Cover Properties</b><br clear=all>
+<br clear=all>
+Cover Properties Matches:<a name="tag_pro_match"></a>
+<table class="sortable rt">
+<col width="180">
+<col span="5" width="60"><tr class="sortablehead">
+<td class="alfsrt">COVER PROPERTIES<td>CATEGORY</td><td>SEVERITY</td><td>ATTEMPTS</td><td>MATCHES</td><td>INCOMPLETE</td><td>SRC</td>
+<tr class="wht"><td class="lf"><a name="tag_hvp_ast_darksimv_hdl.i_r_type_assertions.cover_check_r_type_add" title="mod0.html#1010706547" href="mod0.html#1010706547">darksimv_hdl.i_r_type_assertions.cover_check_r_type_add</a>
+</td><td>0</td><td>0</td><td class="s9">13422</td><td class="s9">11</td><td>0</td><td class="ct"><a title="/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva" href="javascript:void(0);" onclick="openSrcFile('/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva')"><img class="sourcefile"></a>
+</td></tr>
+<tr class="wht"><td class="lf"><a name="tag_hvp_ast_darksimv_hdl.i_r_type_assertions.cover_check_r_type_and" title="mod0.html#373805309" href="mod0.html#373805309">darksimv_hdl.i_r_type_assertions.cover_check_r_type_and</a>
+</td><td>0</td><td>0</td><td class="s9">13422</td><td class="s9">27</td><td>0</td><td class="ct"><a title="/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva" href="javascript:void(0);" onclick="openSrcFile('/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva')"><img class="sourcefile"></a>
+</td></tr>
+<tr class="wht"><td class="lf"><a name="tag_hvp_ast_darksimv_hdl.i_r_type_assertions.cover_check_r_type_or" title="mod0.html#2061621353" href="mod0.html#2061621353">darksimv_hdl.i_r_type_assertions.cover_check_r_type_or</a>
+</td><td>0</td><td>0</td><td class="s9">13422</td><td class="s9">20</td><td>0</td><td class="ct"><a title="/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva" href="javascript:void(0);" onclick="openSrcFile('/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva')"><img class="sourcefile"></a>
+</td></tr>
+<tr class="wht"><td class="lf"><a name="tag_hvp_ast_darksimv_hdl.i_r_type_assertions.cover_check_r_type_sll" title="mod0.html#352611489" href="mod0.html#352611489">darksimv_hdl.i_r_type_assertions.cover_check_r_type_sll</a>
+</td><td>0</td><td>0</td><td class="s9">13422</td><td class="s9">17</td><td>0</td><td class="ct"><a title="/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva" href="javascript:void(0);" onclick="openSrcFile('/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva')"><img class="sourcefile"></a>
+</td></tr>
+<tr class="wht"><td class="lf"><a name="tag_hvp_ast_darksimv_hdl.i_r_type_assertions.cover_check_r_type_slt" title="mod0.html#839650407" href="mod0.html#839650407">darksimv_hdl.i_r_type_assertions.cover_check_r_type_slt</a>
+</td><td>0</td><td>0</td><td class="s9">13422</td><td class="s9">23</td><td>0</td><td class="ct"><a title="/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva" href="javascript:void(0);" onclick="openSrcFile('/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva')"><img class="sourcefile"></a>
+</td></tr>
+<tr class="wht"><td class="lf"><a name="tag_hvp_ast_darksimv_hdl.i_r_type_assertions.cover_check_r_type_sltu" title="mod0.html#321362702" href="mod0.html#321362702">darksimv_hdl.i_r_type_assertions.cover_check_r_type_sltu</a>
+</td><td>0</td><td>0</td><td class="s9">13422</td><td class="s9">20</td><td>0</td><td class="ct"><a title="/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva" href="javascript:void(0);" onclick="openSrcFile('/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva')"><img class="sourcefile"></a>
+</td></tr>
+<tr class="wht"><td class="lf"><a name="tag_hvp_ast_darksimv_hdl.i_r_type_assertions.cover_check_r_type_sra" title="mod0.html#213966482" href="mod0.html#213966482">darksimv_hdl.i_r_type_assertions.cover_check_r_type_sra</a>
+</td><td>0</td><td>0</td><td class="s9">13422</td><td class="s9">6</td><td>0</td><td class="ct"><a title="/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva" href="javascript:void(0);" onclick="openSrcFile('/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva')"><img class="sourcefile"></a>
+</td></tr>
+<tr class="wht"><td class="lf"><a name="tag_hvp_ast_darksimv_hdl.i_r_type_assertions.cover_check_r_type_srl" title="mod0.html#888522713" href="mod0.html#888522713">darksimv_hdl.i_r_type_assertions.cover_check_r_type_srl</a>
+</td><td>0</td><td>0</td><td class="s9">13422</td><td class="s9">4</td><td>0</td><td class="ct"><a title="/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva" href="javascript:void(0);" onclick="openSrcFile('/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva')"><img class="sourcefile"></a>
+</td></tr>
+<tr class="wht"><td class="lf"><a name="tag_hvp_ast_darksimv_hdl.i_r_type_assertions.cover_check_r_type_sub" title="mod0.html#1092504268" href="mod0.html#1092504268">darksimv_hdl.i_r_type_assertions.cover_check_r_type_sub</a>
+</td><td>0</td><td>0</td><td class="s9">13422</td><td class="s9">10</td><td>0</td><td class="ct"><a title="/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva" href="javascript:void(0);" onclick="openSrcFile('/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva')"><img class="sourcefile"></a>
+</td></tr>
+<tr class="wht"><td class="lf"><a name="tag_hvp_ast_darksimv_hdl.i_r_type_assertions.cover_check_r_type_xor" title="mod0.html#1633158841" href="mod0.html#1633158841">darksimv_hdl.i_r_type_assertions.cover_check_r_type_xor</a>
+</td><td>0</td><td>0</td><td class="s9">13422</td><td class="s9">13</td><td>0</td><td class="ct"><a title="/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva" href="javascript:void(0);" onclick="openSrcFile('/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/assertions/r_type_assertions.sva')"><img class="sourcefile"></a>
+</td></tr>
+</table>
+<br clear=all>
+</div>
+<div class="ui-layout-center-inner-north">
+<div id="center-bread-crumb" class="breadCrumb module urg-margin-bottom">
+  <ul>
+    <li>
+      <a href="#tag_pro_match">Cover Properties Matches</a>    </li>
+  </ul>
+</div>
+</div>
+</div>
+<div class="ui-layout-south">
+<table align=center><tr><td class="s0 cl">0%</td>
+<td class="s1 cl">10%</td>
+<td class="s2 cl">20%</td>
+<td class="s3 cl">30%</td>
+<td class="s4 cl">40%</td>
+<td class="s5 cl">50%</td>
+<td class="s6 cl">60%</td>
+<td class="s7 cl">70%</td>
+<td class="s8 cl">80%</td>
+<td class="s9 cl">90%</td>
+<td class="s10 cl">100%</td></tr></table></div>
+</body>
+</html>

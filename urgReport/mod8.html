@@ -1,0 +1,3515 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="Author" content="<username>"> <meta name="GENERATOR" content="urg/version [en] (platform name) [urg]">
+<title>Unified Coverage Report :: Module :: darkriscv</title>
+<link type="text/css" rel="stylesheet" href="css/.urg.css">
+<link type="text/css" rel="stylesheet" href="css/.layout.css">
+<link type="text/css" rel="stylesheet" href="css/.breadcrumb.css">
+<script type="text/javascript" src="js/.jquery.js"></script>
+<script type="text/javascript" src="js/.jquery-ui.js"></script>
+<script type="text/javascript" src="js/.sortable.js"></script>
+<script type="text/javascript" src="js/.layout.js"></script>
+<script type="text/javascript" src="js/.breadcrumb.js"></script>
+<script type="text/javascript">
+var layout, westLayout, centerLayout;
+$(document).ready(function () {
+  if ($("#north-bread-crumb")) {
+    $("#north-bread-crumb").jBreadCrumb({easing:'swing'})
+  }
+  layout = $("body").layout({ 
+    resizable: true,
+    spacing_open: 4,
+    spacing_closed: 4,
+    north: {
+      size: 76
+    },
+    south: {
+      size: 45,
+      initClosed: true
+    },
+    west: {
+      size: 500,
+      resizable: true,
+      initClosed: false
+    }
+  });
+  centerLayout = $('div.ui-layout-center').layout({
+    north__paneSelector: ".ui-layout-center-inner-north",
+    center__paneSelector: ".ui-layout-center-inner-center", 
+    north__size: 50,
+    spacing_open: 4,
+    spacing_closed: 4
+  });
+});
+</script>
+</head>
+<body onLoad="initPage();"><div class="ui-layout-north">
+<div class="logo"></div>
+<center class="pagetitle">Module Definition</center>
+<div align="center"><a href="dashboard.html" ><b>dashboard</b></a> | <a href="hierarchy.html" ><b>hierarchy</b></a> | <a href="modlist.html" ><b>modlist</b></a> | <a href="groups.html" ><b>groups</b></a> | <a href="tests.html" ><b>tests</b></a> | <a href="asserts.html" ><b>asserts</b></a></div>
+
+</div>
+<div class="ui-layout-west">
+<div name='tag_darkriscv'>
+<div class=modhdr>
+<br clear=all>
+<span class=titlename>Module : <a href="#"  onclick="showContent('tag_darkriscv')">darkriscv</a></span>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td>SCORE</td><td>LINE</td><td>COND</td><td>TOGGLE</td><td>FSM</td><td>BRANCH</td><td>ASSERT</td></tr><tr>
+<td class="s9 cl rt"> 97.57</td>
+<td class="s10 cl rt"><a href="mod8.html#Line" >100.00</a></td>
+<td class="s9 cl rt"><a href="mod8.html#Cond" > 98.00</a></td>
+<td class="s9 cl rt"><a href="mod8.html#Toggle" > 92.28</a></td>
+<td class="wht cl rt"></td>
+<td class="s10 cl rt"><a href="mod8.html#Branch" >100.00</a></td>
+<td class="wht cl rt"></td>
+</tr></table><br clear=all>
+<span class=repname>Source File(s) : </span>
+<br clear=all>
+<a href="javascript:void(0);"  onclick="openSrcFile('/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/rtl/src/darkriscv.v')">/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/rtl/src/darkriscv.v</a><br clear=all>
+<br clear=all>
+<span class=repname>Module self-instances :</span>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td class="alfsrt">NAME</td><td>SCORE</td><td>LINE</td><td>COND</td><td>TOGGLE</td><td>FSM</td><td>BRANCH</td><td>ASSERT</td></tr><tr>
+<td class="wht cl wordwrap"><a href="mod8.html#inst_tag_8"  onclick="showContent('inst_tag_8')">darksimv_hdl.core0</a></td>
+<td class="s9 cl rt"> 97.57</td>
+<td class="s10 cl rt"><a href="mod8.html#Line" >100.00</a></td>
+<td class="s9 cl rt"><a href="mod8.html#Cond" > 98.00</a></td>
+<td class="s9 cl rt"><a href="mod8.html#Toggle" > 92.28</a></td>
+<td class="wht cl rt"></td>
+<td class="s10 cl rt"><a href="mod8.html#Branch" >100.00</a></td>
+<td class="wht cl rt"></td>
+</tr></table></div>
+</div>
+<br clear=all>
+<div name='tag_darkriscv'>
+<hr>
+<a name="inst_tag_8"></a>
+<div class=modhdr>
+<br clear=all>
+<span class=titlename>Module Instance : <a href="hierarchy.html#tag_urg_inst_8" >darksimv_hdl.core0</a></span>
+<br clear=all>
+<br clear=all>
+<span class=repname>Instance :</span>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td>SCORE</td><td>LINE</td><td>COND</td><td>TOGGLE</td><td>FSM</td><td>BRANCH</td><td>ASSERT</td></tr><tr>
+<td class="s9 cl rt"> 97.57</td>
+<td class="s10 cl rt"><a href="mod8.html#Line" >100.00</a></td>
+<td class="s9 cl rt"><a href="mod8.html#Cond" > 98.00</a></td>
+<td class="s9 cl rt"><a href="mod8.html#Toggle" > 92.28</a></td>
+<td class="wht cl rt"></td>
+<td class="s10 cl rt"><a href="mod8.html#Branch" >100.00</a></td>
+<td class="wht cl rt"></td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class=repname>Instance's subtree :</span>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td>SCORE</td><td>LINE</td><td>COND</td><td>TOGGLE</td><td>FSM</td><td>BRANCH</td><td>ASSERT</td></tr><tr>
+<td class="s9 cl rt"> 97.57</td>
+<td class="s10 cl rt">100.00</td>
+<td class="s9 cl rt"> 98.00</td>
+<td class="s9 cl rt"> 92.28</td>
+<td class="wht cl rt"></td>
+<td class="s10 cl rt">100.00</td>
+<td class="wht cl rt"></td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class=repname>Parent : </span>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td>SCORE</td><td>LINE</td><td>COND</td><td>TOGGLE</td><td>FSM</td><td>BRANCH</td><td>ASSERT</td><td class="alfsrt">NAME</td></tr><tr>
+<td class="s10 cl rt">100.00</td>
+<td class="s10 cl rt">100.00</td>
+<td class="wht cl rt"></td>
+<td class="s10 cl rt">100.00</td>
+<td class="wht cl rt"></td>
+<td class="wht cl rt"></td>
+<td class="wht cl rt"></td>
+<td><a href="mod4.html#inst_tag_4" >darksimv_hdl</a></td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class=repname>Subtrees :</span>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td class="alfsrt">NAME</td><td>SCORE</td><td>LINE</td><td>COND</td><td>TOGGLE</td><td>FSM</td><td>BRANCH</td><td>ASSERT</td></tr><tr>
+<td colspan=8>no children</td>
+</tr></table><br clear=all>
+</div>
+</div>
+<hr>
+Since this is the module's only instance, the coverage report is the same as for the module.</div>
+<div class="ui-layout-center">
+<div class="ui-layout-center-inner-center">
+<div name='tag_darkriscv'>
+<a name="Line"></a>
+Line Coverage for Module : <a href="mod8.html" >darkriscv</a><br clear=all>
+<table class="noborder">
+<col width="122">
+<col span="4" width="82">
+<tr><th></th><th>Line No.</th><th>Total</th><th>Covered</th><th>Percent</th></tr>
+<tr class="s10"><td class="lf">TOTAL</td><td></td><td>23</td><td>23</td><td>100.00</td></tr>
+<tr class="s10"><td class="lf">ALWAYS</td><td>109</td><td>3</td><td>3</td><td>100.00</td></tr>
+<tr class="s10"><td class="lf">ALWAYS</td><td>129</td><td>14</td><td>14</td><td>100.00</td></tr>
+<tr class="s10"><td class="lf">ALWAYS</td><td>425</td><td>6</td><td>6</td><td>100.00</td></tr>
+</table>
+<pre class="code"><br clear=all>
+108                         begin
+109        1/1                  HLT2 &lt;= HLT;
+110                             
+111        2/2                  if(HLT2^HLT) IDATA2 &lt;= IDATA;    
+                        MISSING_ELSE
+112                         end
+113                     
+114                         wire[31:0] IDATAX = XRES ? 0 : HLT2 ? IDATA2 : IDATA;
+115                     
+116                         // decode: IDATA is break apart as described in the RV32I specification
+117                     
+118                     `ifdef __3STAGE__
+119                     
+120                         reg [31:0] XIDATA;
+121                     
+122                         reg XLUI, XAUIPC, XJAL, XJALR, XBCC, XLCC, XSCC, XMCC, XRCC, XCUS, XSYS; //, XFCC, XSYS;
+123                     
+124                         reg [31:0] XSIMM;
+125                         reg [31:0] XUIMM;
+126                     
+127                         always@(posedge CLK)
+128                         begin
+129        1/1                  XIDATA &lt;= HLT ? XIDATA : IDATAX;
+130                     
+131        1/1                  XLUI   &lt;= HLT ? XLUI   : IDATAX[6:0]==`LUI;
+132        1/1                  XAUIPC &lt;= HLT ? XAUIPC : IDATAX[6:0]==`AUIPC;
+133        1/1                  XJAL   &lt;= HLT ? XJAL   : IDATAX[6:0]==`JAL;
+134        1/1                  XJALR  &lt;= HLT ? XJALR  : IDATAX[6:0]==`JALR;
+135                     
+136        1/1                  XBCC   &lt;= HLT ? XBCC   : IDATAX[6:0]==`BCC;
+137        1/1                  XLCC   &lt;= HLT ? XLCC   : IDATAX[6:0]==`LCC;
+138        1/1                  XSCC   &lt;= HLT ? XSCC   : IDATAX[6:0]==`SCC;
+139        1/1                  XMCC   &lt;= HLT ? XMCC   : IDATAX[6:0]==`MCC;
+140                     
+141        1/1                  XRCC   &lt;= HLT ? XRCC   : IDATAX[6:0]==`RCC;
+142        1/1                  XCUS   &lt;= HLT ? XRCC   : IDATAX[6:0]==`CUS;
+143                             //XFCC   &lt;= HLT ? XFCC   : IDATAX[6:0]==`FCC;
+144        1/1                  XSYS   &lt;= HLT ? XSYS   : IDATAX[6:0]==`SYS;
+145                     
+146                             // signal extended immediate, according to the instruction type:
+147                     
+148        1/1                  XSIMM  &lt;= HLT ? XSIMM :
+149                                      IDATAX[6:0]==`SCC ? { IDATAX[31] ? ALL1[31:12]:ALL0[31:12], IDATAX[31:25],IDATAX[11:7] } : // s-type
+150                                      IDATAX[6:0]==`BCC ? { IDATAX[31] ? ALL1[31:13]:ALL0[31:13], IDATAX[31],IDATAX[7],IDATAX[30:25],IDATAX[11:8],ALL0[0] } : // b-type
+151                                      IDATAX[6:0]==`JAL ? { IDATAX[31] ? ALL1[31:21]:ALL0[31:21], IDATAX[31], IDATAX[19:12], IDATAX[20], IDATAX[30:21], ALL0[0] } : // j-type
+152                                      IDATAX[6:0]==`LUI||
+153                                      IDATAX[6:0]==`AUIPC ? { IDATAX[31:12], ALL0[11:0] } : // u-type
+154                                                           { IDATAX[31] ? ALL1[31:12]:ALL0[31:12], IDATAX[31:20] }; // i-type
+155                             // non-signal extended immediate, according to the instruction type:
+156                     
+157        1/1                  XUIMM  &lt;= HLT ? XUIMM :
+158                                      IDATAX[6:0]==`SCC ? { ALL0[31:12], IDATAX[31:25],IDATAX[11:7] } : // s-type
+159                                      IDATAX[6:0]==`BCC ? { ALL0[31:13], IDATAX[31],IDATAX[7],IDATAX[30:25],IDATAX[11:8],ALL0[0] } : // b-type
+160                                      IDATAX[6:0]==`JAL ? { ALL0[31:21], IDATAX[31], IDATAX[19:12], IDATAX[20], IDATAX[30:21], ALL0[0] } : // j-type
+161                                      IDATAX[6:0]==`LUI||
+162                                      IDATAX[6:0]==`AUIPC ? { IDATAX[31:12], ALL0[11:0] } : // u-type
+163                                                           { ALL0[31:12], IDATAX[31:20] }; // i-type
+164                         end
+165                     
+166                         reg [1:0] FLUSH = -1;  // flush instruction pipeline
+167                     
+168                     `else
+169                     
+170                         wire [31:0] XIDATA;
+171                     
+172                         wire XLUI, XAUIPC, XJAL, XJALR, XBCC, XLCC, XSCC, XMCC, XRCC, XCUS, XSYS; //, XFCC, XSYS;
+173                     
+174                         wire [31:0] XSIMM;
+175                         wire [31:0] XUIMM;
+176                     
+177                         assign XIDATA = IDATAX;
+178                     
+179                         assign XLUI   = IDATAX[6:0]==`LUI;
+180                         assign XAUIPC = IDATAX[6:0]==`AUIPC;
+181                         assign XJAL   = IDATAX[6:0]==`JAL;
+182                         assign XJALR  = IDATAX[6:0]==`JALR;
+183                     
+184                         assign XBCC   = IDATAX[6:0]==`BCC;
+185                         assign XLCC   = IDATAX[6:0]==`LCC;
+186                         assign XSCC   = IDATAX[6:0]==`SCC;
+187                         assign XMCC   = IDATAX[6:0]==`MCC;
+188                     
+189                         assign XRCC   = IDATAX[6:0]==`RCC;
+190                         assign XCUS   = IDATAX[6:0]==`CUS;
+191                         //assign XFCC   &lt;= IDATAX[6:0]==`FCC;
+192                         assign XSYS   = IDATAX[6:0]==`SYS;
+193                     
+194                         // signal extended immediate, according to the instruction type:
+195                     
+196                         assign XSIMM  = 
+197                                          IDATAX[6:0]==`SCC ? { IDATAX[31] ? ALL1[31:12]:ALL0[31:12], IDATAX[31:25],IDATAX[11:7] } : // s-type
+198                                          IDATAX[6:0]==`BCC ? { IDATAX[31] ? ALL1[31:13]:ALL0[31:13], IDATAX[31],IDATAX[7],IDATAX[30:25],IDATAX[11:8],ALL0[0] } : // b-type
+199                                          IDATAX[6:0]==`JAL ? { IDATAX[31] ? ALL1[31:21]:ALL0[31:21], IDATAX[31], IDATAX[19:12], IDATAX[20], IDATAX[30:21], ALL0[0] } : // j-type
+200                                          IDATAX[6:0]==`LUI||
+201                                          IDATAX[6:0]==`AUIPC ? { IDATAX[31:12], ALL0[11:0] } : // u-type
+202                                                               { IDATAX[31] ? ALL1[31:12]:ALL0[31:12], IDATAX[31:20] }; // i-type
+203                             // non-signal extended immediate, according to the instruction type:
+204                     
+205                         assign XUIMM  = 
+206                                          IDATAX[6:0]==`SCC ? { ALL0[31:12], IDATAX[31:25],IDATAX[11:7] } : // s-type
+207                                          IDATAX[6:0]==`BCC ? { ALL0[31:13], IDATAX[31],IDATAX[7],IDATAX[30:25],IDATAX[11:8],ALL0[0] } : // b-type
+208                                          IDATAX[6:0]==`JAL ? { ALL0[31:21], IDATAX[31], IDATAX[19:12], IDATAX[20], IDATAX[30:21], ALL0[0] } : // j-type
+209                                          IDATAX[6:0]==`LUI||
+210                                          IDATAX[6:0]==`AUIPC ? { IDATAX[31:12], ALL0[11:0] } : // u-type
+211                                                               { ALL0[31:12], IDATAX[31:20] }; // i-type
+212                     
+213                         reg FLUSH = -1;  // flush instruction pipeline
+214                     
+215                     `endif
+216                     
+217                     `ifdef __THREADS__
+218                         `ifdef __RV32E__
+219                     
+220                             reg [`__THREADS__-1:0] RESMODE = -1;
+221                     
+222                             wire [`__THREADS__+3:0] DPTR   = XRES ? { RESMODE, 4'd0 } : { TPTR, XIDATA[10: 7] }; // set SP_RESET when RES==1
+223                             wire [`__THREADS__+3:0] S1PTR  = { TPTR, XIDATA[18:15] };
+224                             wire [`__THREADS__+3:0] S2PTR  = { TPTR, XIDATA[23:20] };
+225                         `else
+226                             reg [`__THREADS__-1:0] RESMODE = -1;
+227                     
+228                             wire [`__THREADS__+4:0] DPTR   = XRES ? { RESMODE, 5'd0 } : { TPTR, XIDATA[11: 7] }; // set SP_RESET when RES==1
+229                             wire [`__THREADS__+4:0] S1PTR  = { TPTR, XIDATA[19:15] };
+230                             wire [`__THREADS__+4:0] S2PTR  = { TPTR, XIDATA[24:20] };
+231                         `endif
+232                     `else
+233                         `ifdef __RV32E__
+234                             wire [3:0] DPTR   = XIDATA[10: 7]; // set SP_RESET when RES==1
+235                             wire [3:0] S1PTR  = XIDATA[18:15];
+236                             wire [3:0] S2PTR  = XIDATA[23:20];
+237                         `else
+238                             wire [4:0] DPTR   = XIDATA[11: 7]; // set SP_RESET when RES==1
+239                             wire [4:0] S1PTR  = XIDATA[19:15];
+240                             wire [4:0] S2PTR  = XIDATA[24:20];
+241                         `endif
+242                     `endif
+243                     
+244                         wire [6:0] OPCODE = FLUSH ? 0 : XIDATA[6:0];
+245                         wire [2:0] FCT3   = XIDATA[14:12];
+246                         wire [6:0] FCT7   = XIDATA[31:25];
+247                     
+248                         wire [31:0] SIMM  = XSIMM;
+249                         wire [31:0] UIMM  = XUIMM;
+250                     
+251                         // main opcode decoder:
+252                     
+253                         wire    LUI = FLUSH ? 0 : XLUI;   // OPCODE==7'b0110111;
+254                         wire  AUIPC = FLUSH ? 0 : XAUIPC; // OPCODE==7'b0010111;
+255                         wire    JAL = FLUSH ? 0 : XJAL;   // OPCODE==7'b1101111;
+256                         wire   JALR = FLUSH ? 0 : XJALR;  // OPCODE==7'b1100111;
+257                     
+258                         wire    BCC = FLUSH ? 0 : XBCC; // OPCODE==7'b1100011; //FCT3
+259                         wire    LCC = FLUSH ? 0 : XLCC; // OPCODE==7'b0000011; //FCT3
+260                         wire    SCC = FLUSH ? 0 : XSCC; // OPCODE==7'b0100011; //FCT3
+261                         wire    MCC = FLUSH ? 0 : XMCC; // OPCODE==7'b0010011; //FCT3
+262                     
+263                         wire    RCC = FLUSH ? 0 : XRCC; // OPCODE==7'b0110011; //FCT3
+264                         wire    CUS = FLUSH ? 0 : XCUS; // OPCODE==7'b0110011; //FCT3
+265                         //wire    FCC = FLUSH ? 0 : XFCC; // OPCODE==7'b0001111; //FCT3
+266                         wire    SYS = FLUSH ? 0 : XSYS; // OPCODE==7'b1110011; //FCT3
+267                     
+268                     `ifdef __THREADS__
+269                         `ifdef __3STAGE__
+270                             reg [31:0] NXPC2 [0:(2**`__THREADS__)-1];       // 32-bit program counter t+2
+271                         `endif
+272                     `else
+273                         `ifdef __3STAGE__
+274                             reg [31:0] NXPC2;       // 32-bit program counter t+2
+275                         `endif
+276                     `endif
+277                     
+278                         reg [31:0] REGS [0:`RLEN-1];	// general-purpose 32x32-bit registers (s1)
+279                     
+280                         reg [31:0] NXPC;        // 32-bit program counter t+1
+281                         reg [31:0] PC;		    // 32-bit program counter t+0
+282                     
+283                     `ifdef SIMULATION
+284                         integer i;
+285                         
+286                         initial for(i=0;i!=`RLEN;i=i+1) REGS[i] = 0;
+287                     `endif
+288                     
+289                         // source-1 and source-1 register selection
+290                     
+291                         wire          [31:0] U1REG = REGS[S1PTR];
+292                         wire          [31:0] U2REG = REGS[S2PTR];
+293                     
+294                         wire signed   [31:0] S1REG = U1REG;
+295                         wire signed   [31:0] S2REG = U2REG;
+296                     
+297                     
+298                         // L-group of instructions (OPCODE==7'b0000011)
+299                     
+300                         wire [31:0] LDATA = FCT3[1:0]==0 ? { FCT3[2]==0&amp;&amp;DATAI[ 7] ? ALL1[31: 8]:ALL0[31: 8] , DATAI[ 7: 0] } :
+301                                             FCT3[1:0]==1 ? { FCT3[2]==0&amp;&amp;DATAI[15] ? ALL1[31:16]:ALL0[31:16] , DATAI[15: 0] } :
+302                                                             DATAI;
+303                     
+304                         // C-group: CSRRW
+305                     
+306                         wire EBRK = SYS &amp;&amp; FCT3==0 &amp;&amp; XIDATA[31:20]==12'b000000000001; // ebreak always decodable, for simulation
+307                     
+308                     `ifdef __CSR__
+309                     
+310                         wire CSRX  = SYS &amp;&amp; FCT3[1:0];
+311                     
+312                         `ifdef __INTERRUPT__
+313                             reg [31:0] MSTATUS  = 0;
+314                             reg [31:0] MSCRATCH = 0;
+315                             reg [31:0] MCAUSE   = 0;
+316                             reg [31:0] MEPC     = 0;
+317                             reg [31:0] MTVEC    = 0;
+318                             reg [31:0] MIE      = 0;
+319                             reg [31:0] MIP      = 0;
+320                     
+321                             wire MRET = SYS &amp;&amp; FCT3==0 &amp;&amp; XIDATA[31:20]==12'b001100000010;
+322                         `endif
+323                     
+324                         `ifdef __EBREAK__
+325                             reg [31:0] SSTATUS  = 0;
+326                             reg [31:0] SSCRATCH = 0;
+327                             reg [31:0] SCAUSE   = 0;
+328                             reg [31:0] SEPC     = 0;
+329                             reg [31:0] STVEC    = 0;
+330                             reg [31:0] SIE      = 0;
+331                             reg [31:0] SIP      = 0;
+332                     
+333                             wire SRET = SYS &amp;&amp; FCT3==0 &amp;&amp; XIDATA[31:20]==12'b000100000010;
+334                         `endif
+335                     
+336                         wire [31:0] CRDATA = 
+337                         `ifdef __THREADS__    
+338                                             XIDATA[31:20]==12'hf14 ? { CPTR, TPTR } : // core/thread number
+339                         `else
+340                                             XIDATA[31:20]==12'hf14 ? CPTR  : // core number
+341                         `endif    
+342                         `ifdef __INTERRUPT__
+343                                             XIDATA[31:20]==12'h344 ? MIP      : // machine interrupt pending
+344                                             XIDATA[31:20]==12'h304 ? MIE      : // machine interrupt enable
+345                                             XIDATA[31:20]==12'h341 ? MEPC     : // machine exception PC
+346                                             XIDATA[31:20]==12'h342 ? MCAUSE   : // machine expection cause
+347                                             XIDATA[31:20]==12'h305 ? MTVEC    : // machine vector table
+348                                             XIDATA[31:20]==12'h300 ? MSTATUS  : // machine status
+349                                             XIDATA[31:20]==12'h340 ? MSCRATCH : // machine status
+350                         `endif
+351                         `ifdef __EBREAK__
+352                                             XIDATA[31:20]==12'h144 ? SIP      : // machine interrupt pending
+353                                             XIDATA[31:20]==12'h104 ? SIE      : // machine interrupt enable
+354                                             XIDATA[31:20]==12'h141 ? SEPC     : // machine exception PC
+355                                             XIDATA[31:20]==12'h142 ? SCAUSE   : // machine expection cause
+356                                             XIDATA[31:20]==12'h105 ? STVEC    : // machine vector table
+357                                             XIDATA[31:20]==12'h100 ? SSTATUS  : // machine status
+358                                             XIDATA[31:20]==12'h140 ? SSCRATCH : // machine status
+359                         `endif
+360                                                                      0;	 // unknown
+361                     
+362                         wire [31:0] CRMASK = FCT3[2] ? XIDATA[19:15] : U1REG;
+363                         wire [31:0] WRDATA = FCT3[1:0]==3 ? (CRDATA &amp; ~CRMASK) : FCT3[1:0]==2 ? (CRDATA | CRMASK) : CRMASK;
+364                        
+365                     `endif
+366                     
+367                     
+368                         // RM-group of instructions (OPCODEs==7'b0010011/7'b0110011), merged! src=immediate(M)/register(R)
+369                     
+370                         wire signed [31:0] S2REGX = XMCC ? SIMM : S2REG;
+371                         wire        [31:0] U2REGX = XMCC ? UIMM : U2REG;
+372                     
+373                         wire [31:0] RMDATA = FCT3==7 ? U1REG&amp;S2REGX :
+374                                              FCT3==6 ? U1REG|S2REGX :
+375                                              FCT3==4 ? U1REG^S2REGX :
+376                                              FCT3==3 ? U1REG&lt;U2REGX : // unsigned
+377                                              FCT3==2 ? S1REG&lt;S2REGX : // signed
+378                                              FCT3==0 ? (XRCC&amp;&amp;FCT7[5] ? U1REG-S2REGX : U1REG+S2REGX) :
+379                                              FCT3==1 ? S1REG&lt;&lt;U2REGX[4:0] :
+380                                              //FCT3==5 ?
+381                                              !FCT7[5] ? S1REG&gt;&gt;U2REGX[4:0] :
+382                     `ifdef MODEL_TECH
+383                                                        -((-S1REG)&gt;&gt;U2REGX[4:0]); // workaround for modelsim
+384                     `else
+385                                                        $signed(S1REG&gt;&gt;&gt;U2REGX[4:0]);  // (FCT7[5] ? U1REG&gt;&gt;&gt;U2REG[4:0] :
+386                     `endif
+387                     
+388                     `ifdef __MAC16X16__
+389                     
+390                         // MAC instruction rd += s1*s2 (OPCODE==7'b1111111)
+391                         //
+392                         // 0000000 01100 01011 100 01100 0110011 xor a2,a1,a2
+393                         // 0000000 01010 01100 000 01010 0110011 add a0,a2,a0
+394                         // 0000000 01100 01011 000 01010 0001011 mac a0,a1,a2
+395                         //
+396                         // 0000 0000 1100 0101 1000 0101 0000 1011 = 00c5850b
+397                     
+398                         wire MAC = CUS &amp;&amp; FCT3==0;
+399                     
+400                         wire signed [15:0] K1TMP = S1REG[15:0];
+401                         wire signed [15:0] K2TMP = S2REG[15:0];
+402                         wire signed [31:0] KDATA = K1TMP*K2TMP;
+403                     
+404                     `endif
+405                     
+406                         // J/B-group of instructions (OPCODE==7'b1100011)
+407                     
+408                         wire BMUX       = FCT3==7 &amp;&amp; U1REG&gt;=U2REG  || // bgeu
+409                                           FCT3==6 &amp;&amp; U1REG&lt; U2REGX || // bltu
+410                                           FCT3==5 &amp;&amp; S1REG&gt;=S2REG  || // bge
+411                                           FCT3==4 &amp;&amp; S1REG&lt; S2REGX || // blt
+412                                           FCT3==1 &amp;&amp; U1REG!=U2REGX || // bne
+413                                           FCT3==0 &amp;&amp; U1REG==U2REGX; // beq
+414                     
+415                         wire [31:0] PCSIMM = PC+SIMM;
+416                         wire        JREQ = JAL||JALR||(BCC &amp;&amp; BMUX);
+417                         wire [31:0] JVAL = JALR ? DADDR : PCSIMM; // SIMM + (JALR ? U1REG : PC);
+418                     
+419                         always@(posedge CLK)
+420                         begin
+421                     `ifdef __THREADS__
+422                             RESMODE &lt;= RES ? -1 : RESMODE ? RESMODE-1 : 0;
+423                             XRES &lt;= |RESMODE;
+424                     `else
+425        1/1                  XRES &lt;= RES;
+426                     `endif
+427                     
+428                     `ifdef __3STAGE__
+429        1/1          	    FLUSH &lt;= XRES ? 2 : HLT ? FLUSH :        // reset and halt
+430                     	                       FLUSH ? FLUSH-1 :
+431                         `ifdef __EBREAK__
+432                                                 EBRK ? 2 : // ebreak jmps to system level, i.e. sepc = PC; PC = stvec
+433                                                 SRET ? 2 : // sret returns from system level, i.e. PC = sepc
+434                         `endif
+435                         `ifdef __INTERRUPT__
+436                                                 MRET ? 2 : // mret returns from interrupt, i.e. PC = mepc
+437                         `endif
+438                     
+439                     	                       JREQ ? 2 : 0;  // flush the pipeline!
+440                     `else
+441                             FLUSH &lt;= XRES ? 1 : HLT ? FLUSH :        // reset and halt
+442                                            JREQ;  // flush the pipeline!
+443                     `endif
+444                     
+445                     `ifdef __INTERRUPT__
+446                     
+447                         `ifdef __EBREAK__
+448                             MIP[11] &lt;= IRQ&amp;&amp;MSTATUS[3]&amp;&amp;MIE[11]&amp;&amp;!SIP[1];
+449                         `else
+450                             MIP[11] &lt;= IRQ&amp;&amp;MSTATUS[3]&amp;&amp;MIE[11];
+451                         `endif
+452                         
+453                             if(XRES)
+454                             begin
+455                                 MTVEC    &lt;= 0;
+456                                 MEPC     &lt;= 0;
+457                                 MIE      &lt;= 0;
+458                                 MCAUSE   &lt;= 0;
+459                                 MSTATUS  &lt;= 0;
+460                                 MSCRATCH &lt;= 0;
+461                             end
+462                             else
+463                             if(!HLT &amp;&amp; !FLUSH)
+464                             begin
+465                                 if(CSRX)
+466                                 begin
+467                                     case(XIDATA[31:20])
+468                                         12'h300: MSTATUS  &lt;= WRDATA;
+469                                         12'h340: MSCRATCH &lt;= WRDATA;
+470                                         12'h305: MTVEC    &lt;= WRDATA;
+471                                         12'h341: MEPC     &lt;= WRDATA;
+472                                         12'h304: MIE      &lt;= WRDATA;
+473                                     endcase
+474                                 end
+475                                 else
+476                                 if(MIP[11] &amp;&amp; JREQ)
+477                                 begin
+478                                     MEPC   &lt;= JVAL;             // interrupt saves the next PC!
+479                                     MSTATUS[3] &lt;= 0;            // no interrupts when handling ebreak!
+480                                     MSTATUS[7] &lt;= MSTATUS[3];   // copy old MIE bit
+481                                     MCAUSE &lt;= 32'h8000000b;     // ext interrupt
+482                                 end
+483                                 else
+484                                 if(MRET)
+485                                 begin
+486                                     MSTATUS[3] &lt;= MSTATUS[7]; // return last MIE bit
+487                                 end
+488                             end
+489                     `endif
+490                     
+491                     `ifdef __EBREAK__
+492                        
+493                             if(XRES)
+494                             begin
+495                                 STVEC    &lt;= 0;
+496                                 SEPC     &lt;= 0;
+497                                 SIE      &lt;= 0;
+498                                 SIP      &lt;= 0;
+499                                 SCAUSE   &lt;= 0;
+500                                 SSTATUS  &lt;= 0;
+501                                 SSCRATCH &lt;= 0;
+502                             end
+503                             else
+504                             if(!HLT||!FLUSH)
+505                             begin
+506                                 if(EBRK) // ebreak cannot be blocked!
+507                                 begin
+508                                     SEPC   &lt;= PC;               // ebreak saves the current PC!
+509                                     SSTATUS[1] &lt;= 0;            // no interrupts when handling ebreak!
+510                                     SSTATUS[5] &lt;= SSTATUS[1];   // copy old MIE bit
+511                                     SCAUSE &lt;= 32'h00000003;     // ebreak
+512                                     SIP[1] &lt;= 1;                // set when ebreak!
+513                                 end
+514                                 else
+515                                 if(CSRX)
+516                                 begin
+517                                     case(XIDATA[31:20])
+518                                         12'h100: SSTATUS  &lt;= WRDATA;
+519                                         12'h140: SSCRATCH &lt;= WRDATA;
+520                                         12'h105: STVEC    &lt;= WRDATA;
+521                                         12'h141: SEPC     &lt;= WRDATA;
+522                                         12'h104: SIE      &lt;= WRDATA;
+523                                     endcase
+524                                 end
+525                                 else
+526                                 if(SRET)
+527                                 begin
+528                                     SSTATUS[3] &lt;= SSTATUS[7]; // return last MIE bit
+529                                     SIP[1] &lt;= 0;              //return from ebreak
+530                                 end
+531                             end
+532                             
+533                     `endif
+534                     
+535                     `ifdef __RV32E__
+536                             REGS[DPTR] &lt;=   XRES||DPTR[3:0]==0 ? 0  :        // reset x0
+537                     `else
+538        1/1                  REGS[DPTR] &lt;=   XRES||DPTR[4:0]==0 ? 0  :        // reset x0
+539                     `endif
+540                                            HLT ? REGS[DPTR] :        // halt
+541                                            LCC ? LDATA :
+542                                          AUIPC ? PCSIMM :
+543                                           JAL||
+544                                           JALR ? NXPC :
+545                                            LUI ? SIMM :
+546                                       MCC||RCC ? RMDATA:
+547                     
+548                     `ifdef __MAC16X16__
+549                                            MAC ? REGS[DPTR]+KDATA :
+550                     `endif
+551                     `ifdef __CSR__
+552                                            CSRX ? CRDATA :
+553                     `endif
+554                                                  REGS[DPTR];
+555                     
+556                     `ifdef __3STAGE__
+557                     
+558                         `ifdef __THREADS__
+559                     
+560                             NXPC &lt;= /*XRES ? `__RESETPC__ :*/ HLT ? NXPC : NXPC2[TPTR];
+561                     
+562                             NXPC2[XRES ? RESMODE : TPTR] &lt;=  XRES ? `__RESETPC__ : HLT ? NXPC2[TPTR] :   // reset and halt
+563                                                           JREQ ? JVAL :                            // jmp/bra
+564                     	                                         NXPC2[TPTR]+4;                   // normal flow
+565                     
+566                             TPTR &lt;= XRES ? 0 : HLT ? TPTR :        // reset and halt
+567                                                 JAL /*JREQ*/ ? TPTR+1 : TPTR;
+568                     	             //TPTR==0/*&amp;&amp; IREQ*/&amp;&amp;JREQ ? 1 :         // wait pipeflush to switch to irq
+569                                      //TPTR==1/*&amp;&amp;!IREQ*/&amp;&amp;JREQ ? 0 : TPTR;  // wait pipeflush to return from irq
+570                     
+571                         `else
+572        1/1                  NXPC &lt;= /*XRES ? `__RESETPC__ :*/ HLT ? NXPC : NXPC2;
+573                     
+574        1/1          	    NXPC2 &lt;=  XRES ? `__RESETPC__ : HLT ? NXPC2 :   // reset and halt
+575                             `ifdef __EBREAK__
+576                                          SRET ? SEPC :  // return from system call
+577                                          EBRK ? STVEC : // ebreak causes an system call                     
+578                             `endif
+579                     
+580                             `ifdef __INTERRUPT__
+581                                          MRET ? MEPC :  // return from interrupt
+582                                         MIP[11]&amp;&amp;JREQ ? MTVEC : // pending interrupt + pipeline flush
+583                             `endif
+584                     	                 JREQ ? JVAL :                    // jmp/bra
+585                     	                        NXPC2+4;                   // normal flow
+586                     
+587                         `endif
+588                     
+589                     `else
+590                             NXPC &lt;= XRES ? `__RESETPC__ : HLT ? NXPC :   // reset and halt
+591                             
+592                             `ifdef __EBREAK__
+593                                          MRET ? MEPC :
+594                                          EBRK ? MTVEC : // ebreak causes an interrupt
+595                             `endif
+596                             `ifdef __INTERRUPT__
+597                                          MRET ? MEPC :
+598                                         MIP[11]&amp;&amp;JREQ ? MTVEC : // pending interrupt + pipeline flush
+599                             `endif
+600                                   JREQ ? JVAL :                   // jmp/bra
+601                                          NXPC+4;                   // normal flow
+602                     `endif
+603        1/1                  PC   &lt;= /*XRES ? `__RESETPC__ :*/ HLT ? PC : NXPC; // current program counter
+</pre>
+<hr>
+<a name="Cond"></a>
+Cond Coverage for Module : <a href="mod8.html" >darkriscv</a><br clear=all>
+<table class="noborder">
+<col width="122">
+<col span="3" width="82">
+<tr><th></th><th>Total</th><th>Covered</th><th>Percent</th></tr>
+<tr class="s9"><td class="lf">Conditions</td><td>200</td><td>196</td><td>98.00</td></tr>
+<tr class="s9"><td class="lf">Logical</td><td>200</td><td>196</td><td>98.00</td></tr>
+<tr class="wht"><td class="lf">Non-Logical</td><td>0</td><td>0</td><td></td></tr>
+<tr class="wht"><td class="lf">Event</td><td>0</td><td>0</td><td></td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       114
+ EXPRESSION (XRES ? 0 : (HLT2 ? IDATA2 : IDATA))
+             --1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       114
+ SUB-EXPRESSION (HLT2 ? IDATA2 : IDATA)
+                 --1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       129
+ EXPRESSION (HLT ? XIDATA : IDATAX)
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       131
+ EXPRESSION (HLT ? XLUI : (IDATAX[6:0] == 7'b0110111))
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       132
+ EXPRESSION (HLT ? XAUIPC : (IDATAX[6:0] == 7'b0010111))
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       133
+ EXPRESSION (HLT ? XJAL : (IDATAX[6:0] == 7'b1101111))
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       134
+ EXPRESSION (HLT ? XJALR : (IDATAX[6:0] == 7'b1100111))
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       136
+ EXPRESSION (HLT ? XBCC : (IDATAX[6:0] == 7'b1100011))
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       137
+ EXPRESSION (HLT ? XLCC : (IDATAX[6:0] == 7'b0000011))
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       138
+ EXPRESSION (HLT ? XSCC : (IDATAX[6:0] == 7'b0100011))
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       139
+ EXPRESSION (HLT ? XMCC : (IDATAX[6:0] == 7'b0010011))
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       141
+ EXPRESSION (HLT ? XRCC : (IDATAX[6:0] == 7'b0110011))
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       142
+ EXPRESSION (HLT ? XRCC : (IDATAX[6:0] == 7'b0001011))
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       144
+ EXPRESSION (HLT ? XSYS : (IDATAX[6:0] == 7'b1110011))
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       148
+ EXPRESSION 
+ Number  Term
+      1  HLT ? XSIMM : ((IDATAX[6:0] == 7'b0100011) ? ({(IDATAX[31] ? ALL1[31:12] : ALL0[31:12]),IDATAX[31:25],IDATAX[11:7]}) : ((IDATAX[6:0] == 7'b1100011) ? ({(IDATAX[31] ? ALL1[31:13] : ALL0[31:13]),IDATAX[31],IDATAX[7],IDATAX[30:25],IDATAX[11:8],ALL0[0]}) : ((IDATAX[6:0] == 7'b1101111) ? ({(IDATAX[31] ? ALL1[31:21] : ALL0[31:21]),IDATAX[31],IDATAX[19:12],IDATAX[20],IDATAX[30:21],ALL0[0]}) : (((IDATAX[6:0] == 7'b0110111) || (IDATAX[6:0] == 7'b0010111)) ? ({IDATAX[31:12], ALL0[11:0]}) : ({(IDATAX[31] ? ALL1[31:12] : ALL0[31:12]),IDATAX[31:20]}))))))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       148
+ SUB-EXPRESSION 
+ Number  Term
+      1  (IDATAX[6:0] == 7'b0100011) ? ({(IDATAX[31] ? ALL1[31:12] : ALL0[31:12]),IDATAX[31:25],IDATAX[11:7]}) : ((IDATAX[6:0] == 7'b1100011) ? ({(IDATAX[31] ? ALL1[31:13] : ALL0[31:13]),IDATAX[31],IDATAX[7],IDATAX[30:25],IDATAX[11:8],ALL0[0]}) : ((IDATAX[6:0] == 7'b1101111) ? ({(IDATAX[31] ? ALL1[31:21] : ALL0[31:21]),IDATAX[31],IDATAX[19:12],IDATAX[20],IDATAX[30:21],ALL0[0]}) : (((IDATAX[6:0] == 7'b0110111) || (IDATAX[6:0] == 7'b0010111)) ? ({IDATAX[31:12], ALL0[11:0]}) : ({(IDATAX[31] ? ALL1[31:12] : ALL0[31:12]),IDATAX[31:20]})))))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       148
+ SUB-EXPRESSION (IDATAX[31] ? ALL1[31:12] : ALL0[31:12])
+                 -----1----
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       148
+ SUB-EXPRESSION 
+ Number  Term
+      1  (IDATAX[6:0] == 7'b1100011) ? ({(IDATAX[31] ? ALL1[31:13] : ALL0[31:13]),IDATAX[31],IDATAX[7],IDATAX[30:25],IDATAX[11:8],ALL0[0]}) : ((IDATAX[6:0] == 7'b1101111) ? ({(IDATAX[31] ? ALL1[31:21] : ALL0[31:21]),IDATAX[31],IDATAX[19:12],IDATAX[20],IDATAX[30:21],ALL0[0]}) : (((IDATAX[6:0] == 7'b0110111) || (IDATAX[6:0] == 7'b0010111)) ? ({IDATAX[31:12], ALL0[11:0]}) : ({(IDATAX[31] ? ALL1[31:12] : ALL0[31:12]),IDATAX[31:20]}))))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       148
+ SUB-EXPRESSION (IDATAX[31] ? ALL1[31:13] : ALL0[31:13])
+                 -----1----
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       148
+ SUB-EXPRESSION 
+ Number  Term
+      1  (IDATAX[6:0] == 7'b1101111) ? ({(IDATAX[31] ? ALL1[31:21] : ALL0[31:21]),IDATAX[31],IDATAX[19:12],IDATAX[20],IDATAX[30:21],ALL0[0]}) : (((IDATAX[6:0] == 7'b0110111) || (IDATAX[6:0] == 7'b0010111)) ? ({IDATAX[31:12], ALL0[11:0]}) : ({(IDATAX[31] ? ALL1[31:12] : ALL0[31:12]),IDATAX[31:20]})))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       148
+ SUB-EXPRESSION (IDATAX[31] ? ALL1[31:21] : ALL0[31:21])
+                 -----1----
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       148
+ SUB-EXPRESSION 
+ Number  Term
+      1  ((IDATAX[6:0] == 7'b0110111) || (IDATAX[6:0] == 7'b0010111)) ? ({IDATAX[31:12], ALL0[11:0]}) : ({(IDATAX[31] ? ALL1[31:12] : ALL0[31:12]),IDATAX[31:20]}))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       148
+ SUB-EXPRESSION ((IDATAX[6:0] == 7'b0110111) || (IDATAX[6:0] == 7'b0010111))
+                 -------------1-------------    -------------2-------------
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       148
+ SUB-EXPRESSION (IDATAX[31] ? ALL1[31:12] : ALL0[31:12])
+                 -----1----
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       157
+ EXPRESSION 
+ Number  Term
+      1  HLT ? XUIMM : ((IDATAX[6:0] == 7'b0100011) ? ({ALL0[31:12], IDATAX[31:25], IDATAX[11:7]}) : ((IDATAX[6:0] == 7'b1100011) ? ({ALL0[31:13], IDATAX[31], IDATAX[7], IDATAX[30:25], IDATAX[11:8], ALL0[0]}) : ((IDATAX[6:0] == 7'b1101111) ? ({ALL0[31:21], IDATAX[31], IDATAX[19:12], IDATAX[20], IDATAX[30:21], ALL0[0]}) : (((IDATAX[6:0] == 7'b0110111) || (IDATAX[6:0] == 7'b0010111)) ? ({IDATAX[31:12], ALL0[11:0]}) : ({ALL0[31:12], IDATAX[31:20]}))))))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       157
+ SUB-EXPRESSION 
+ Number  Term
+      1  (IDATAX[6:0] == 7'b0100011) ? ({ALL0[31:12], IDATAX[31:25], IDATAX[11:7]}) : ((IDATAX[6:0] == 7'b1100011) ? ({ALL0[31:13], IDATAX[31], IDATAX[7], IDATAX[30:25], IDATAX[11:8], ALL0[0]}) : ((IDATAX[6:0] == 7'b1101111) ? ({ALL0[31:21], IDATAX[31], IDATAX[19:12], IDATAX[20], IDATAX[30:21], ALL0[0]}) : (((IDATAX[6:0] == 7'b0110111) || (IDATAX[6:0] == 7'b0010111)) ? ({IDATAX[31:12], ALL0[11:0]}) : ({ALL0[31:12], IDATAX[31:20]})))))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       157
+ SUB-EXPRESSION 
+ Number  Term
+      1  (IDATAX[6:0] == 7'b1100011) ? ({ALL0[31:13], IDATAX[31], IDATAX[7], IDATAX[30:25], IDATAX[11:8], ALL0[0]}) : ((IDATAX[6:0] == 7'b1101111) ? ({ALL0[31:21], IDATAX[31], IDATAX[19:12], IDATAX[20], IDATAX[30:21], ALL0[0]}) : (((IDATAX[6:0] == 7'b0110111) || (IDATAX[6:0] == 7'b0010111)) ? ({IDATAX[31:12], ALL0[11:0]}) : ({ALL0[31:12], IDATAX[31:20]}))))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       157
+ SUB-EXPRESSION 
+ Number  Term
+      1  (IDATAX[6:0] == 7'b1101111) ? ({ALL0[31:21], IDATAX[31], IDATAX[19:12], IDATAX[20], IDATAX[30:21], ALL0[0]}) : (((IDATAX[6:0] == 7'b0110111) || (IDATAX[6:0] == 7'b0010111)) ? ({IDATAX[31:12], ALL0[11:0]}) : ({ALL0[31:12], IDATAX[31:20]})))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       157
+ SUB-EXPRESSION (((IDATAX[6:0] == 7'b0110111) || (IDATAX[6:0] == 7'b0010111)) ? ({IDATAX[31:12], ALL0[11:0]}) : ({ALL0[31:12], IDATAX[31:20]}))
+                 ------------------------------1-----------------------------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       157
+ SUB-EXPRESSION ((IDATAX[6:0] == 7'b0110111) || (IDATAX[6:0] == 7'b0010111))
+                 -------------1-------------    -------------2-------------
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       244
+ EXPRESSION (FLUSH ? 0 : XIDATA[6:0])
+             --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       253
+ EXPRESSION (FLUSH ? 0 : XLUI)
+             --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       254
+ EXPRESSION (FLUSH ? 0 : XAUIPC)
+             --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       255
+ EXPRESSION (FLUSH ? 0 : XJAL)
+             --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       256
+ EXPRESSION (FLUSH ? 0 : XJALR)
+             --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       258
+ EXPRESSION (FLUSH ? 0 : XBCC)
+             --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       259
+ EXPRESSION (FLUSH ? 0 : XLCC)
+             --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       260
+ EXPRESSION (FLUSH ? 0 : XSCC)
+             --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       261
+ EXPRESSION (FLUSH ? 0 : XMCC)
+             --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       263
+ EXPRESSION (FLUSH ? 0 : XRCC)
+             --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       264
+ EXPRESSION (FLUSH ? 0 : XCUS)
+             --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       266
+ EXPRESSION (FLUSH ? 0 : XSYS)
+             --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       300
+ EXPRESSION 
+ Number  Term
+      1  (FCT3[1:0] == 2'b0) ? ({(((FCT3[2] == 1'b0) &amp;&amp; DATAI[7]) ? ALL1[31:8] : ALL0[31:8]),DATAI[7:0]}) : ((FCT3[1:0] == 2'b1) ? ({(((FCT3[2] == 1'b0) &amp;&amp; DATAI[15]) ? ALL1[31:16] : ALL0[31:16]),DATAI[15:0]}) : DATAI))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       300
+ SUB-EXPRESSION (((FCT3[2] == 1'b0) &amp;&amp; DATAI[7]) ? ALL1[31:8] : ALL0[31:8])
+                 ---------------1---------------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       300
+ SUB-EXPRESSION ((FCT3[2] == 1'b0) &amp;&amp; DATAI[7])
+                 --------1--------    ----2---
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       300
+ SUB-EXPRESSION ((FCT3[1:0] == 2'b1) ? ({(((FCT3[2] == 1'b0) &amp;&amp; DATAI[15]) ? ALL1[31:16] : ALL0[31:16]),DATAI[15:0]}) : DATAI)
+                 ---------1---------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       300
+ SUB-EXPRESSION (((FCT3[2] == 1'b0) &amp;&amp; DATAI[15]) ? ALL1[31:16] : ALL0[31:16])
+                 ----------------1---------------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       300
+ SUB-EXPRESSION ((FCT3[2] == 1'b0) &amp;&amp; DATAI[15])
+                 --------1--------    ----2----
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       306
+ EXPRESSION (SYS &amp;&amp; (FCT3 == 3'b0) &amp;&amp; (XIDATA[31:20] == 12'b1))
+             -1-    -------2------    ------------3-----------
+</pre>
+<table class="noborder">
+<col span="3" width="40">
+<tr><th>-1-</th><th>-2-</th><th>-3-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uRed"><td>1</td><td>0</td><td>1</td><td class="lf">Not Covered</td></tr>
+<tr class="uRed"><td>1</td><td>1</td><td>0</td><td class="lf">Not Covered</td></tr>
+<tr class="uRed"><td>1</td><td>1</td><td>1</td><td class="lf">Not Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       370
+ EXPRESSION (XMCC ? SIMM : S2REG)
+             --1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       371
+ EXPRESSION (XMCC ? UIMM : U2REG)
+             --1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       373
+ EXPRESSION 
+ Number  Term
+      1  (FCT3 == 3'h7) ? ((U1REG &amp; S2REGX)) : ((FCT3 == 3'h6) ? ((U1REG | S2REGX)) : ((FCT3 == 3'h4) ? ((U1REG ^ S2REGX)) : ((FCT3 == 3'h3) ? (U1REG &lt; U2REGX) : ((FCT3 == 3'h2) ? (S1REG &lt; S2REGX) : ((FCT3 == 3'b0) ? ((XRCC &amp;&amp; FCT7[5]) ? ((U1REG - S2REGX)) : ((U1REG + S2REGX))) : ((FCT3 == 3'b1) ? ((S1REG &lt;&lt; U2REGX[4:0])) : (((!FCT7[5])) ? ((S1REG &gt;&gt; U2REGX[4:0])) : $signed((S1REG &gt;&gt;&gt; U2REGX[4:0]))))))))))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       373
+ SUB-EXPRESSION 
+ Number  Term
+      1  (FCT3 == 3'h6) ? ((U1REG | S2REGX)) : ((FCT3 == 3'h4) ? ((U1REG ^ S2REGX)) : ((FCT3 == 3'h3) ? (U1REG &lt; U2REGX) : ((FCT3 == 3'h2) ? (S1REG &lt; S2REGX) : ((FCT3 == 3'b0) ? ((XRCC &amp;&amp; FCT7[5]) ? ((U1REG - S2REGX)) : ((U1REG + S2REGX))) : ((FCT3 == 3'b1) ? ((S1REG &lt;&lt; U2REGX[4:0])) : (((!FCT7[5])) ? ((S1REG &gt;&gt; U2REGX[4:0])) : $signed((S1REG &gt;&gt;&gt; U2REGX[4:0])))))))))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       373
+ SUB-EXPRESSION 
+ Number  Term
+      1  (FCT3 == 3'h4) ? ((U1REG ^ S2REGX)) : ((FCT3 == 3'h3) ? (U1REG &lt; U2REGX) : ((FCT3 == 3'h2) ? (S1REG &lt; S2REGX) : ((FCT3 == 3'b0) ? ((XRCC &amp;&amp; FCT7[5]) ? ((U1REG - S2REGX)) : ((U1REG + S2REGX))) : ((FCT3 == 3'b1) ? ((S1REG &lt;&lt; U2REGX[4:0])) : (((!FCT7[5])) ? ((S1REG &gt;&gt; U2REGX[4:0])) : $signed((S1REG &gt;&gt;&gt; U2REGX[4:0]))))))))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       373
+ SUB-EXPRESSION 
+ Number  Term
+      1  (FCT3 == 3'h3) ? (U1REG &lt; U2REGX) : ((FCT3 == 3'h2) ? (S1REG &lt; S2REGX) : ((FCT3 == 3'b0) ? ((XRCC &amp;&amp; FCT7[5]) ? ((U1REG - S2REGX)) : ((U1REG + S2REGX))) : ((FCT3 == 3'b1) ? ((S1REG &lt;&lt; U2REGX[4:0])) : (((!FCT7[5])) ? ((S1REG &gt;&gt; U2REGX[4:0])) : $signed((S1REG &gt;&gt;&gt; U2REGX[4:0])))))))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       373
+ SUB-EXPRESSION 
+ Number  Term
+      1  (FCT3 == 3'h2) ? (S1REG &lt; S2REGX) : ((FCT3 == 3'b0) ? ((XRCC &amp;&amp; FCT7[5]) ? ((U1REG - S2REGX)) : ((U1REG + S2REGX))) : ((FCT3 == 3'b1) ? ((S1REG &lt;&lt; U2REGX[4:0])) : (((!FCT7[5])) ? ((S1REG &gt;&gt; U2REGX[4:0])) : $signed((S1REG &gt;&gt;&gt; U2REGX[4:0]))))))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       373
+ SUB-EXPRESSION 
+ Number  Term
+      1  (FCT3 == 3'b0) ? ((XRCC &amp;&amp; FCT7[5]) ? ((U1REG - S2REGX)) : ((U1REG + S2REGX))) : ((FCT3 == 3'b1) ? ((S1REG &lt;&lt; U2REGX[4:0])) : (((!FCT7[5])) ? ((S1REG &gt;&gt; U2REGX[4:0])) : $signed((S1REG &gt;&gt;&gt; U2REGX[4:0])))))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       373
+ SUB-EXPRESSION ((XRCC &amp;&amp; FCT7[5]) ? ((U1REG - S2REGX)) : ((U1REG + S2REGX)))
+                 --------1--------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       373
+ SUB-EXPRESSION (XRCC &amp;&amp; FCT7[5])
+                 --1-    ---2---
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       373
+ SUB-EXPRESSION ((FCT3 == 3'b1) ? ((S1REG &lt;&lt; U2REGX[4:0])) : (((!FCT7[5])) ? ((S1REG &gt;&gt; U2REGX[4:0])) : $signed((S1REG &gt;&gt;&gt; U2REGX[4:0]))))
+                 -------1------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       373
+ SUB-EXPRESSION (((!FCT7[5])) ? ((S1REG &gt;&gt; U2REGX[4:0])) : $signed((S1REG &gt;&gt;&gt; U2REGX[4:0])))
+                 ------1-----
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       416
+ EXPRESSION (JAL || JALR || (BCC &amp;&amp; BMUX))
+             -1-    --2-    ------3------
+</pre>
+<table class="noborder">
+<col span="3" width="40">
+<tr><th>-1-</th><th>-2-</th><th>-3-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       416
+ SUB-EXPRESSION (BCC &amp;&amp; BMUX)
+                 -1-    --2-
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       417
+ EXPRESSION (JALR ? DADDR : PCSIMM)
+             --1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       429
+ EXPRESSION (XRES ? 2 : (HLT ? FLUSH : (FLUSH ? ((FLUSH - 1)) : (JREQ ? 2 : 0))))
+             --1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       429
+ SUB-EXPRESSION (HLT ? FLUSH : (FLUSH ? ((FLUSH - 1)) : (JREQ ? 2 : 0)))
+                 -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       429
+ SUB-EXPRESSION (FLUSH ? ((FLUSH - 1)) : (JREQ ? 2 : 0))
+                 --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       429
+ SUB-EXPRESSION (JREQ ? 2 : 0)
+                 --1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       538
+ EXPRESSION 
+ Number  Term
+      1  (XRES || (DPTR[4:0] == 5'b0)) ? 0 : (HLT ? REGS[DPTR] : (LCC ? LDATA : (AUIPC ? PCSIMM : ((JAL || JALR) ? NXPC : (LUI ? SIMM : ((MCC || RCC) ? RMDATA : REGS[DPTR])))))))
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       538
+ SUB-EXPRESSION (XRES || (DPTR[4:0] == 5'b0))
+                 --1-    ---------2---------
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uRed"><td>1</td><td>0</td><td class="lf">Not Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       538
+ SUB-EXPRESSION (HLT ? REGS[DPTR] : (LCC ? LDATA : (AUIPC ? PCSIMM : ((JAL || JALR) ? NXPC : (LUI ? SIMM : ((MCC || RCC) ? RMDATA : REGS[DPTR]))))))
+                 -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       538
+ SUB-EXPRESSION (LCC ? LDATA : (AUIPC ? PCSIMM : ((JAL || JALR) ? NXPC : (LUI ? SIMM : ((MCC || RCC) ? RMDATA : REGS[DPTR])))))
+                 -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       538
+ SUB-EXPRESSION (AUIPC ? PCSIMM : ((JAL || JALR) ? NXPC : (LUI ? SIMM : ((MCC || RCC) ? RMDATA : REGS[DPTR]))))
+                 --1--
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       538
+ SUB-EXPRESSION ((JAL || JALR) ? NXPC : (LUI ? SIMM : ((MCC || RCC) ? RMDATA : REGS[DPTR])))
+                 ------1------
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       538
+ SUB-EXPRESSION (JAL || JALR)
+                 -1-    --2-
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       538
+ SUB-EXPRESSION (LUI ? SIMM : ((MCC || RCC) ? RMDATA : REGS[DPTR]))
+                 -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       538
+ SUB-EXPRESSION ((MCC || RCC) ? RMDATA : REGS[DPTR])
+                 ------1-----
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       538
+ SUB-EXPRESSION (MCC || RCC)
+                 -1-    -2-
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       572
+ EXPRESSION (HLT ? NXPC : NXPC2)
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       574
+ EXPRESSION (XRES ? 32'b0 : (HLT ? NXPC2 : (JREQ ? JVAL : ((NXPC2 + 4)))))
+             --1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       574
+ SUB-EXPRESSION (HLT ? NXPC2 : (JREQ ? JVAL : ((NXPC2 + 4))))
+                 -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       574
+ SUB-EXPRESSION (JREQ ? JVAL : ((NXPC2 + 4)))
+                 --1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       603
+ EXPRESSION (HLT ? PC : NXPC)
+             -1-
+</pre>
+<table class="noborder">
+<col width="40">
+<tr><th>-1-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       614
+ EXPRESSION ((SCC || LCC) &amp;&amp; (FCT3[1:0] == 2'b0))
+             ------1-----    ---------2---------
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       614
+ SUB-EXPRESSION (SCC || LCC)
+                 -1-    -2-
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       615
+ EXPRESSION ((SCC || LCC) &amp;&amp; (FCT3[1:0] == 2'b1))
+             ------1-----    ---------2---------
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       615
+ SUB-EXPRESSION (SCC || LCC)
+                 -1-    -2-
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       616
+ EXPRESSION ((SCC || LCC) &amp;&amp; (FCT3[1:0] == 2'h2))
+             ------1-----    ---------2---------
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>1</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       616
+ SUB-EXPRESSION (SCC || LCC)
+                 -1-    -2-
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+</table>
+<br clear=all>
+<pre class="code"> LINE       620
+ EXPRESSION (SCC || LCC)
+             -1-    -2-
+</pre>
+<table class="noborder">
+<col span="2" width="40">
+<tr><th>-1-</th><th>-2-</th><th>Status</th></tr>
+<tr class="uGreen"><td>0</td><td>0</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>0</td><td>1</td><td class="lf">Covered</td></tr>
+<tr class="uGreen"><td>1</td><td>0</td><td class="lf">Covered</td></tr>
+</table>
+<hr>
+<a name="Toggle"></a>
+Toggle Coverage for Module : <a href="mod8.html" >darkriscv</a><br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=120></th><th nowrap width=80>Total</th><th nowrap width=80>Covered</th><th nowrap width=80>Percent</th></tr><tr class="s8">
+<td>Totals</td>
+<td class="rt">70</td>
+<td class="rt">58</td>
+<td class="rt">82.86 </td>
+</tr><tr class="s9">
+<td>Total Bits</td>
+<td class="rt">1878</td>
+<td class="rt">1733</td>
+<td class="rt">92.28 </td>
+</tr><tr class="s9">
+<td nowrap>Total Bits 0->1</td>
+<td class="rt">939</td>
+<td class="rt">869</td>
+<td class="rt">92.55 </td>
+</tr><tr class="s9">
+<td nowrap>Total Bits 1->0</td>
+<td class="rt">939</td>
+<td class="rt">864</td>
+<td class="rt">92.01 </td>
+</tr></table><br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=120></th><th nowrap width=80></th><th nowrap width=80></th><th nowrap width=80></th></tr><tr class="s7">
+<td>Ports</td>
+<td class="rt">14</td>
+<td class="rt">11</td>
+<td class="rt">78.57 </td>
+</tr><tr class="s9">
+<td>Port Bits</td>
+<td class="rt">348</td>
+<td class="rt">344</td>
+<td class="rt">98.85 </td>
+</tr><tr class="s9">
+<td nowrap>Port Bits 0->1</td>
+<td class="rt">174</td>
+<td class="rt">172</td>
+<td class="rt">98.85 </td>
+</tr><tr class="s9">
+<td nowrap>Port Bits 1->0</td>
+<td class="rt">174</td>
+<td class="rt">172</td>
+<td class="rt">98.85 </td>
+</tr></table><br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=120></th><th nowrap width=80></th><th nowrap width=80></th><th nowrap width=80></th></tr><tr class="s8">
+<td>Signals</td>
+<td class="rt">56</td>
+<td class="rt">47</td>
+<td class="rt">83.93 </td>
+</tr><tr class="s9">
+<td>Signal Bits</td>
+<td class="rt">1530</td>
+<td class="rt">1389</td>
+<td class="rt">90.78 </td>
+</tr><tr class="s9">
+<td nowrap>Signal Bits 0->1</td>
+<td class="rt">765</td>
+<td class="rt">697</td>
+<td class="rt">91.11 </td>
+</tr><tr class="s9">
+<td nowrap>Signal Bits 1->0</td>
+<td class="rt">765</td>
+<td class="rt">692</td>
+<td class="rt">90.46 </td>
+</tr></table><br clear=all>
+<table align=left class="sortable noborder">
+<caption><b>Port Details</b></caption>
+<tr class="sortablehead">
+<td class="alfsrt">Name</td><td class="alfsrt">Toggle</td><td class="alfsrt">Toggle 1->0</td><td class="alfsrt">Toggle 0->1</td><td class="alfsrt">Direction</td></tr><tr>
+<td>CLK</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>INPUT</td>
+</tr><tr>
+<td>RES</td>
+<td class="s3 cl">No</td>
+<td class="s9 cl">Yes</td>
+<td class="s3 cl">No</td>
+<td>INPUT</td>
+</tr><tr>
+<td>HLT</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>INPUT</td>
+</tr><tr>
+<td>IDATA[1:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s9 cl">Yes</td>
+<td>INPUT</td>
+</tr><tr>
+<td>IDATA[31:2]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>INPUT</td>
+</tr><tr>
+<td>IADDR[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>OUTPUT</td>
+</tr><tr>
+<td>DATAI[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>INPUT</td>
+</tr><tr>
+<td>DATAO[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>OUTPUT</td>
+</tr><tr>
+<td>DADDR[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>OUTPUT</td>
+</tr><tr>
+<td>DLEN[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>OUTPUT</td>
+</tr><tr>
+<td>DRW</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>OUTPUT</td>
+</tr><tr>
+<td>DRD</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>OUTPUT</td>
+</tr><tr>
+<td>DWR</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>OUTPUT</td>
+</tr><tr>
+<td>DAS</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>OUTPUT</td>
+</tr><tr>
+<td>DEBUG[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td>OUTPUT</td>
+</tr><tr>
+<td>DEBUG[3]</td>
+<td class="s3 cl">No</td>
+<td class="s9 cl">Yes</td>
+<td class="s3 cl">No</td>
+<td>OUTPUT</td>
+</tr></table><br clear=all>
+<table align=left class="sortable noborder">
+<caption><b>Signal Details</b></caption>
+<tr class="sortablehead">
+<td class="alfsrt">Name</td><td class="alfsrt">Toggle</td><td class="alfsrt">Toggle 1->0</td><td class="alfsrt">Toggle 0->1</td></tr><tr>
+<td>ALL0[31:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>ALL1[31:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>XRES</td>
+<td class="s3 cl">No</td>
+<td class="s9 cl">Yes</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>HLT2</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>IDATA2[1:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>IDATA2[31:2]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>IDATAX[1:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>IDATAX[31:2]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XIDATA[1:0]</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XIDATA[31:2]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XLUI</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XAUIPC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XJAL</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XJALR</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XBCC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XLCC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XSCC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XMCC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XRCC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XCUS</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XSYS</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>XSIMM[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>XUIMM[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>FLUSH[1:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>DPTR[4:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>S1PTR[4:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>S2PTR[4:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>OPCODE[6:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>FCT3[2:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>FCT7[6:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>SIMM[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>UIMM[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>LUI</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>AUIPC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>JAL</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>JALR</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>BCC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>LCC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>SCC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>MCC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>RCC</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>CUS</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>SYS</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>NXPC2[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>NXPC[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>PC[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>U1REG[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>U2REG[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>S1REG[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>S2REG[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>LDATA[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>EBRK</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+<td class="s3 cl">No</td>
+</tr><tr>
+<td>S2REGX[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>U2REGX[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>RMDATA[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>BMUX</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>PCSIMM[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>JREQ</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr><tr>
+<td>JVAL[31:0]</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+<td class="s9 cl">Yes</td>
+</tr></table><br clear=all>
+<hr>
+<a name="Branch"></a>
+Branch Coverage for Module : <a href="mod8.html" >darkriscv</a><br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=120></th><th nowrap width=80>Line No.</th><th nowrap width=80>Total</th><th nowrap width=80>Covered</th><th nowrap width=80>Percent</th></tr><tr class="s10">
+<td>Branches</td>
+<td></td>
+<td class="rt">105</td>
+<td class="rt">105</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">114</td>
+<td class="rt">3</td>
+<td class="rt">3</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">244</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">253</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">254</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">255</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">256</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">258</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">259</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">260</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">261</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">263</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">264</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">266</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">300</td>
+<td class="rt">3</td>
+<td class="rt">3</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">370</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">371</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">373</td>
+<td class="rt">10</td>
+<td class="rt">10</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">417</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>IF</td>
+<td class="rt">111</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">129</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">131</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">132</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">133</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">134</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">136</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">137</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">138</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">139</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">141</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">142</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">144</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">148</td>
+<td class="rt">6</td>
+<td class="rt">6</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">157</td>
+<td class="rt">6</td>
+<td class="rt">6</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">429</td>
+<td class="rt">5</td>
+<td class="rt">5</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">538</td>
+<td class="rt">8</td>
+<td class="rt">8</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">572</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">574</td>
+<td class="rt">4</td>
+<td class="rt">4</td>
+<td class="rt">100.00</td>
+</tr><tr class="s10">
+<td>TERNARY</td>
+<td class="rt">603</td>
+<td class="rt">2</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+114            wire[31:0] IDATAX = XRES ? 0 : HLT2 ? IDATA2 : IDATA;
+                                        <font color = "green">-1-</font>        <font color = "green">-2-</font>   
+                                        <font color = "green">==></font>        <font color = "green">==></font>   
+                                                   <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>-2-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+244            wire [6:0] OPCODE = FLUSH ? 0 : XIDATA[6:0];
+                                         <font color = "green">-1-</font>  
+                                         <font color = "green">==></font>  
+                                         <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+253            wire    LUI = FLUSH ? 0 : XLUI;   // OPCODE==7'b0110111;
+                                   <font color = "green">-1-</font>  
+                                   <font color = "green">==></font>  
+                                   <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+254            wire  AUIPC = FLUSH ? 0 : XAUIPC; // OPCODE==7'b0010111;
+                                   <font color = "green">-1-</font>  
+                                   <font color = "green">==></font>  
+                                   <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+255            wire    JAL = FLUSH ? 0 : XJAL;   // OPCODE==7'b1101111;
+                                   <font color = "green">-1-</font>  
+                                   <font color = "green">==></font>  
+                                   <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+256            wire   JALR = FLUSH ? 0 : XJALR;  // OPCODE==7'b1100111;
+                                   <font color = "green">-1-</font>  
+                                   <font color = "green">==></font>  
+                                   <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+258            wire    BCC = FLUSH ? 0 : XBCC; // OPCODE==7'b1100011; //FCT3
+                                   <font color = "green">-1-</font>  
+                                   <font color = "green">==></font>  
+                                   <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+259            wire    LCC = FLUSH ? 0 : XLCC; // OPCODE==7'b0000011; //FCT3
+                                   <font color = "green">-1-</font>  
+                                   <font color = "green">==></font>  
+                                   <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+260            wire    SCC = FLUSH ? 0 : XSCC; // OPCODE==7'b0100011; //FCT3
+                                   <font color = "green">-1-</font>  
+                                   <font color = "green">==></font>  
+                                   <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+261            wire    MCC = FLUSH ? 0 : XMCC; // OPCODE==7'b0010011; //FCT3
+                                   <font color = "green">-1-</font>  
+                                   <font color = "green">==></font>  
+                                   <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+263            wire    RCC = FLUSH ? 0 : XRCC; // OPCODE==7'b0110011; //FCT3
+                                   <font color = "green">-1-</font>  
+                                   <font color = "green">==></font>  
+                                   <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+264            wire    CUS = FLUSH ? 0 : XCUS; // OPCODE==7'b0110011; //FCT3
+                                   <font color = "green">-1-</font>  
+                                   <font color = "green">==></font>  
+                                   <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+266            wire    SYS = FLUSH ? 0 : XSYS; // OPCODE==7'b1110011; //FCT3
+                                   <font color = "green">-1-</font>  
+                                   <font color = "green">==></font>  
+                                   <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+300            wire [31:0] LDATA = FCT3[1:0]==0 ? { FCT3[2]==0&amp;&amp;DATAI[ 7] ? ALL1[31: 8]:ALL0[31: 8] , DATAI[ 7: 0] } :
+301                                FCT3[1:0]==1 ? { FCT3[2]==0&amp;&amp;DATAI[15] ? ALL1[31:16]:ALL0[31:16] , DATAI[15: 0] } :
+302                                                DATAI;
+
+ID         LINE       
+-1-        300        (FCT3[1:0] == 2'b0)
+-2-        300        (FCT3[1:0] == 2'b1)
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>-2-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+370            wire signed [31:0] S2REGX = XMCC ? SIMM : S2REG;
+                                                <font color = "green">-1-</font>  
+                                                <font color = "green">==></font>  
+                                                <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+371            wire        [31:0] U2REGX = XMCC ? UIMM : U2REG;
+                                                <font color = "green">-1-</font>  
+                                                <font color = "green">==></font>  
+                                                <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+373            wire [31:0] RMDATA = FCT3==7 ? U1REG&S2REGX :
+                                            <font color = "green">-1-</font>  
+                                            <font color = "green">==></font>  
+374                                 FCT3==6 ? U1REG|S2REGX :
+                                            <font color = "green">-2-</font>  
+                                            <font color = "green">==></font>  
+375                                 FCT3==4 ? U1REG^S2REGX :
+                                            <font color = "green">-3-</font>  
+                                            <font color = "green">==></font>  
+376                                 FCT3==3 ? U1REG<U2REGX : // unsigned
+                                            <font color = "green">-4-</font>  
+                                            <font color = "green">==></font>  
+377                                 FCT3==2 ? S1REG<S2REGX : // signed
+                                            <font color = "green">-5-</font>  
+                                            <font color = "green">==></font>  
+378                                 FCT3==0 ? (XRCC&&FCT7[5] ? U1REG-S2REGX : U1REG+S2REGX) :
+                                            <font color = "green">-6-</font>              <font color = "green">-7-</font>   
+                                                             <font color = "green">==></font>  
+                                                             <font color = "green">==></font>  
+379                                 FCT3==1 ? S1REG<<U2REGX[4:0] :
+                                            <font color = "green">-8-</font>  
+                                            <font color = "green">==></font>  
+380                                 //FCT3==5 ?
+                                               
+381                                 !FCT7[5] ? S1REG>>U2REGX[4:0] :
+                                             <font color = "green">-9-</font>  
+                                             <font color = "green">==></font>  
+                                             <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>-2-</th><th nowrap width=80>-3-</th><th nowrap width=80>-4-</th><th nowrap width=80>-5-</th><th nowrap width=80>-6-</th><th nowrap width=80>-7-</th><th nowrap width=80>-8-</th><th nowrap width=80>-9-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center nowrap>-</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+417            wire [31:0] JVAL = JALR ? DADDR : PCSIMM; // SIMM + (JALR ? U1REG : PC);
+                                       <font color = "green">-1-</font>  
+                                       <font color = "green">==></font>  
+                                       <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+111                if(HLT2^HLT) IDATA2 <= IDATA;    
+                   <font color = "green">-1-</font>  
+           <font color = "green">        ==></font>
+                   MISSING_ELSE
+           <font color = "green">        ==></font>
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+129                XIDATA <= HLT ? XIDATA : IDATAX;
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+                                 <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+131                XLUI   <= HLT ? XLUI   : IDATAX[6:0]==`LUI;
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+                                 <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+132                XAUIPC <= HLT ? XAUIPC : IDATAX[6:0]==`AUIPC;
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+                                 <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+133                XJAL   <= HLT ? XJAL   : IDATAX[6:0]==`JAL;
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+                                 <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+134                XJALR  <= HLT ? XJALR  : IDATAX[6:0]==`JALR;
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+                                 <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+136                XBCC   <= HLT ? XBCC   : IDATAX[6:0]==`BCC;
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+                                 <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+137                XLCC   <= HLT ? XLCC   : IDATAX[6:0]==`LCC;
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+                                 <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+138                XSCC   <= HLT ? XSCC   : IDATAX[6:0]==`SCC;
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+                                 <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+139                XMCC   <= HLT ? XMCC   : IDATAX[6:0]==`MCC;
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+                                 <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+141                XRCC   <= HLT ? XRCC   : IDATAX[6:0]==`RCC;
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+                                 <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+142                XCUS   <= HLT ? XRCC   : IDATAX[6:0]==`CUS;
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+                                 <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+144                XSYS   <= HLT ? XSYS   : IDATAX[6:0]==`SYS;
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+                                 <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+148                XSIMM  <= HLT ? XSIMM :
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+149                         IDATAX[6:0]==`SCC ? { IDATAX[31] ? ALL1[31:12]:ALL0[31:12], IDATAX[31:25],IDATAX[11:7] } : // s-type
+                                              <font color = "green">-2-</font>            <font color = "green">-3-</font>   
+                                              <font color = "green">==></font>            <font color = "green">==></font>   
+150                         IDATAX[6:0]==`BCC ? { IDATAX[31] ? ALL1[31:13]:ALL0[31:13], IDATAX[31],IDATAX[7],IDATAX[30:25],IDATAX[11:8],ALL0[0] } : // b-type
+                                              <font color = "green">-4-</font>            <font color = "green">-5-</font>   
+                                              <font color = "green">==></font>            <font color = "green">==></font>   
+                                                             <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>-2-</th><th nowrap width=80>-3-</th><th nowrap width=80>-4-</th><th nowrap width=80>-5-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+157                XUIMM  <= HLT ? XUIMM :
+                                 <font color = "green">-1-</font>  
+                                 <font color = "green">==></font>  
+158                         IDATAX[6:0]==`SCC ? { ALL0[31:12], IDATAX[31:25],IDATAX[11:7] } : // s-type
+                                              <font color = "green">-2-</font>  
+                                              <font color = "green">==></font>  
+159                         IDATAX[6:0]==`BCC ? { ALL0[31:13], IDATAX[31],IDATAX[7],IDATAX[30:25],IDATAX[11:8],ALL0[0] } : // b-type
+                                              <font color = "green">-3-</font>  
+                                              <font color = "green">==></font>  
+160                         IDATAX[6:0]==`JAL ? { ALL0[31:21], IDATAX[31], IDATAX[19:12], IDATAX[20], IDATAX[30:21], ALL0[0] } : // j-type
+                                              <font color = "green">-4-</font>  
+                                              <font color = "green">==></font>  
+161                         IDATAX[6:0]==`LUI||
+                                               
+162                         IDATAX[6:0]==`AUIPC ? { IDATAX[31:12], ALL0[11:0] } : // u-type
+                                                <font color = "green">-5-</font>  
+                                                <font color = "green">==></font>  
+                                                <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>-2-</th><th nowrap width=80>-3-</th><th nowrap width=80>-4-</th><th nowrap width=80>-5-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+429        	    FLUSH <= XRES ? 2 : HLT ? FLUSH :        // reset and halt
+           	                  <font color = "green">-1-</font>       <font color = "green">-2-</font>   
+           	                  <font color = "green">==></font>       <font color = "green">==></font>   
+430        	                       FLUSH ? FLUSH-1 :
+           	                             <font color = "green">-3-</font>  
+           	                             <font color = "green">==></font>  
+431            `ifdef __EBREAK__
+                                
+432                                    EBRK ? 2 : // ebreak jmps to system level, i.e. sepc = PC; PC = stvec
+                                            <font color = "green">-4-</font>  
+                                            <font color = "green">==></font>  
+                                            <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>-2-</th><th nowrap width=80>-3-</th><th nowrap width=80>-4-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+538                REGS[DPTR] <=   XRES||DPTR[4:0]==0 ? 0  :        // reset x0
+                                                      <font color = "green">-1-</font>  
+                                                      <font color = "green">==></font>  
+539        `endif
+                 
+540                               HLT ? REGS[DPTR] :        // halt
+                                      <font color = "green">-2-</font>  
+                                      <font color = "green">==></font>  
+541                               LCC ? LDATA :
+                                      <font color = "green">-3-</font>  
+                                      <font color = "green">==></font>  
+542                             AUIPC ? PCSIMM :
+                                      <font color = "green">-4-</font>  
+                                      <font color = "green">==></font>  
+543                              JAL||
+                                      
+544                              JALR ? NXPC :
+                                      <font color = "green">-5-</font>  
+                                      <font color = "green">==></font>  
+545                               LUI ? SIMM :
+                                      <font color = "green">-6-</font>  
+                                      <font color = "green">==></font>  
+546                          MCC||RCC ? RMDATA:
+                                      <font color = "green">-7-</font>  
+                                      <font color = "green">==></font>  
+                                      <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>-2-</th><th nowrap width=80>-3-</th><th nowrap width=80>-4-</th><th nowrap width=80>-5-</th><th nowrap width=80>-6-</th><th nowrap width=80>-7-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+572                NXPC <= /*XRES ? `__RESETPC__ :*/ HLT ? NXPC : NXPC2;
+                                                         <font color = "green">-1-</font>  
+                                                         <font color = "green">==></font>  
+                                                         <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+574        	    NXPC2 <=  XRES ? `__RESETPC__ : HLT ? NXPC2 :   // reset and halt
+           	                   <font color = "green">-1-</font>                  <font color = "green">-2-</font>   
+           	                   <font color = "green">==></font>                  <font color = "green">==></font>   
+575                `ifdef __EBREAK__
+                                    
+576                             SRET ? SEPC :  // return from system call
+                                     <font color = "green">-3-</font>  
+                                     <font color = "green">==></font>  
+                                     <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>-2-</th><th nowrap width=80>-3-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>1</td>
+<td align=center nowrap>-</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td align=center>0</td>
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+<pre class="code"><br clear=all>
+603                PC   <= /*XRES ? `__RESETPC__ :*/ HLT ? PC : NXPC; // current program counter
+                                                         <font color = "green">-1-</font>  
+                                                         <font color = "green">==></font>  
+                                                         <font color = "green">==></font>  
+</pre>
+<br clear=all>
+<span class=repname>Branches:</span>
+<br clear=all>
+<table align=left class="noborder">
+<tr>
+<th nowrap width=80>-1-</th><th nowrap width=80>Status</th></tr><tr class="uGreen">
+<td align=center>1</td>
+<td>Covered</td>
+</tr><tr class="uGreen">
+<td align=center>0</td>
+<td>Covered</td>
+</tr></table><br clear=all>
+</div>
+</div>
+<div class="ui-layout-center-inner-north">
+<div id="center-bread-crumb" class="breadCrumb module urg-margin-bottom">
+  <ul name="inst_tag_8">
+    <li>
+      <a href="#Line">Line</a>    </li>
+    <li>
+      <a href="#Cond">Cond</a>    </li>
+    <li>
+      <a href="#Toggle">Toggle</a>    </li>
+    <li>
+      <a href="#Branch">Branch</a>    </li>
+  </ul>
+  <ul name="tag_darkriscv">
+    <li>
+      <a href="#Line">Line</a>    </li>
+    <li>
+      <a href="#Cond">Cond</a>    </li>
+    <li>
+      <a href="#Toggle">Toggle</a>    </li>
+    <li>
+      <a href="#Branch">Branch</a>    </li>
+  </ul>
+</div>
+</div>
+</div>
+<div class="ui-layout-south">
+<table align=center><tr><td class="s0 cl">0%</td>
+<td class="s1 cl">10%</td>
+<td class="s2 cl">20%</td>
+<td class="s3 cl">30%</td>
+<td class="s4 cl">40%</td>
+<td class="s5 cl">50%</td>
+<td class="s6 cl">60%</td>
+<td class="s7 cl">70%</td>
+<td class="s8 cl">80%</td>
+<td class="s9 cl">90%</td>
+<td class="s10 cl">100%</td></tr></table></div>
+</body>
+</html>
