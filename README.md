@@ -1,4 +1,4 @@
-<p align="center"><h1 align="center">MP6134-FUNCTIONALVERIFICATION-PROJECT</h1></p>
+<p align="center"><h1 align="center">MP6134 - FUNCTIONAL VERIFICATION - PROJECT</h1></p>
 <p align="center">
 	<img src="https://img.shields.io/github/license/ErickOF/MP6134-FunctionalVerification-Project?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
 	<img src="https://img.shields.io/github/last-commit/ErickOF/MP6134-FunctionalVerification-Project?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
@@ -23,7 +23,6 @@
   - [⚙️ Installation](#-installation)
   - [🤖 Usage](#🤖-usage)
   - [🧪 Testing](#🧪-testing)
-- [📌 Project Roadmap](#-project-roadmap)
 - [🔰 Contributing](#-contributing)
 - [🎗 License](#-license)
 - [🙌 Acknowledgments](#-acknowledgments)
@@ -50,6 +49,7 @@
     ├── Makefile
     ├── README.md
     ├── export_tools.sh
+    ├── regression.sh
     ├── rtl
     │   ├── README.md
     │   ├── include
@@ -63,6 +63,7 @@
     │   ├── sequences
     │   └── tests
     └── tb_uvm
+        ├── assertions
         ├── checkers
         ├── environment
         ├── filelist.f
@@ -78,6 +79,10 @@
 		<summary><b>__root__</b></summary>
 		<blockquote>
 			<table>
+			<tr>
+				<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/regression.sh'>regression.sh</a></b></td>
+				<td><code>❯ REPLACE-ME</code></td>
+			</tr>
 			<tr>
 				<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/export_tools.sh'>export_tools.sh</a></b></td>
 				<td><code>❯ REPLACE-ME</code></td>
@@ -137,6 +142,17 @@
 			</tr>
 			</table>
 			<details>
+				<summary><b>assertions</b></summary>
+				<blockquote>
+					<table>
+					<tr>
+						<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/tb_uvm/assertions/r_type_assertions.sva'>r_type_assertions.sva</a></b></td>
+						<td><code>❯ REPLACE-ME</code></td>
+					</tr>
+					</table>
+				</blockquote>
+			</details>
+			<details>
 				<summary><b>environment</b></summary>
 				<blockquote>
 					<table>
@@ -158,6 +174,14 @@
 					</tr>
 					<tr>
 						<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/tb_uvm/environment/darkriscv_driver.sv'>darkriscv_driver.sv</a></b></td>
+						<td><code>❯ REPLACE-ME</code></td>
+					</tr>
+					<tr>
+						<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/tb_uvm/environment/darkriscv_input_cov.sv'>darkriscv_input_cov.sv</a></b></td>
+						<td><code>❯ REPLACE-ME</code></td>
+					</tr>
+					<tr>
+						<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/tb_uvm/environment/darkriscv_output_cov.sv'>darkriscv_output_cov.sv</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					<tr>
@@ -196,7 +220,19 @@
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					<tr>
+						<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/tb_uvm/sequences/i_instr_seq.sv'>i_instr_seq.sv</a></b></td>
+						<td><code>❯ REPLACE-ME</code></td>
+					</tr>
+					<tr>
+						<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/tb_uvm/sequences/b_instr_seq.sv'>b_instr_seq.sv</a></b></td>
+						<td><code>❯ REPLACE-ME</code></td>
+					</tr>
+					<tr>
 						<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/tb_uvm/sequences/random_instr_seq.sv'>random_instr_seq.sv</a></b></td>
+						<td><code>❯ REPLACE-ME</code></td>
+					</tr>
+					<tr>
+						<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/tb_uvm/sequences/s_instr_seq.sv'>s_instr_seq.sv</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					<tr>
@@ -204,7 +240,23 @@
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					<tr>
+						<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/tb_uvm/sequences/j_instr_seq.sv'>j_instr_seq.sv</a></b></td>
+						<td><code>❯ REPLACE-ME</code></td>
+					</tr>
+					<tr>
+						<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/tb_uvm/sequences/l_instr_seq.sv'>l_instr_seq.sv</a></b></td>
+						<td><code>❯ REPLACE-ME</code></td>
+					</tr>
+					<tr>
 						<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/tb_uvm/sequences/init_registers_seq.sv'>init_registers_seq.sv</a></b></td>
+						<td><code>❯ REPLACE-ME</code></td>
+					</tr>
+					<tr>
+						<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/tb_uvm/sequences/u_instr_seq.sv'>u_instr_seq.sv</a></b></td>
+						<td><code>❯ REPLACE-ME</code></td>
+					</tr>
+					<tr>
+						<td><b><a href='https://github.com/ErickOF/MP6134-FunctionalVerification-Project/blob/master/tb_uvm/sequences/r_instr_seq.sv'>r_instr_seq.sv</a></b></td>
 						<td><code>❯ REPLACE-ME</code></td>
 					</tr>
 					<tr>
@@ -352,8 +404,7 @@
 
 Before getting started with MP6134-FunctionalVerification-Project, ensure your runtime environment meets the following requirements:
 
-- **Programming Language:** Error detecting primary_language: {'sh': 1, 'v': 1, 'vh': 1, 'sv': 36, 'f': 2, 'svh': 3}
-
+- **Programming Language:** Shell, Verilog, SystemVerilog, SystemVerilogAssertions, Python
 
 ### ⚙️ Installation
 
@@ -373,24 +424,23 @@ Install MP6134-FunctionalVerification-Project using one of the following methods
 
 3. Install the project dependencies:
 
-echo 'INSERT-INSTALL-COMMAND-HERE'
-
+```sh
+> export_tools.sh
+> make compile_uvm
+```
 
 
 ### 🤖 Usage
 Run MP6134-FunctionalVerification-Project using the following command:
-echo 'INSERT-RUN-COMMAND-HERE'
+```sh
+> make uvm_gui
+```
 
 ### 🧪 Testing
 Run the test suite using the following command:
-echo 'INSERT-TEST-COMMAND-HERE'
-
----
-## 📌 Project Roadmap
-
-- [X] **`Task 1`**: <strike>Implement feature one.</strike>
-- [ ] **`Task 2`**: Implement feature two.
-- [ ] **`Task 3`**: Implement feature three.
+```sh
+> source regression.sh
+```
 
 ---
 
@@ -403,23 +453,23 @@ echo 'INSERT-TEST-COMMAND-HERE'
 <details closed>
 <summary>Contributing Guidelines</summary>
 
-1. **Fork the Repository**: Start by forking the project repository to your github account.
+1. **Fork the Repository**: Start by forking the project repository to your GitHub account.
 2. **Clone Locally**: Clone the forked repository to your local machine using a git client.
    ```sh
    git clone https://github.com/ErickOF/MP6134-FunctionalVerification-Project
    ```
 3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
    ```sh
-   git checkout -b new-feature-x
+   git checkout -b username/new-feature-x
    ```
 4. **Make Your Changes**: Develop and test your changes locally.
 5. **Commit Your Changes**: Commit with a clear message describing your updates.
    ```sh
    git commit -m 'Implemented new feature x.'
    ```
-6. **Push to github**: Push the changes to your forked repository.
+6. **Push to GitHub**: Push the changes to your forked repository.
    ```sh
-   git push origin new-feature-x
+   git push origin username/new-feature-x
    ```
 7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
 8. **Review**: Once your PR is reviewed and approved, it will be merged into the main branch. Congratulations on your contribution!
@@ -439,7 +489,7 @@ echo 'INSERT-TEST-COMMAND-HERE'
 
 ## 🎗 License
 
-This project is protected under the [SELECT-A-LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
+This project is protected under the [SELECT-A-LICENSE](https://choosealicense.com/licenses) License. Refer to the [LICENSE](https://choosealicense.com/licenses/) file for more details.
 
 ---
 
