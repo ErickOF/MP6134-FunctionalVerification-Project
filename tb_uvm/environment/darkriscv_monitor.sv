@@ -108,38 +108,28 @@ class darkriscv_monitor extends uvm_monitor;
     logic [31:0] output_data;
     logic [2:0] bytes_transfered;
 
+    bit valid_transaction;
+
     forever begin
-      @ (negedge intf.CLK);
-      if (!intf.HLT && !intf.RES) begin
-        instruction_data = intf.IDATA;
-        input_data = intf.DATAI;
+      intf.mon_sigs(
+        ._IDATA(instruction_data),
+        ._IADDR(output_item.instruction_address),
+        ._DATAI(input_data),
+        ._DATAO(output_data),
+        ._DADDR(data_address),
+        ._DLEN(bytes_transfered),
+        ._DRD(read_op),
+        ._DWR(write_op),
+        ._valid(valid_transaction)
+      );
 
-        if (intf.DWR) begin
-          write_op = 1;
-          read_op = 0;
-          data_address = intf.DADDR;
-          output_data = intf.DATAO;
-          bytes_transfered = intf.DLEN;
-        end
-        else if (intf.DRD) begin
-          write_op = 0;
-          read_op = 1;
-          data_address = intf.DADDR;
-          bytes_transfered = intf.DLEN;
-        end
-        else begin
-          write_op = 0;
-          read_op = 0;
-          bytes_transfered = 0;
-        end
-
+      if (valid_transaction) begin
         input_item.instruction_data = instruction_data;
         input_item.input_data = input_data;
         send_input_item();
 
         `uvm_info(get_type_name(), $sformatf("Instruction IDATA: %h, Input Data: %h", instruction_data, input_data), UVM_MEDIUM)
 
-        output_item.instruction_address = intf.IADDR;
         output_item.data_address = data_address;
         output_item.output_data = output_data;
         output_item.bytes_transfered = bytes_transfered;

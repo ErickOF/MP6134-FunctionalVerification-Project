@@ -97,7 +97,6 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
       // Drive the item to the DUT and read the response in parallel.
       fork
         drive(driscv_item);
-        read(driscv_item);
       join
 
       // Indicate to the sequencer that the item has been processed.
@@ -117,12 +116,8 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
   virtual task drive(darkriscv_item driscv_item);
     // Drive the signals from the item to the DUT via the interface (implementation required).
     `uvm_info(get_type_name(), $sformatf("Driving instruction 0x%0h with data 0x%0h", driscv_item.riscv_inst, driscv_item.riscv_data), UVM_NONE)
-    @ (posedge intf.CLK);
-    intf.HLT = 0;
-    intf.IDATA = driscv_item.riscv_inst;
-    intf.DATAI = driscv_item.riscv_data;
-    @ (posedge intf.CLK);
-    intf.HLT = 1;
+
+    intf.drive(._IDATA(driscv_item.riscv_inst), ._DATAI(driscv_item.riscv_data));
 
     expected_item.instruction_data = driscv_item.riscv_inst;
     expected_item.input_data = driscv_item.riscv_data;
@@ -131,33 +126,8 @@ class darkriscv_driver extends uvm_driver #(darkriscv_item);
 
   virtual task reset();
     `uvm_info(get_type_name(), "Driving signals to initial/known values" , UVM_NONE)
-    intf.HLT     = 0;
-`ifdef __INTERRUPT__
-    intf.IRQ     = 0;
-`endif
-    intf.IDATA   = 0;
-    intf.DATAI   = 0;
-`ifdef SIMULATION
-    intf.ESIMREQ = 0;
-`endif
-    intf.RES     = 1;
-    repeat (2) @(negedge intf.CLK);
-    intf.RES     = 0;
-    intf.HLT     = 1;
+    intf.reset();
   endtask : reset
-
-  //-----------------------------------------------------------------------------------------------
-  // Task: read
-  //
-  // This task is responsible for reading the status or response from the DUT after driving an item.
-  // The actual implementation of reading signals from the interface will be added here.
-  //
-  // Parameters:
-  // - driscv_item: The item related to the read operation.
-  //-----------------------------------------------------------------------------------------------
-  virtual task read(darkriscv_item driscv_item);
-    // Read the status/response from the DUT via the interface (implementation required).
-  endtask : read
 
   function void send_expected_item();
     darkriscv_input_item expected_item_tmp;
