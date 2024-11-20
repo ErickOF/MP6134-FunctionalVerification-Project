@@ -1,0 +1,340 @@
+module r_type_assertions(darksimv_hdl_xtor intf);
+  //-----------------------------------------------------------------------------------------------
+  // Property: check_r_type_add
+  //
+  // Description:
+  //   This property verifies that for an R-type ADD instruction, the sum of source registers (`r1
+  //   and `r2`) matches the value in the destination register (`RMDATA`). The check is triggered
+  //   on the positive edge of the clock (`CLK`) and is disabled during reset (`RES`) or flush 
+  //   conditions (`FLUSH` is non-zero).
+  //
+  // Parameters:
+  //   - r_type: Opcode for R-type instructions.
+  //   - add_sub: Funct3 field for ADD or SUB operations.
+  //-----------------------------------------------------------------------------------------------
+  property check_r_type_add;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    @(posedge intf.CLK)
+    // Disable the property if any of these conditions are met:
+    // 1. Reset (`RES`) is active.
+    // 2. Flush signal (`FLUSH`) is not zero.
+    disable iff (intf.RES || (`HDL_TOP.FLUSH !== 0))
+    // Proceed if the instruction is R-type ADD:
+    // 1. Opcode matches R-type
+    // 2. Funct3 matches ADD/SUB
+    // 3. Funct7 matches ADD
+    // Fetch source register values `r1` and `r2` from the DUT's register file
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === add_sub) && (intf.IDATA[31:25] === 7'b000_0000), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 clock cycles, check if the sum matches the value in `RMDATA`
+    |-> ##2 ((r1 + r2) === `HDL_TOP.RMDATA);
+  endproperty
+
+  //-----------------------------------------------------------------------------------------------
+  // Property: check_r_type_sub
+  //
+  // Description:
+  //   This property verifies that for an R-type SUB instruction, the difference between source
+  //   registers (`r1` and `r2`) matches the value in the destination register (`RMDATA`). The
+  //   check is triggered on the positive edge of the clock (`CLK`) and is disabled during reset
+  //   (`RES`) or flush conditions (`FLUSH` is non-zero).
+  //
+  // Parameters:
+  //   - r_type: Opcode for R-type instructions.
+  //   - add_sub: Funct3 field for ADD or SUB operations.
+  //-----------------------------------------------------------------------------------------------
+  property check_r_type_sub;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    @(posedge intf.CLK)
+    // Disable the property if any of these conditions are met:
+    // 1. Reset (`RES`) is active.
+    // 2. Flush signal (`FLUSH`) is not zero.
+    disable iff (intf.RES || (`HDL_TOP.FLUSH !== 0))
+    // Proceed if the instruction is R-type SUB:
+    // 1. Opcode matches R-type
+    // 2. Funct3 matches ADD/SUB
+    // 3. Funct7 matches SUB
+    // Fetch source register values `r1` and `r2` from the DUT's register file
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === add_sub) && (intf.IDATA[31:25] === 7'b010_0000), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 clock cycles, check if the difference matches the value in `RMDATA`
+    |-> ##2 ((r1 - r2) === `HDL_TOP.RMDATA);
+  endproperty
+
+  //-----------------------------------------------------------------------------------------------
+  // Property: check_r_type_sll
+  //
+  // Description:
+  //   Verifies that for an R-type SLL instruction, the result of shifting `r1` left by the amount
+  //   specified in the lower 5 bits of `r2` matches the value in the destination register
+  //   (`RMDATA`). The check is triggered on the positive edge of the clock (`CLK`) and is disabled
+  //   during reset (`RES`) or flush (`FLUSH`) conditions.
+  //
+  // Parameters:
+  //   - r_type: Opcode for R-type instructions.
+  //   - sll: Funct3 field for the SLL operation.
+  //-----------------------------------------------------------------------------------------------
+  property check_r_type_sll;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+  
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    @(posedge intf.CLK)
+    // Disable the property if any of these conditions are met:
+    // 1. Reset (`RES`) is active.
+    // 2. Flush signal (`FLUSH`) is not zero.
+    disable iff (intf.RES || (`HDL_TOP.FLUSH !== 0))
+    // Proceed if the instruction is R-type SLL:
+    // 1. Opcode matches R-type
+    // 2. Funct3 matches SLL
+    // Fetch source register values `r1` and `r2` from the DUT's register file
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === sll), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 clock cycles, check if the left shift matches the value in `RMDATA`
+    |-> ##2 ((unsigned'(r1) << r2[4:0]) === `HDL_TOP.RMDATA);
+  endproperty
+
+  //-----------------------------------------------------------------------------------------------
+  // Property: check_r_type_slt
+  //
+  // Description:
+  //   Verifies that for an R-type SLT (Set Less Than) instruction, the result in the destination
+  //   register (`RMDATA`) correctly indicates whether `r1` is less than `r2`.
+  //
+  // Parameters:
+  //   - r_type: Opcode for R-type instructions.
+  //   - slt: Funct3 field for the SLT operation.
+  //-----------------------------------------------------------------------------------------------
+  property check_r_type_slt;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+  
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    @(posedge intf.CLK)
+    // Disable the property if any of these conditions are met:
+    // 1. Reset (`RES`) is active.
+    // 2. Flush signal (`FLUSH`) is not zero.
+    disable iff (intf.RES || (`HDL_TOP.FLUSH !== 0))
+    // Proceed if the instruction is R-type SLT:
+    // 1. Opcode matches R-type
+    // 2. Funct3 matches SLT
+    // Fetch source register values `r1` and `r2` from the DUT's register file
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === slt), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 clock cycles, check if `r1 < r2` matches the value in `RMDATA`
+    |-> ##2 ((r1 < r2) === `HDL_TOP.RMDATA);
+  endproperty
+
+  //-----------------------------------------------------------------------------------------------
+  // Property: check_r_type_sltu
+  //
+  // Description:
+  //   Verifies that for an R-type SLTU (Set Less Than Unsigned) instruction, the result in the
+  //   destination register (`RMDATA`) correctly indicates whether `r1` is less than `r2` as
+  //   unsigned integers.
+  //
+  // Parameters:
+  //   - r_type: Opcode for R-type instructions.
+  //   - sltu: Funct3 field for the SLTU operation.
+  //-----------------------------------------------------------------------------------------------
+  property check_r_type_sltu;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+  
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    @(posedge intf.CLK)
+    // Disable the property if any of these conditions are met:
+    // 1. Reset (`RES`) is active.
+    // 2. Flush signal (`FLUSH`) is not zero.
+    disable iff (intf.RES || (`HDL_TOP.FLUSH !== 0))
+    // Proceed if the instruction is R-type SLTU:
+    // 1. Opcode matches R-type
+    // 2. Funct3 matches SLTU
+    // Fetch source register values `r1` and `r2` from the DUT's register file
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === sltu), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 clock cycles, check if the unsigned comparison of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((unsigned'(r1) < unsigned'(r2)) === `HDL_TOP.RMDATA);
+  endproperty
+
+  //-----------------------------------------------------------------------------------------------
+  // Property: check_r_type_xor
+  //
+  // Description:
+  //   Verifies that for an R-type XOR instruction, the result in the destination register
+  //   (`RMDATA`) matches the bitwise XOR of `r1` and `r2`.
+  //
+  // Parameters:
+  //   - r_type: Opcode for R-type instructions.
+  //   - xor_: Funct3 field for the XOR operation.
+  //-----------------------------------------------------------------------------------------------
+  property check_r_type_xor;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+  
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    @(posedge intf.CLK)
+    // Disable the property if any of these conditions are met:
+    // 1. Reset (`RES`) is active.
+    // 2. Flush signal (`FLUSH`) is not zero.
+    disable iff (intf.RES || (`HDL_TOP.FLUSH !== 0))
+    // Proceed if the instruction is R-type XOR:
+    // 1. Opcode matches R-type
+    // 2. Funct3 matches XOR
+    // Fetch source register values `r1` and `r2` from the DUT's register file
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === xor_), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 clock cycles, check if the XOR of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((r1 ^ r2) === `HDL_TOP.RMDATA);
+  endproperty
+
+  //-----------------------------------------------------------------------------------------------
+  // Property: check_r_type_srl
+  //
+  // Description:
+  //   Verifies that for an R-type SRL (Shift Right Logical) instruction, the result in the
+  //   destination register (`RMDATA`) matches the logical right shift of `r1` by the value in
+  //   `r2`.
+  //
+  // Parameters:
+  //   - r_type: Opcode for R-type instructions.
+  //   - srl_sra: Funct3 field shared by SRL and SRA.
+  //   - Funct7: Differentiates SRL (funct7 = 7'b000_0000).
+  //-----------------------------------------------------------------------------------------------
+  property check_r_type_srl;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+  
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    @(posedge intf.CLK)
+    // Disable the property if any of these conditions are met:
+    // 1. Reset (`RES`) is active.
+    // 2. Flush signal (`FLUSH`) is not zero.
+    disable iff (intf.RES || (`HDL_TOP.FLUSH !== 0))
+    // Proceed if the instruction is R-type SRL:
+    // 1. Opcode matches R-type
+    // 2. Funct3 matches SRL/SRA group
+    // 3. Funct7 matches SRL
+    // Fetch source register values `r1` and `r2` from the DUT's register file
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === srl_sra) && (intf.IDATA[31:25] === 7'b000_0000), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 clock cycles, check if the logical right shift of `r1` matches `RMDATA`
+    |-> ##2 ((unsigned'(r1) >> r2[4:0]) === `HDL_TOP.RMDATA);
+  endproperty
+
+  //-----------------------------------------------------------------------------------------------
+  // Property: check_r_type_sra
+  //
+  // Description:
+  //   Verifies that for an R-type SRA (Shift Right Arithmetic) instruction, the result in the
+  //   destination register (`RMDATA`) matches the arithmetic right shift of `r1` by the value in
+  //   `r2`.
+  //
+  // Parameters:
+  //   - r_type: Opcode for R-type instructions.
+  //   - srl_sra: Funct3 field shared by SRL and SRA.
+  //   - Funct7: Differentiates SRA (funct7 = 7'b010_0000).
+  //-----------------------------------------------------------------------------------------------
+  property check_r_type_sra;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+  
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    @(posedge intf.CLK)
+    // Disable the property if any of these conditions are met:
+    // 1. Reset (`RES`) is active.
+    // 2. Flush signal (`FLUSH`) is not zero.
+    disable iff (intf.RES || (`HDL_TOP.FLUSH !== 0))
+    // Proceed if the instruction is R-type SRA:
+    // 1. Opcode matches R-type
+    // 2. Funct3 matches SRL/SRA group
+    // 3. Funct7 matches SRA
+    // Fetch source register values `r1` and `r2` from the DUT's register file
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === srl_sra) && (intf.IDATA[31:25] === 7'b010_0000), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 clock cycles, check if the arithmetic right shift of `r1` matches `RMDATA`
+    |-> ##2 ((r1 >>> r2[4:0]) === `HDL_TOP.RMDATA);
+  endproperty
+
+  //-----------------------------------------------------------------------------------------------
+  // Property: check_r_type_or
+  //
+  // Description:
+  //   Verifies that for an R-type OR instruction, the result in the destination register
+  //   (`RMDATA`) matches the bitwise OR of `r1` and `r2`.
+  //
+  // Parameters:
+  //   - r_type: Opcode for R-type instructions.
+  //   - or_: Funct3 field for the OR instruction.
+  //-----------------------------------------------------------------------------------------------
+  property check_r_type_or;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+  
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    @(posedge intf.CLK)
+    // Disable the property if any of these conditions are met:
+    // 1. Reset (`RES`) is active.
+    // 2. Flush signal (`FLUSH`) is not zero.
+    disable iff (intf.RES || (`HDL_TOP.FLUSH !== 0))
+    // Proceed if the instruction is R-type OR:
+    // 1. Opcode matches R-type
+    // 2. Funct3 matches OR instruction
+    // Fetch source register values `r1` and `r2` from the DUT's register file
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === or_), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 clock cycles, check if the OR of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((r1 | r2) === `HDL_TOP.RMDATA);
+  endproperty
+
+  //-----------------------------------------------------------------------------------------------
+  // Property: check_r_type_and
+  //
+  // Description:
+  //   Verifies that for an R-type AND instruction, the result in the destination register
+  //   (`RMDATA`) matches the bitwise AND of `r1` and `r2`.
+  //
+  // Parameters:
+  //   - r_type: Opcode for R-type instructions.
+  //   - and_: Funct3 field for the AND instruction.
+  //-----------------------------------------------------------------------------------------------
+  property check_r_type_and;
+    // Declare two 32-bit registers to hold the values fetched from the DUT
+    logic [31:0] r1, r2;
+  
+    // Triggered on the positive edge of the clock (`intf.CLK`)
+    @(posedge intf.CLK)
+    // Disable the property if any of these conditions are met:
+    // 1. Reset (`RES`) is active.
+    // 2. Flush signal (`FLUSH`) is not zero.
+    disable iff (intf.RES || (`HDL_TOP.FLUSH !== 0))
+    // Proceed if the instruction is R-type AND:
+    // 1. Opcode matches R-type
+    // 2. Funct3 matches AND instruction
+    // Fetch source register values `r1` and `r2` from the DUT's register file
+    ((intf.IDATA[6:0] === r_type) && (intf.IDATA[14:12] === and_), r1=`HDL_TOP.REGS[intf.IDATA[19:15]], r2=`HDL_TOP.REGS[intf.IDATA[24:20]])
+    // After 2 clock cycles, check if the AND of `r1` and `r2` matches `RMDATA`
+    |-> ##2 ((r1 & r2) === `HDL_TOP.RMDATA);
+  endproperty
+
+  // Call assertions
+  assert_check_r_type_add: assert property (check_r_type_add);
+  assert_check_r_type_sub: assert property (check_r_type_sub);
+  assert_check_r_type_sll: assert property (check_r_type_sll);
+  assert_check_r_type_slt: assert property (check_r_type_slt);
+  assert_check_r_type_sltu: assert property (check_r_type_sltu);
+  assert_check_r_type_xor: assert property (check_r_type_xor);
+  assert_check_r_type_srl: assert property (check_r_type_srl);
+  assert_check_r_type_sra: assert property (check_r_type_sra);
+  assert_check_r_type_or: assert property (check_r_type_or);
+  assert_check_r_type_and: assert property (check_r_type_and);
+
+  // Call cover properties
+  cover_check_r_type_add: cover property (check_r_type_add);
+  cover_check_r_type_sub: cover property (check_r_type_sub);
+  cover_check_r_type_sll: cover property (check_r_type_sll);
+  cover_check_r_type_slt: cover property (check_r_type_slt);
+  cover_check_r_type_sltu: cover property (check_r_type_sltu);
+  cover_check_r_type_xor: cover property (check_r_type_xor);
+  cover_check_r_type_srl: cover property (check_r_type_srl);
+  cover_check_r_type_sra: cover property (check_r_type_sra);
+  cover_check_r_type_or: cover property (check_r_type_or);
+  cover_check_r_type_and: cover property (check_r_type_and);
+endmodule : r_type_assertions

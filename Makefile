@@ -29,6 +29,7 @@
 # VCS variables
 FILELIST_LAYERS = tb/filelist.f
 FILELIST_UVM    = tb_uvm/filelist.f
+FILELIST_DPI    = tb_emu/filelist.f
 SIMDIR = darksocv_dir
 XSIM = $(SIMDIR)/darksocv
 VCDS = $(SIMDIR)/darksocv.vcd
@@ -40,12 +41,15 @@ VCS_UVM = $(VCS) \
 	-ntb_opts uvm-1.2 \
 	-timescale=1ns/1ps \
 	-cm line+cond+fsm+branch+tgl -cm_dir ./coverage.vdb \
-	-CFLAGS -DVCS
+	-DVCS
+VCS_DPI = $(VCS_UVM) -CFLAGS "-std=c99" -LDFLAGS "-lm"
 VCS_GUI_LAYERS = $(VCS) -gui
 VCS_GUI_UVM = $(VCS_UVM) -gui
+VCS_GUI_DPI = $(VCS_DPI) -gui
 
 DEPS_LAYERS = $(FILELIST_LAYERS)
 DEPS_UVM = $(FILELIST_UVM)
+DEPS_DPI = $(FILELIST_DPI)
 
 TARGET_TEST = darkriscv_base_test
 
@@ -65,7 +69,13 @@ uvm: compile_uvm
 	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=$(TARGET_TEST)
 
 compile_uvm: $(DEPS_UVM) $(SIMDIR)
-	$(VCS_UVM) -f $(FILELIST_UVM) -o $(XSIM)
+	$(VCS_UVM) -f $(FILELIST_UVM) tb_uvm/environment/dpi_msg_channel.cc -o $(XSIM)
+
+uvm_dpi: compile_uvm_dpi
+	./$(XSIM) +vcs+dumpvars+$(VCDS) +UVM_TESTNAME=$(TARGET_TEST)
+
+compile_uvm_dpi: $(DEPS_DPI) $(SIMDIR)
+	$(VCS_DPI) -f $(FILELIST_DPI) tb_emu/environment/dpi_msg_channel.cc -o $(XSIM)
 
 uvm_run_%:
 	@echo "Running UVM test: $*"
