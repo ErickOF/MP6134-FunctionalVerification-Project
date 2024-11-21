@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="Author" content="<username>"> <meta name="GENERATOR" content="urg/version [en] (platform name) [urg]">
+<title>Unified Coverage Report :: Group :: $unit::darkriscv_input_cov::cg_input_inst</title>
+<link type="text/css" rel="stylesheet" href="css/.urg.css">
+<link type="text/css" rel="stylesheet" href="css/.layout.css">
+<link type="text/css" rel="stylesheet" href="css/.breadcrumb.css">
+<script type="text/javascript" src="js/.jquery.js"></script>
+<script type="text/javascript" src="js/.jquery-ui.js"></script>
+<script type="text/javascript" src="js/.sortable.js"></script>
+<script type="text/javascript" src="js/.layout.js"></script>
+<script type="text/javascript" src="js/.breadcrumb.js"></script>
+<script type="text/javascript">
+var layout, westLayout, centerLayout;
+$(document).ready(function () {
+  if ($("#north-bread-crumb")) {
+    $("#north-bread-crumb").jBreadCrumb({easing:'swing'})
+  }
+  layout = $("body").layout({ 
+    resizable: true,
+    spacing_open: 4,
+    spacing_closed: 4,
+    north: {
+      size: 76
+    },
+    south: {
+      size: 45,
+      initClosed: true
+    },
+    west: {
+      size: 500,
+      resizable: true,
+      initClosed: false
+    }
+  });
+  centerLayout = $('div.ui-layout-center').layout({
+    north__paneSelector: ".ui-layout-center-inner-north",
+    center__paneSelector: ".ui-layout-center-inner-center", 
+    north__size: 50,
+    spacing_open: 4,
+    spacing_closed: 4
+  });
+});
+</script>
+</head>
+<body onLoad="initPage();"><div class="ui-layout-north">
+<div class="logo"></div>
+<center class="pagetitle">Group : $unit::darkriscv_input_cov::cg_input_inst</center>
+<div align="center"><a href="dashboard.html" ><b>dashboard</b></a> | <a href="hierarchy.html" ><b>hierarchy</b></a> | <a href="modlist.html" ><b>modlist</b></a> | <a href="groups.html" ><b>groups</b></a> | <a href="tests.html" ><b>tests</b></a> | <a href="asserts.html" ><b>asserts</b></a></div>
+
+</div>
+<div class="ui-layout-west">
+<div>
+<div class=modhdr>
+<br clear=all>
+<span class=titlename>Group : <a href="#"  onclick="showContent('$unit::darkriscv_input_cov::cg_input_inst')">$unit::darkriscv_input_cov::cg_input_inst</a></span>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td><b>SCORE</b></td><td>WEIGHT</td><td>GOAL</td><td>AT LEAST</td><td>AUTO BIN MAX</td><td>PRINT MISSING</td></tr><tr>
+<td class="s10 cl rt">100.00</td>
+<td class="wht cl rt">1     </td>
+<td class="wht cl rt">100   </td>
+<td class="wht cl rt">1     </td>
+<td class="wht cl rt">64    </td>
+<td class="wht cl rt">64    </td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class=repname>Source File(s) : </span>
+<br clear=all>
+<a href="javascript:void(0);"  onclick="openSrcFile('/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/environment/darkriscv_input_cov.sv')">/mnt/vol_NFS_alajuela/qtree_NFS_rh003/MP6134_3_2024_maestria/fpicado/MP6134-FunctionalVerification-Project/tb_uvm/environment/darkriscv_input_cov.sv</a><br clear=all>
+<br clear=all>
+</div>
+<hr>
+<br clear=all>
+<span class=repname>Summary for Group   $unit::darkriscv_input_cov::cg_input_inst
+</span>
+<br clear=all>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td class="alfsrt">CATEGORY</td><td>EXPECTED</td><td>UNCOVERED</td><td>COVERED</td><td>PERCENT</td></tr><tr class="s10">
+<td><a href="#var_tbl_$unit::darkriscv_input_cov::cg_input_inst" >Variables</a></td>
+<td class="rt">113</td>
+<td class="rt">0</td>
+<td class="rt">113</td>
+<td class="rt">100.00</td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class="repname" id="var_tbl_$unit::darkriscv_input_cov::cg_input_inst">Variables for Group  $unit::darkriscv_input_cov::cg_input_inst
+</span>
+<br clear=all>
+<table align=left class="sortable">
+<tr class="sortablehead">
+<td class="alfsrt">VARIABLE</td><td>EXPECTED</td><td>UNCOVERED</td><td>COVERED</td><td>PERCENT</td><td>GOAL</td><td>WEIGHT</td><td>AT LEAST</td><td>AUTO BIN MAX</td><td>COMMENT</td></tr><tr class="s10">
+<td><a href="#inst_tag_$unit::darkriscv_input_cov::cg_input_inst.inst_type"  onclick="checkLink(this)" target="detailFrame">inst_type</a></td>
+<td class="rt">7</td>
+<td class="rt">0</td>
+<td class="rt">7</td>
+<td class="rt">100.00</td>
+<td class="rt">100</td>
+<td class="rt">1</td>
+<td class="rt">1</td>
+<td class="rt">0</td>
+<td></td>
+</tr><tr class="s10">
+<td><a href="#inst_tag_$unit::darkriscv_input_cov::cg_input_inst.rd"  onclick="checkLink(this)" target="detailFrame">rd</a></td>
+<td class="rt">32</td>
+<td class="rt">0</td>
+<td class="rt">32</td>
+<td class="rt">100.00</td>
+<td class="rt">100</td>
+<td class="rt">1</td>
+<td class="rt">1</td>
+<td class="rt">32</td>
+<td></td>
+</tr><tr class="s10">
+<td><a href="#inst_tag_$unit::darkriscv_input_cov::cg_input_inst.rs1"  onclick="checkLink(this)" target="detailFrame">rs1</a></td>
+<td class="rt">32</td>
+<td class="rt">0</td>
+<td class="rt">32</td>
+<td class="rt">100.00</td>
+<td class="rt">100</td>
+<td class="rt">1</td>
+<td class="rt">1</td>
+<td class="rt">32</td>
+<td></td>
+</tr><tr class="s10">
+<td><a href="#inst_tag_$unit::darkriscv_input_cov::cg_input_inst.rs2"  onclick="checkLink(this)" target="detailFrame">rs2</a></td>
+<td class="rt">32</td>
+<td class="rt">0</td>
+<td class="rt">32</td>
+<td class="rt">100.00</td>
+<td class="rt">100</td>
+<td class="rt">1</td>
+<td class="rt">1</td>
+<td class="rt">32</td>
+<td></td>
+</tr><tr class="s10">
+<td><a href="#inst_tag_$unit::darkriscv_input_cov::cg_input_inst.funct3"  onclick="checkLink(this)" target="detailFrame">funct3</a></td>
+<td class="rt">8</td>
+<td class="rt">0</td>
+<td class="rt">8</td>
+<td class="rt">100.00</td>
+<td class="rt">100</td>
+<td class="rt">1</td>
+<td class="rt">1</td>
+<td class="rt">8</td>
+<td></td>
+</tr><tr class="s10">
+<td><a href="#inst_tag_$unit::darkriscv_input_cov::cg_input_inst.funct7"  onclick="checkLink(this)" target="detailFrame">funct7</a></td>
+<td class="rt">2</td>
+<td class="rt">0</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+<td class="rt">100</td>
+<td class="rt">1</td>
+<td class="rt">1</td>
+<td class="rt">0</td>
+<td></td>
+</tr></table><br clear=all>
+</div>
+</div>
+<div class="ui-layout-center">
+<div class="ui-layout-center-inner-center">
+<div>
+<br clear=all>
+<a name="inst_tag_$unit::darkriscv_input_cov::cg_input_inst.inst_type"></a><span class="repname" id="inst_tag_$unit::darkriscv_input_cov::cg_input_inst.inst_type">Summary for Variable inst_type</span>
+<br clear=all>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td class="alfsrt">CATEGORY</td><td>EXPECTED</td><td>UNCOVERED</td><td>COVERED</td><td>PERCENT</td></tr><tr class="s10">
+<td>User Defined Bins</td>
+<td class="rt">7</td>
+<td class="rt">0</td>
+<td class="rt">7</td>
+<td class="rt">100.00</td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class=repname>User Defined Bins for inst_type</span>
+<br clear=all>
+<br clear=all>
+<span class=repname>Bins</span>
+<br clear=all>
+<table align=left class="sortable">
+<tr class="sortablehead">
+<td class="alfsrt">NAME</td><td>COUNT</td><td>AT LEAST</td></tr><tr class="s10">
+<td>values_33</td>
+<td class="rt">146</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>values_13</td>
+<td class="rt">1626</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>values_23</td>
+<td class="rt">2280</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>values_63</td>
+<td class="rt">151</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>values_17</td>
+<td class="rt">78</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>values_6f</td>
+<td class="rt">88</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>values_0b</td>
+<td class="rt">1992</td>
+<td class="rt">1</td>
+</tr></table><br clear=all>
+<hr>
+<br clear=all>
+<a name="inst_tag_$unit::darkriscv_input_cov::cg_input_inst.rd"></a><span class="repname" id="inst_tag_$unit::darkriscv_input_cov::cg_input_inst.rd">Summary for Variable rd</span>
+<br clear=all>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td class="alfsrt">CATEGORY</td><td>EXPECTED</td><td>UNCOVERED</td><td>COVERED</td><td>PERCENT</td></tr><tr class="s10">
+<td>Automatically Generated Bins</td>
+<td class="rt">32</td>
+<td class="rt">0</td>
+<td class="rt">32</td>
+<td class="rt">100.00</td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class=repname>Automatically Generated Bins for rd</span>
+<br clear=all>
+<br clear=all>
+<span class=repname>Bins</span>
+<br clear=all>
+<table align=left class="sortable">
+<tr class="sortablehead">
+<td class="alfsrt">NAME</td><td>COUNT</td><td>AT LEAST</td></tr><tr class="s10">
+<td>auto[0]</td>
+<td class="rt">2064</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[1]</td>
+<td class="rt">76</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[2]</td>
+<td class="rt">75</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[3]</td>
+<td class="rt">73</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[4]</td>
+<td class="rt">78</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[5]</td>
+<td class="rt">70</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[6]</td>
+<td class="rt">74</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[7]</td>
+<td class="rt">75</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[8]</td>
+<td class="rt">68</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[9]</td>
+<td class="rt">80</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[10]</td>
+<td class="rt">66</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[11]</td>
+<td class="rt">68</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[12]</td>
+<td class="rt">81</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[13]</td>
+<td class="rt">77</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[14]</td>
+<td class="rt">71</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[15]</td>
+<td class="rt">60</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[16]</td>
+<td class="rt">71</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[17]</td>
+<td class="rt">62</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[18]</td>
+<td class="rt">67</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[19]</td>
+<td class="rt">72</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[20]</td>
+<td class="rt">62</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[21]</td>
+<td class="rt">68</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[22]</td>
+<td class="rt">77</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[23]</td>
+<td class="rt">60</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[24]</td>
+<td class="rt">69</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[25]</td>
+<td class="rt">70</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[26]</td>
+<td class="rt">73</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[27]</td>
+<td class="rt">78</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[28]</td>
+<td class="rt">63</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[29]</td>
+<td class="rt">77</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[30]</td>
+<td class="rt">69</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[31]</td>
+<td class="rt">59</td>
+<td class="rt">1</td>
+</tr></table><br clear=all>
+<hr>
+<br clear=all>
+<a name="inst_tag_$unit::darkriscv_input_cov::cg_input_inst.rs1"></a><span class="repname" id="inst_tag_$unit::darkriscv_input_cov::cg_input_inst.rs1">Summary for Variable rs1</span>
+<br clear=all>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td class="alfsrt">CATEGORY</td><td>EXPECTED</td><td>UNCOVERED</td><td>COVERED</td><td>PERCENT</td></tr><tr class="s10">
+<td>Automatically Generated Bins</td>
+<td class="rt">32</td>
+<td class="rt">0</td>
+<td class="rt">32</td>
+<td class="rt">100.00</td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class=repname>Automatically Generated Bins for rs1</span>
+<br clear=all>
+<br clear=all>
+<span class=repname>Bins</span>
+<br clear=all>
+<table align=left class="sortable">
+<tr class="sortablehead">
+<td class="alfsrt">NAME</td><td>COUNT</td><td>AT LEAST</td></tr><tr class="s10">
+<td>auto[0]</td>
+<td class="rt">5623</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[1]</td>
+<td class="rt">43</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[2]</td>
+<td class="rt">29</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[3]</td>
+<td class="rt">29</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[4]</td>
+<td class="rt">42</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[5]</td>
+<td class="rt">39</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[6]</td>
+<td class="rt">31</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[7]</td>
+<td class="rt">43</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[8]</td>
+<td class="rt">36</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[9]</td>
+<td class="rt">42</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[10]</td>
+<td class="rt">40</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[11]</td>
+<td class="rt">28</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[12]</td>
+<td class="rt">34</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[13]</td>
+<td class="rt">32</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[14]</td>
+<td class="rt">25</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[15]</td>
+<td class="rt">45</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[16]</td>
+<td class="rt">30</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[17]</td>
+<td class="rt">43</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[18]</td>
+<td class="rt">37</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[19]</td>
+<td class="rt">29</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[20]</td>
+<td class="rt">26</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[21]</td>
+<td class="rt">31</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[22]</td>
+<td class="rt">33</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[23]</td>
+<td class="rt">26</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[24]</td>
+<td class="rt">27</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[25]</td>
+<td class="rt">33</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[26]</td>
+<td class="rt">40</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[27]</td>
+<td class="rt">27</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[28]</td>
+<td class="rt">32</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[29]</td>
+<td class="rt">42</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[30]</td>
+<td class="rt">29</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[31]</td>
+<td class="rt">38</td>
+<td class="rt">1</td>
+</tr></table><br clear=all>
+<hr>
+<br clear=all>
+<a name="inst_tag_$unit::darkriscv_input_cov::cg_input_inst.rs2"></a><span class="repname" id="inst_tag_$unit::darkriscv_input_cov::cg_input_inst.rs2">Summary for Variable rs2</span>
+<br clear=all>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td class="alfsrt">CATEGORY</td><td>EXPECTED</td><td>UNCOVERED</td><td>COVERED</td><td>PERCENT</td></tr><tr class="s10">
+<td>Automatically Generated Bins</td>
+<td class="rt">32</td>
+<td class="rt">0</td>
+<td class="rt">32</td>
+<td class="rt">100.00</td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class=repname>Automatically Generated Bins for rs2</span>
+<br clear=all>
+<br clear=all>
+<span class=repname>Bins</span>
+<br clear=all>
+<table align=left class="sortable">
+<tr class="sortablehead">
+<td class="alfsrt">NAME</td><td>COUNT</td><td>AT LEAST</td></tr><tr class="s10">
+<td>auto[0]</td>
+<td class="rt">2182</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[1]</td>
+<td class="rt">193</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[2]</td>
+<td class="rt">147</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[3]</td>
+<td class="rt">155</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[4]</td>
+<td class="rt">131</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[5]</td>
+<td class="rt">120</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[6]</td>
+<td class="rt">145</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[7]</td>
+<td class="rt">156</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[8]</td>
+<td class="rt">131</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[9]</td>
+<td class="rt">156</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[10]</td>
+<td class="rt">145</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[11]</td>
+<td class="rt">144</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[12]</td>
+<td class="rt">170</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[13]</td>
+<td class="rt">148</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[14]</td>
+<td class="rt">130</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[15]</td>
+<td class="rt">144</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[16]</td>
+<td class="rt">153</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[17]</td>
+<td class="rt">146</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[18]</td>
+<td class="rt">135</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[19]</td>
+<td class="rt">138</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[20]</td>
+<td class="rt">136</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[21]</td>
+<td class="rt">147</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[22]</td>
+<td class="rt">148</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[23]</td>
+<td class="rt">147</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[24]</td>
+<td class="rt">146</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[25]</td>
+<td class="rt">140</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[26]</td>
+<td class="rt">137</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[27]</td>
+<td class="rt">159</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[28]</td>
+<td class="rt">130</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[29]</td>
+<td class="rt">141</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[30]</td>
+<td class="rt">149</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[31]</td>
+<td class="rt">135</td>
+<td class="rt">1</td>
+</tr></table><br clear=all>
+<hr>
+<br clear=all>
+<a name="inst_tag_$unit::darkriscv_input_cov::cg_input_inst.funct3"></a><span class="repname" id="inst_tag_$unit::darkriscv_input_cov::cg_input_inst.funct3">Summary for Variable funct3</span>
+<br clear=all>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td class="alfsrt">CATEGORY</td><td>EXPECTED</td><td>UNCOVERED</td><td>COVERED</td><td>PERCENT</td></tr><tr class="s10">
+<td>Automatically Generated Bins</td>
+<td class="rt">8</td>
+<td class="rt">0</td>
+<td class="rt">8</td>
+<td class="rt">100.00</td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class=repname>Automatically Generated Bins for funct3</span>
+<br clear=all>
+<br clear=all>
+<span class=repname>Bins</span>
+<br clear=all>
+<table align=left class="sortable">
+<tr class="sortablehead">
+<td class="alfsrt">NAME</td><td>COUNT</td><td>AT LEAST</td></tr><tr class="s10">
+<td>auto[0]</td>
+<td class="rt">3742</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[1]</td>
+<td class="rt">172</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[2]</td>
+<td class="rt">2275</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[3]</td>
+<td class="rt">66</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[4]</td>
+<td class="rt">132</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[5]</td>
+<td class="rt">110</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[6]</td>
+<td class="rt">90</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>auto[7]</td>
+<td class="rt">97</td>
+<td class="rt">1</td>
+</tr></table><br clear=all>
+<hr>
+<br clear=all>
+<a name="inst_tag_$unit::darkriscv_input_cov::cg_input_inst.funct7"></a><span class="repname" id="inst_tag_$unit::darkriscv_input_cov::cg_input_inst.funct7">Summary for Variable funct7</span>
+<br clear=all>
+<br clear=all>
+<table align=left>
+<tr class="sortablehead">
+<td class="alfsrt">CATEGORY</td><td>EXPECTED</td><td>UNCOVERED</td><td>COVERED</td><td>PERCENT</td></tr><tr class="s10">
+<td>User Defined Bins</td>
+<td class="rt">2</td>
+<td class="rt">0</td>
+<td class="rt">2</td>
+<td class="rt">100.00</td>
+</tr></table><br clear=all>
+<br clear=all>
+<span class=repname>User Defined Bins for funct7</span>
+<br clear=all>
+<br clear=all>
+<span class=repname>Bins</span>
+<br clear=all>
+<table align=left class="sortable">
+<tr class="sortablehead">
+<td class="alfsrt">NAME</td><td>COUNT</td><td>AT LEAST</td></tr><tr class="s10">
+<td>valids_00</td>
+<td class="rt">129</td>
+<td class="rt">1</td>
+</tr><tr class="s10">
+<td>valids_20</td>
+<td class="rt">17</td>
+<td class="rt">1</td>
+</tr></table><br clear=all>
+</div>
+</div>
+<div class="ui-layout-center-inner-north">
+<div id="center-bread-crumb" class="breadCrumb module urg-margin-bottom">
+  <ul>
+    <li>
+      <a href="#inst_tag_$unit::darkriscv_input_cov::cg_input_inst.inst_type">Variable : inst_type</a>    </li>
+    <li>
+      <a href="#inst_tag_$unit::darkriscv_input_cov::cg_input_inst.rd">Variable : rd</a>    </li>
+    <li>
+      <a href="#inst_tag_$unit::darkriscv_input_cov::cg_input_inst.rs1">Variable : rs1</a>    </li>
+    <li>
+      <a href="#inst_tag_$unit::darkriscv_input_cov::cg_input_inst.rs2">Variable : rs2</a>    </li>
+    <li>
+      <a href="#inst_tag_$unit::darkriscv_input_cov::cg_input_inst.funct3">Variable : funct3</a>    </li>
+    <li>
+      <a href="#inst_tag_$unit::darkriscv_input_cov::cg_input_inst.funct7">Variable : funct7</a>    </li>
+  </ul>
+</div>
+</div>
+</div>
+<div class="ui-layout-south">
+<table align=center><tr><td class="s0 cl">0%</td>
+<td class="s1 cl">10%</td>
+<td class="s2 cl">20%</td>
+<td class="s3 cl">30%</td>
+<td class="s4 cl">40%</td>
+<td class="s5 cl">50%</td>
+<td class="s6 cl">60%</td>
+<td class="s7 cl">70%</td>
+<td class="s8 cl">80%</td>
+<td class="s9 cl">90%</td>
+<td class="s10 cl">100%</td></tr></table></div>
+</body>
+</html>
